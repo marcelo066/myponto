@@ -1,0 +1,1615 @@
+<html><head>
+
+	<title>Tutorial de Templates em PHP</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<meta name="keywords" content="php, template, tutorial, simples, simple, sigma, smarty">
+	<link rel="stylesheet" type="text/css" href="template.php_arquivos/style.css" media="screen">
+	<link rel="alternate" title="Tutorial de Templates em PHP RSS" href="http://www.raelcunha.com/packages/blog/pages/rss.php" type="application/rss+xml">
+	<link rel="stylesheet" type="text/css" href="template.php_arquivos/prettify.css">
+	<script type="text/javascript" src="template.php_arquivos/prettify.js"></script>
+	<style>
+		* {
+			font-size: 12px;
+			font-family: Verdana, Georgia, Tahoma, Verdana, Serif; 
+		}
+		ol{
+			padding-left: 50px;
+		}
+		img {
+			border: none;
+			margin-right: 0px;
+		}
+		.extra {
+			text-align: justify;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+		.code {
+			width: 100%; 
+			background-color: #dfe4dc; 
+			white-space: nowrap; 
+			overflow: scroll;
+			text-align: left;
+		}
+		pre, .reserved, .string, .number{
+			font-size: 10px;
+		}
+		.reserved, .string, .number{
+			font-weight: bold;
+		}
+		.reserved {
+			color: #7f0055;
+		}
+		.string {
+			color: #2a00ff;
+		}
+		.number {
+			color: #990000;
+		}
+		#display {
+			padding-top: 20px;
+		}
+		ul {
+			padding-left: 30px;
+		}
+		.add {
+			text-align: center;
+		}
+	
+	</style>
+	<script type="text/javascript">
+	
+		var URL_ROOT = "";
+		var loadingMessage = "Carregando...";
+		var SENDING_MESSAGE = "Enviando";
+		var loading = "<img border=0 align=absmiddle src=\"/images/loading.gif\">" + loadingMessage;
+		
+	</script>
+</head><body>
+
+<div id="outer">
+
+	<div id="outer2">
+	
+		<div id="header">
+
+			<div id="topText">
+				<h1>Rael</h1>
+				<h2>Página Pessoal</h2>
+			</div>
+			
+		</div>
+	
+		<div id="menu">
+			<a href="http://www.raelcunha.com/index.php">Go to home</a>
+		</div>
+		
+		<div id="loading" style="visibility: hidden;">
+			<div class="loading"><img src="template.php_arquivos/loading.gif" align="absmiddle" border="0">Carregando...</div>
+		</div>			
+		
+		<div class="add">
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-1324327298235207";
+			//468x15, criado 11/12/07
+			google_ad_slot = "9989311899";
+			google_ad_width = 468;
+			google_ad_height = 15;
+			//--></script>
+			<script type="text/javascript" src="template.php_arquivos/show_ads.js">
+			</script><script>window.google_render_ad();</script><iframe name="google_ads_frame" src="template.php_arquivos/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" width="468" frameborder="0" height="15"></iframe>		
+		</div>
+
+		<div id="display" class="">
+			
+	<style type="text/css">
+		#lang_menu {
+			clear: both;
+			float: right;
+		}
+		.lang_item {
+			float: left; padding-right: 20px;
+		}
+		.error{
+			font-weight: bold;
+			font-family: monospace;
+			color: red;		
+		}
+		li {
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+		
+		.code {
+			text-align:left;
+		}
+
+		.code span.text {
+			color:#007700;
+		}
+		
+		.code span.comment {
+			color:#FF9900;
+		}
+		
+		.code span.tag {
+			color:#0000BB;
+		}
+		
+		.code span.attribute {
+			color:#0000BB;
+			font-weight: normal;
+		}
+		
+		.code span.value {
+			color:#DD0000;	
+		}
+		
+		.code span.comment span {
+			color:#008000;
+		}
+		
+		.code span.template_var {
+			color: black;
+		}
+		
+	</style>
+
+	   
+	<div id="title">Tutorial de Templates em PHP</div>
+	<br>
+   
+   <br>
+
+<p><a href="http://raelcunha.com/packages/blog/pages/index.tpl.php?post=328">&lt; Voltar para post relacionado</a></p>
+
+<br><br>
+
+<p>Uma das coisas que as pessoas mais me perguntam sobre PHP, é sobre o uso de Templates. Ou porque leram em algum livro ou fórum, 
+ou seja porque eu comentei em aula.</p>
+
+<p>Através do uso de templates, deixamos toda a estrutura visual (HTML
+ou XML, CSS, etc) separado da lógica de programação (código PHP), o que
+melhora e muito tanto a construção quanto a manutenção de sistemas web.</p>
+
+<p>Existem vários mecanismo de template para PHP, e há um bom tempo no mercado. Mas qual indicar? Sem dúvida alguma, o <a href="http://www.smarty.net/" target="new" title="Site do Smarty">Smarty</a> é 
+hoje o mais completo deles. Porém, o mais complexo, e de curva mais demorada. Ele é praticamente uma linguagem à parte do PHP.</p>
+
+<p>Com base nisso, eu resolvi colocar criar um tutorial baseado em um
+mecanismo de template muito mais simples. Ou seja: este não é um
+tutorial sobre o <a href="http://www.smarty.net/" target="new" title="Site do Smarty">Smarty</a>.
+É sobre Templates, mas baseado uma biblioteca que eu mesmo desenvolvi,
+e uso em meus projetos (mesmo nos maiores deles), na qual gastei
+bastante tempo desenvolvendo e melhorando, sempre com o foco principal
+na facilidade de uso.</p> 
+
+<p>Mas quase todos os conceitos vistos neste tutorial se aplicam à
+maioria das classes de Template existentes em PHP, portanto, se você
+entender as idéias explicadas aqui, poderá usar seu mecanismo de
+Templates favorito.</p>
+
+<p>Para criar esta biblioteca (eu uso templates há muitos anos, quando
+só existia a PHPLib), eu estudei vários mecanismos de templates
+(PHPLib, Sigma, etc), portanto não estou "reinventando a roda", apenas
+"me apoiei no ombro de gigantes" para criar algo muito mais fácil de
+usar, que atendesse minhas necessidades e da empresa que eu trabalhava
+na época. De fato, atualmente muita gente usa esta biblioteca.</p>
+
+<p>Eu inclusive traduzi os comentários dos métodos/funções públicos
+para facilitar. Você verá que será preciso entender apenas duas idéias
+básicas: variáveis e blocos.</p>
+
+<p>Então, vamos lá.</p>
+
+<br>
+<hr>
+
+
+<br>
+<p>
+<strong>Índice</strong><br>
+</p>
+
+<p>
+<a href="#download">Download, Documentação e Licença</a><br>
+<a href="#requirements">Requisitos necessários</a><br>
+<a href="#install">Instalação</a><br>
+<a href="#hello">Exemplo e explicação: Olá Mundo</a><br>
+<a href="#vars">Variáveis</a><br>
+<a href="#blocks">Blocos</a><br>
+<a href="#nested_blocks">Blocos aninhados</a><br>
+<a href="#select_blocks">Blocos com HTML Select</a><br>
+<a href="#multiple_files">Usando vários arquivos HTML</a><br>
+<a href="#get_content">Guardando o conteúdo do template</a><br>
+<a href="#objects">Usando Objetos</a><br>
+<a href="#other_files">Criando XML, CSV e outros</a><br>
+<a href="#office_files">Criando documentos do Office</a><br>
+<a href="#errors">Gerenciando erros</a><br>
+<a href="#varvars">Variáveis dinâmicas</a><br>
+<a href="#messages">Mensagens de Erro</a><br>
+<a href="#performance">Precisão e Desempenho</a><br>
+<a href="#conclusion">Conclusão</a><br>
+</p>
+
+<br>
+
+<hr>
+
+<br>
+<p><strong><a name="download">Download, Documentação e Licença</a></strong></p>
+
+<p>Para baixar o código fonte, escolha entre a versão com comentários e mensagens de erro em português ou inglês:</p>
+
+<p>
+- <a href="http://www.raelcunha.com/packages/extra/template/files/Template_pt-br.zip">Download Template (português)</a><br>
+- <a href="http://www.raelcunha.com/packages/extra/template/files/Template_en-us.zip">Download Template (english)</a></p>
+
+<p>Para ver a documentação dos métodos (API), clique no link do idioma desejado:</p>
+
+<p>
+- <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.php">Ver API (português)</a><br>
+- <a href="http://www.raelcunha.com/packages/extra/template/en-us/api/index.php">Ver API (english)</a>
+</p>
+
+<p>A licença desta biblioteca é regida pela licença <a href="http://www.gnu.org/licenses/lgpl.html" target="new">LGPL</a>. Ou seja, você pode utilizá-la, como biblioteca, mesmo em projetos comerciais. 
+Lembre-se apenas de ser uma pessoa legal e enviar de volta eventuais modificações, correções ou melhorias.</p>
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="requirements">Requisitos Necessários</a></strong></p>
+
+<p>É preciso usar qualquer versão do PHP igual ou superior à 5. Versões 4 não são suportadas. Quanto mais novo seu PHP, 
+melhor será o desempenho desta biblioteca (veja a seção <a href="#performance">Precisão e Desempenho</a> para maiores informações).</p>
+
+<br>
+<hr>
+
+
+<br>
+<p><strong><a name="install">Instalação</a></strong></p>
+
+<p>Mais simples, impossível: apenas descompacte o arquivo, e o inclua no seu script PHP através da diretiva <i>require</i>:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="hello">Exemplo e explicação: Olá Mundo</a></strong></p>
+
+<p>O funcionamento básico do mecanismo de templates é baseado na seguinte idéia: você tem um arquivo PHP (que usará 
+a biblioteca), e este arquivo não conterá código HTML algum. O código HTML ficará separado, em um arquivo que conterá somente 
+códigos HTML. Este arquivo HTML será lido pelo arquivo PHP. Aliás, tudo será processado no arquivo PHP.</p>
+
+<p>Dito isso, vamos ao primeiro exemplo, o já manjado <strong>Olá mundo</strong>. Vamos criar 2 arquivos: o PHP responsável por toda a 
+lógica, e o arquivo HTML com nosso layout.</p>
+
+<p>Então, crie um arquivo HTML, chamado <strong>hello.html</strong> com o conteúdo abaixo:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	Olá Mundo, com templates PHP!
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Agora, crie o arquivo PHP, <strong>hello.php</strong>:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"hello.html"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Agora basta executar em seu navegador, o script <strong>hello.php</strong>, e verificar que ele irá exibir o conteúdo lido de <strong>hello.html</strong>.</p>
+
+<p>Se algo deu errado, consulte a seção sobre as <a href="#messages">Mensagens de Erro</a>.</p>
+
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="vars">Variáveis</a></strong></p>
+
+<p>Vamos agora a um conceito importante: <i>variáveis de template</i>. Como você pode imaginar, vamos querer alterar várias partes do arquivo HTML. Como fazer isso? Simples: 
+no lado do HTML, você cria as chamadas <i>variáveis de template</i>. Veja o exemplo abaixo:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	Olá <span class="template_var">{FULANO}</span>, com templates PHP!
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Repare na variável FULANO, entre chaves. Ela vai ter seu valor
+atribuído no código PHP. Variáveis só podem contêr em seu nome: letras,
+números e underscore (_). O uso de maiúsculas é apenas uma convenção,
+pra facilitar a identificação quando olhamos o código HTML. Mas,
+obrigatoriamente tem que estar entre chaves, sem nenhum espaço em
+branco.</p>
+
+<p>Então, como ficaria o código PHP que atribui valor à ela? Vamos à ele:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"hello.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">FULANO&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"Rael"</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Execute então novamente o script, e você verá que o código final gerado no navegador será:
+
+</p><p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	Olá Rael, com templates PHP!
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Variáveis de template que não tiverem um valor atribuído, serão
+limpas do código final gerado. Outra coisa sobre variáveis: você pode
+repetir as variáveis de template (ou seja, usar a mesma variável em
+vários lugares). Mas, óbvio, todas mostrarão o mesmo valor.</p>
+
+<p>Para ler o valor de uma variável, acesse do mesmo modo:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"hello.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Atribuindo&nbsp;valor
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">FULANO&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"Rael"</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Imprimindo&nbsp;o&nbsp;valor&nbsp;da&nbsp;variável
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">die<span style="color: rgb(0, 119, 0);">(</span></span><span style="color: rgb(221, 0, 0);">"Valor&nbsp;de&nbsp;FULANO:&nbsp;"</span><span style="color: rgb(0, 119, 0);">.</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">FULANO</span><span style="color: rgb(0, 119, 0);">)</span><span style="color: rgb(0, 119, 0);">;
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Repare que usando as variáveis de template, você pode continuar
+editando o arquivo HTML em seu editor favorito: as variáveis de
+template serão reconhecidas como um texto qualquer, e o arquivo HTML
+não ficará poluído de código HTML. O contrário também é verdade: seu
+arquivo PHP ficará limpo de código HTML.</p>
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="blocks">Blocos</a></strong></p>
+
+<p>Esse é o segundo e último conceito que você precisa saber sobre essa
+biblioteca de templates: os blocos. Imagine que você gostaria de listar
+o total de produtos cadastrados em um banco de dados. Se não houver
+nenhum produto, você irá exibir uma aviso de que nenhum produto foi
+encontrado.</p>
+
+<p>Vamos utilizar então, dois blocos: um que mostra a quantidade total;
+e outro que avisa que não existem produtos cadastrados, caso realmente
+o banco esteja vazio. O código HTML para isso é:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	&lt;<span class="tag">p</span>&gt;Quantidade de produtos cadastrados no sistema:&lt;/<span class="tag">p</span>&gt;
+
+	<span class="comment">&lt;!-- BEGIN BLOCK_QUANTIDADE --&gt;</span>
+	&lt;<span class="tag">div</span> <span class="attribute">class</span>=<span class="value">"destaque"</span>&gt;Existem <span class="template_var">{QUANTIDADE}</span> produtos cadastrados.&lt;/<span class="tag">div</span>&gt;
+	<span class="comment">&lt;!-- END BLOCK_QUANTIDADE --&gt;</span>
+
+	<span class="comment">&lt;!-- BEGIN BLOCK_VAZIO --&gt;</span>
+	&lt;<span class="tag">div</span> <span class="attribute">class</span>=<span class="value">"vazio"</span>&gt;Não existe nenhum produto cadastrado.&lt;/<span class="tag">div</span>&gt;
+	<span class="comment">&lt;!-- END BLOCK_VAZIO --&gt;</span>
+
+&lt;/<span class="tag">body</span>&gt;
+
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Repare que o início e final do bloco são identificados por um
+comentário HTML, com a palavra BEGIN (para identificar início) ou END
+(para identificar fim) e o nome do bloco em seguida. As palavras BEGIN
+e END sempre devem ser maiúsculas. O nome do bloco deve conter somente
+letras, números ou underscore.</p>
+
+<p>E então, no lado PHP, vamos checar se os produtos existem. Caso sim,
+mostraremos o bloco BLOCK_QUANTIDADE. Caso não, vamos exibir o bloco
+BLOCK_VAZIO.</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"hello.html"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Vamos&nbsp;supor&nbsp;que&nbsp;esta&nbsp;quantidade&nbsp;veio&nbsp;do&nbsp;banco&nbsp;de&nbsp;dados
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$quantidade&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">5</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Se&nbsp;existem&nbsp;produtos&nbsp;cadastrados,&nbsp;vamos&nbsp;exibir&nbsp;a&nbsp;quantidade
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">if(</span><span style="color: rgb(0, 0, 187);">$quantidade&nbsp;</span><span style="color: rgb(0, 119, 0);">&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">0</span><span style="color: rgb(0, 119, 0);">){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">QUANTIDADE&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$quantidade</span><span style="color: rgb(0, 119, 0);">;
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_QUANTIDADE"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Caso&nbsp;não&nbsp;exista&nbsp;nenhum&nbsp;produto,&nbsp;exibimos&nbsp;a&nbsp;mensagem&nbsp;de&nbsp;vazio
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">else&nbsp;{
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_VAZIO"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Como você pode reparar, blocos podem contêr variáveis de template. E
+blocos só são exibidos se no código PHP pedirmos isso, através do
+método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#parseBlock" target="new" title="Link para a documentação do método">parseBlock()</a>. 
+Caso contrário, o bloco não é exibido no conteúdo final gerado.</p>
+
+<p>Outro detalhe importante: ao contrário das variáveis de template,
+cada bloco deve ser único, ou seja, não podemos usar o mesmo nome para
+vários blocos.</p>
+
+<p>Repare que mesmo com o uso de blocos, podemos continuar editando o
+arquivo HTML em qualquer editor HTML: os comentários que indicam início
+e fim de bloco não irão interferir em nada.</p>
+
+<p>Agora vamos à outro exemplo usando blocos: imagine que você precisa
+mostrar os dados dos produtos que existem no seu cadastro. Vamos então,
+usando blocos, montar o HTML para isso:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	&lt;<span class="tag">p</span>&gt;Produtos cadastrados no sistema:&lt;/<span class="tag">p</span>&gt;
+
+	&lt;<span class="tag">table</span> <span class="attribute">border</span>=<span class="value">1&gt;</span>
+
+	
+		&lt;<span class="tag">tr</span>&gt;&lt;<span class="tag">td</span>&gt;Nome&lt;/<span class="tag">td</span>&gt;&lt;<span class="tag">td</span>&gt;Quantidade&lt;/<span class="tag">td</span>&gt;&lt;/<span class="tag">tr</span>&gt;
+	
+		<span class="comment">&lt;!-- BEGIN BLOCK_PRODUTO --&gt;</span>
+			&lt;<span class="tag">tr</span>&gt;
+
+			
+				&lt;<span class="tag">td</span>&gt; <span class="template_var">{NOME}</span> &lt;/<span class="tag">td</span>&gt;
+				&lt;<span class="tag">td</span>&gt; <span class="template_var">{QUANTIDADE}</span> &lt;/<span class="tag">td</span>&gt;
+				
+			&lt;/<span class="tag">tr</span>&gt;
+		<span class="comment">&lt;!-- END BLOCK_PRODUTO --&gt;</span>
+	
+	&lt;/<span class="tag">table</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Repare que temos apenas uma linha para dados dos produtos, dentro de
+um bloco. Vamos então atribuir valor à estas variáveis, e ir duplicando
+o conteúdo do bloco conforme listamos os produtos:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"hello.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Produtos&nbsp;cadastrados
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$produtos&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;array(
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Sabão&nbsp;em&nbsp;Pó"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">15</span><span style="color: rgb(0, 119, 0);">),
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Escova&nbsp;de&nbsp;Dente"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">53</span><span style="color: rgb(0, 119, 0);">),
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Creme&nbsp;Dental"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">37</span><span style="color: rgb(0, 119, 0);">)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Listando&nbsp;os&nbsp;produtos
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">foreach(</span><span style="color: rgb(0, 0, 187);">$produtos&nbsp;</span><span style="color: rgb(0, 119, 0);">as&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">){
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">NOME&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"nome"</span><span style="color: rgb(0, 119, 0);">];
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">QUANTIDADE&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"quantidade"</span><span style="color: rgb(0, 119, 0);">];
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_PRODUTO"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">true</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Repare no segundo paràmetro do método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#parseBlock" target="new" title="Link para a documentação do método">parseBlock()</a>: passamos o valor <i>true</i> para ele. Este parâmetro - <strong>$append</strong> - indica quando queremos manter o conteúdo anterior 
+do bloco, somado ao novo conteúdo que acabamos de atribuir.</p>
+
+<p>No exemplo acima, os dados dos produtos vieram do array <strong>$produtos</strong>. Caso estes dados estivessem armazenados em um banco de dados, então bastaríamos fazer como no exemplo abaixo:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code>
+<span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"hello.html"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;...&nbsp;Conectar&nbsp;ao&nbsp;banco,&nbsp;selecionar&nbsp;database,&nbsp;etc
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;Produtos&nbsp;da&nbsp;database
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$result&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">mysql_query</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"SELECT&nbsp;nome,&nbsp;quantidade&nbsp;FROM&nbsp;produtos"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Listando&nbsp;os&nbsp;produtos
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">while(</span><span style="color: rgb(0, 0, 187);">$linha&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">mysql_fetch_array</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$result</span><span style="color: rgb(0, 119, 0);">)){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">NOME&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$linha</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"nome"</span><span style="color: rgb(0, 119, 0);">];
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">QUANTIDADE&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$linha</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"quantidade"</span><span style="color: rgb(0, 119, 0);">];
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_PRODUTO"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">true</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<br>
+<hr>
+
+
+<br>
+<p><strong><a name="nested_blocks">Blocos aninhados</a></strong></p>
+
+<p>Vamos agora então juntar os 2 exemplos de uso de blocos que vimos:
+queremos mostrar os dados dos produtos em um bloco, mas caso não
+existam produtos cadastrados, exibiremos uma mensagem com um aviso.
+Vamos fazer isso agora usando blocos aninhados, ou seja, blocos dentro
+de outros blocos:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	&lt;<span class="tag">p</span>&gt;Produtos cadastrados no sistema:&lt;/<span class="tag">p</span>&gt;
+
+
+	<span class="comment">&lt;!-- BEGIN BLOCK_PRODUTOS --&gt;</span>
+
+	&lt;<span class="tag">table</span> <span class="attribute">border</span>=<span class="value">1&gt;</span>
+	
+		&lt;<span class="tag">tr</span>&gt;&lt;<span class="tag">td</span>&gt;Nome&lt;/<span class="tag">td</span>&gt;&lt;<span class="tag">td</span>&gt;Quantidade&lt;/<span class="tag">td</span>&gt;&lt;/<span class="tag">tr</span>&gt;
+
+	
+		<span class="comment">&lt;!-- BEGIN BLOCK_DADOS --&gt;</span>
+			&lt;<span class="tag">tr</span>&gt;
+			
+				&lt;<span class="tag">td</span>&gt; <span class="template_var">{NOME}</span> &lt;/<span class="tag">td</span>&gt;
+				&lt;<span class="tag">td</span>&gt; <span class="template_var">{QUANTIDADE}</span> &lt;/<span class="tag">td</span>&gt;
+
+				
+			&lt;/<span class="tag">tr</span>&gt;
+		<span class="comment">&lt;!-- END BLOCK_DADOS --&gt;</span>
+	
+	&lt;/<span class="tag">table</span>&gt;
+	<span class="comment">&lt;!-- END BLOCK_PRODUTOS --&gt;</span>
+	
+	<span class="comment">&lt;!-- BEGIN BLOCK_VAZIO --&gt;</span>
+	&lt;<span class="tag">div</span> <span class="attribute">class</span>=<span class="value">vazio&gt;</span>Nenhum registro encontrado.&lt;/<span class="tag">div</span>&gt;
+	<span class="comment">&lt;!-- END BLOCK_VAZIO --&gt;</span>
+
+&lt;/<span class="tag">body</span>&gt;
+
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>E então, caso existam produtos, nós exibimos o bloco PRODUTOS. Caso contrário, exibimos o bloco VAZIO:</p>
+
+<p>
+</p><div class="code">
+
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"hello.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Produtos&nbsp;cadastrados
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$produtos&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;array(
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Sabão&nbsp;em&nbsp;Pó"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">15</span><span style="color: rgb(0, 119, 0);">),
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Escova&nbsp;de&nbsp;Dente"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">53</span><span style="color: rgb(0, 119, 0);">),
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Creme&nbsp;Dental"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">37</span><span style="color: rgb(0, 119, 0);">)
+<br>&nbsp;&nbsp;&nbsp;&nbsp;);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Listando&nbsp;os&nbsp;produtos
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">foreach(</span><span style="color: rgb(0, 0, 187);">$produtos&nbsp;</span><span style="color: rgb(0, 119, 0);">as&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">){
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">NOME&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"nome"</span><span style="color: rgb(0, 119, 0);">];
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">QUANTIDADE&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"quantidade"</span><span style="color: rgb(0, 119, 0);">];
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_DADOS"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">true</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Se&nbsp;existem&nbsp;produtos,&nbsp;então&nbsp;mostramos&nbsp;o&nbsp;bloco&nbsp;com&nbsp;os&nbsp;dados&nbsp;de&nbsp;todos
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">if(isset(</span><span style="color: rgb(0, 0, 187);">$produtos</span><span style="color: rgb(0, 119, 0);">)&nbsp;&amp;&amp;&nbsp;</span><span style="color: rgb(0, 0, 187);">is_array</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$produtos</span><span style="color: rgb(0, 119, 0);">)&nbsp;&amp;&amp;&nbsp;</span><span style="color: rgb(0, 0, 187);">sizeof</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$produtos</span><span style="color: rgb(0, 119, 0);">)&nbsp;&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">0</span><span style="color: rgb(0, 119, 0);">){
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_PRODUTOS"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Senão,&nbsp;mostramos&nbsp;o&nbsp;bloco&nbsp;com&nbsp;o&nbsp;aviso&nbsp;de&nbsp;nenhum&nbsp;cadastrado
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">else&nbsp;{
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_VAZIO"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Repare numa coisa muito importantes nesse exemplo: para que um bloco
+seja mostrado, é preciso que o bloco externo à ele também o seja.
+Senão, o bloco interno não é exibido. Podemos também criar quantos
+blocos aninhados acharmos necessário, desde que sigamos esse princípio:
+se quisermos que um deles seja mostrado, tanto ele quanto o bloco
+externo (se existir) devem ser exibidos.</p>
+
+
+<br>
+<hr>
+
+
+<br>
+<p><strong><a name="select_blocks">Blocos com HTML Select</a></strong></p>
+
+<p>Uma das dúvidas mais comuns é: como usar a classe Template com o
+elemento Select do HTML? Ou melhor: como fazer um elemento Option ficar
+selecionado, usando Template?</p>
+
+<p>Vamos então montar nossa página HTML com o elemento Select e os devidos Options, representando cidades de uma lista:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	&lt;<span class="tag">select&nbsp;name</span>="cidades"&gt;
+	
+		<span class="comment">&lt;!--&nbsp;BEGIN&nbsp;BLOCK_OPTION&nbsp;--&gt;</span>
+		&lt;<span class="tag">option</span>&nbsp;<span class="tag">value</span>="<span class="template_var">{VALUE}</span>"&nbsp;<span class="template_var">{SELECTED}</span>&gt;<span class="template_var">{TEXT}</span>&lt;/<span class="tag">option</span>&gt;
+		<span class="comment">&lt;!--&nbsp;END&nbsp;BLOCK_OPTION&nbsp;--&gt;</span>
+	
+	&lt;/<span class="tag">select</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Agora vamos ao respectivo arquivo PHP:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php</span>
+
+	<span style="color: rgb(0, 119, 0);">require_once(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+
+	</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"index.html"</span><span style="color: rgb(0, 119, 0);">);
+	
+	</span><span style="color: rgb(255, 153, 0);">//&nbsp;Array&nbsp;de&nbsp;cidades
+	</span><span style="color: rgb(0, 0, 187);">$cidades&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;array(</span><span style="color: rgb(0, 0, 187);">0&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Cidade&nbsp;0"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">1&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Cidade&nbsp;1"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">2&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Cidade&nbsp;2"</span><span style="color: rgb(0, 119, 0);">);
+
+	</span><span style="color: rgb(255, 153, 0);">//&nbsp;Valor&nbsp;selecionado
+	</span><span style="color: rgb(0, 0, 187);">$atual&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">1</span><span style="color: rgb(0, 119, 0);">;
+	
+	foreach(</span><span style="color: rgb(0, 0, 187);">$cidades&nbsp;</span><span style="color: rgb(0, 119, 0);">as&nbsp;</span><span style="color: rgb(0, 0, 187);">$value&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">$text</span><span style="color: rgb(0, 119, 0);">){
+
+		</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">VALUE&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$value</span><span style="color: rgb(0, 119, 0);">;		
+		</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">TEXT&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$text</span><span style="color: rgb(0, 119, 0);">;
+
+		</span><span style="color: rgb(255, 153, 0);">//&nbsp;Vendo se a opção atual deve ter o atributo "selected"</span>
+		<span style="color: rgb(0, 119, 0);">if(</span><span style="color: rgb(0, 0, 187);">$atual&nbsp;</span><span style="color: rgb(0, 119, 0);">==&nbsp;</span><span style="color: rgb(0, 0, 187);">$value</span><span style="color: rgb(0, 119, 0);">)&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">SELECTED&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"selected"</span><span style="color: rgb(0, 119, 0);">;
+
+		</span><span style="color: rgb(255, 153, 0);">//&nbsp;Caso esta não seja a opção atual, limpamos o valor da variável SELECTED</span>
+		<span style="color: rgb(0, 119, 0);">else&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">clearVar</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"SELECTED"</span><span style="color: rgb(0, 119, 0);">);
+
+		</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_OPTION"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">true</span><span style="color: rgb(0, 119, 0);">);
+		
+	}
+
+	</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+
+</span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</pre>
+
+</div>
+<p></p>
+
+<p>Como resultado, o navegador exibirá o seguinte código:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	&lt;<span class="tag">select&nbsp;name</span>="cidades"&gt;
+	
+		&lt;<span class="tag">option</span>&nbsp;<span class="tag">value</span>="0"&nbsp;&gt;Cidade 0&lt;/<span class="tag">option</span>&gt;
+		&lt;<span class="tag">option</span>&nbsp;<span class="tag">value</span>="1"&nbsp;<span class="tag">selected</span>&gt;Cidade 1&lt;/<span class="tag">option</span>&gt;
+		&lt;<span class="tag">option</span>&nbsp;<span class="tag">value</span>="2"&nbsp;&gt;Cidade 2&lt;/<span class="tag">option</span>&gt;
+	
+	&lt;/<span class="tag">select</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Reparou que no arquivo PHP chamamos o método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#clearVar" target="new" title="Link para a documentação do método">clearVar</a>?
+Se não chamarmos este método (que limpa o valor de uma variável), todas
+as opções (Options) ficariam com a propriedade "selected" (obviamente,
+efeito não desejado):</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	&lt;<span class="tag">select&nbsp;name</span>="cidades"&gt;
+	
+		&lt;<span class="tag">option</span>&nbsp;<span class="tag">value</span>="0"&nbsp;<span class="tag">selected</span>&gt;Cidade 0&lt;/<span class="tag">option</span>&gt;
+		&lt;<span class="tag">option</span>&nbsp;<span class="tag">value</span>="1"&nbsp;<span class="tag">selected</span>&gt;Cidade 1&lt;/<span class="tag">option</span>&gt;
+		&lt;<span class="tag">option</span>&nbsp;<span class="tag">value</span>="2"&nbsp;<span class="tag">selected</span>&gt;Cidade 2&lt;/<span class="tag">option</span>&gt;
+	
+	&lt;/<span class="tag">select</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+
+<br>
+<hr>
+
+
+<br>
+<p><strong><a name="multiple_files">Usando vários arquivos HTML</a></strong></p>
+
+<p>Um uso bastante comum de templates é usarmos um arquivo HTML que
+contenha a estrutura básica do nosso site: cabeçalho, rodapé, menus,
+etc. E outro arquivo com o conteúdo da página que desejamos mostrar, ou
+seja, o "miolo". Dessa forma, não precisamos repetir em todos os
+arquivos HTML os elementos comuns (cabeçalho, rodapé, etc), e as
+páginas HTML que terão o conteúdo (o "miolo") ficarão mais limpas,
+menores e mais fáceis de serem mantidas.</p>
+
+<p>Como fazer isso com templates? Em primeiro lugar, vamos criar nosso arquivo "base" HTML, o arquivo <strong>base.html</strong>:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">head</span>&gt;
+&lt;<span class="tag">title</span>&gt;Título da Página&lt;/<span class="tag">title</span>&gt;
+&lt;/<span class="tag">head</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	&lt;<span class="tag">div</span>&gt;<span class="template_var">{FULANO}</span>, seja bem vindo!&lt;/<span class="tag">div</span>&gt;
+
+	&lt;<span class="tag">div</span>&gt;<span class="template_var">{CONTEUDO}</span>&lt;/<span class="tag">div</span>&gt;
+	
+	&lt;<span class="tag">div</span>&gt;Deseja maiores informações? Clique &lt;<span class="tag">a</span> <span class="attribute">href</span>=<span class="value">"info.php"</span>&gt;aqui&lt;/<span class="tag">a</span>&gt; para saber&lt;/<span class="tag">div</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+<p>Agora, vamos criar o arquivo que contém o "miolo" de nossa página HTML, o arquivo <strong>miolo.html</strong>:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">	&lt;<span class="tag">p</span>&gt;Produtos cadastrados no sistema:&lt;/<span class="tag">p</span>&gt;
+
+	<span class="comment">&lt;!-- BEGIN BLOCK_PRODUTOS --&gt;</span>
+	&lt;<span class="tag">table</span> <span class="attribute">border</span>=<span class="value">1&gt;</span>
+
+	
+		&lt;<span class="tag">tr</span>&gt;&lt;<span class="tag">td</span>&gt;Nome&lt;/<span class="tag">td</span>&gt;&lt;<span class="tag">td</span>&gt;Quantidade&lt;/<span class="tag">td</span>&gt;&lt;/<span class="tag">tr</span>&gt;
+	
+		<span class="comment">&lt;!-- BEGIN BLOCK_DADOS --&gt;</span>
+			&lt;<span class="tag">tr</span>&gt;
+
+			
+				&lt;<span class="tag">td</span>&gt; <span class="template_var">{NOME}</span> &lt;/<span class="tag">td</span>&gt;
+				&lt;<span class="tag">td</span>&gt; <span class="template_var">{QUANTIDADE}</span> &lt;/<span class="tag">td</span>&gt;
+				
+			&lt;/<span class="tag">tr</span>&gt;
+
+		<span class="comment">&lt;!-- END BLOCK_DADOS --&gt;</span>
+	
+	&lt;/<span class="tag">table</span>&gt;
+	<span class="comment">&lt;!-- END BLOCK_PRODUTOS --&gt;</span>
+	
+	<span class="comment">&lt;!-- BEGIN BLOCK_VAZIO --&gt;</span>
+	&lt;<span class="tag">div</span> <span class="attribute">class</span>=<span class="value">vazio&gt;</span>Nenhum registro encontrado.&lt;/<span class="tag">div</span>&gt;
+	<span class="comment">&lt;!-- END BLOCK_VAZIO --&gt;</span>
+
+</span>
+</pre>
+</div>
+<p></p>
+
+<p>No arquivo PHP então, usamos o método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#addFile" target="new" title="Link para a documentação do método">addFile()</a>,
+onde informamos duas coisas: em qual variável do template o conteúdo do
+novo arquivo será jogado, e qual o caminho desse arquivo. Depois disso,
+basta usar as variáveis e blocos normalmente, independente de qual
+arquivo HTML eles estejam:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"base.html"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Adicionando&nbsp;mais&nbsp;um&nbsp;arquivo&nbsp;HTML
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">addFile</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"CONTEUDO"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"miolo.html"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">FULANO&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"Rael"</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Produtos&nbsp;cadastrados
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$produtos&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;array(
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Sabão&nbsp;em&nbsp;Pó"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">15</span><span style="color: rgb(0, 119, 0);">),
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Escova&nbsp;de&nbsp;Dente"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">53</span><span style="color: rgb(0, 119, 0);">),
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array(</span><span style="color: rgb(221, 0, 0);">"nome"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(221, 0, 0);">"Creme&nbsp;Dental"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"quantidade"&nbsp;</span><span style="color: rgb(0, 119, 0);">=&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">37</span><span style="color: rgb(0, 119, 0);">)
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Listando&nbsp;os&nbsp;produtos
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">foreach(</span><span style="color: rgb(0, 0, 187);">$produtos&nbsp;</span><span style="color: rgb(0, 119, 0);">as&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">NOME&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"nome"</span><span style="color: rgb(0, 119, 0);">];
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">QUANTIDADE&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">"quantidade"</span><span style="color: rgb(0, 119, 0);">];
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_DADOS"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">true</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Se&nbsp;existem&nbsp;produtos,&nbsp;então&nbsp;mostramos&nbsp;o&nbsp;bloco&nbsp;com&nbsp;os&nbsp;dados&nbsp;de&nbsp;todos
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">if(isset(</span><span style="color: rgb(0, 0, 187);">$produtos</span><span style="color: rgb(0, 119, 0);">)&nbsp;&amp;&amp;&nbsp;</span><span style="color: rgb(0, 0, 187);">is_array</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$produtos</span><span style="color: rgb(0, 119, 0);">)&nbsp;&amp;&amp;&nbsp;</span><span style="color: rgb(0, 0, 187);">sizeof</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$produtos</span><span style="color: rgb(0, 119, 0);">)&nbsp;&gt;&nbsp;</span><span style="color: rgb(0, 0, 187);">0</span><span style="color: rgb(0, 119, 0);">){
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_PRODUTOS"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Senão,&nbsp;mostramos&nbsp;o&nbsp;bloco&nbsp;com&nbsp;o&nbsp;aviso&nbsp;de&nbsp;nenhum&nbsp;cadastrado
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">else&nbsp;{
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">parseBlock</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"BLOCK_VAZIO"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+
+</span>
+</code>
+</code></div>
+<p></p>
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="get_content">Guardando o conteúdo do template</a></strong></p>
+
+<p>Até agora exibimos o conteúdo gerado pelo template na tela, através do método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#show" target="new" title="Link para a documentação do método">show()</a>. Mas, e quisermos fazer outro uso para esse conteúdo, como salvá-lo em 
+arquivo ou outra coisa do tipo? Basta usarmos o método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#getContent" target="new" title="Link para a documentação do método">getContent()</a>, que gera o conteúdo final e o retorna:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"base.html"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">addFile</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"CONTEUDO"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">"miolo.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Variáveis,&nbsp;blocos,&nbsp;etc
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">FULANO&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"Rael"</span><span style="color: rgb(0, 119, 0);">;
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Pega&nbsp;o&nbsp;conteúdo&nbsp;final&nbsp;do&nbsp;template
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$conteudo&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">getContent</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Salva&nbsp;em&nbsp;um&nbsp;arquivo
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">file_put_contents</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"arquivo.txt"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">$conteudo</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="objects">Usando Objetos</a></strong></p>
+
+<p>A classe Template suporta a atribuição de objetos para as variáveis
+de template em sua versão atual: versão 1.5 (verifique no código fonte
+da classe sua versão).</p>
+
+<p>Isso faz com que o código nos arquivos PHP fique bastante reduzido
+(claro, desde que você use objetos), e devido à isso, há uma melhora
+(quase imperceptível) em desempenho.</p>
+
+<p>Para que os exemplos fiquem mais claros, vamos trabalhar com uma
+suposta página que exibe detalhes de um produto. Os produtos possuem
+como atributos: <strong>nome</strong>, <strong>id</strong> e <strong>valor</strong>.</p> 
+
+<p>Temos uma classe PHP chamada Produto, que representa a tabela <strong>produtos</strong> do banco de dados, com o seguinte código (bem rudimentar e sem métodos para salvar/atualizar os dados):</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">class&nbsp;</span><span style="color: rgb(0, 0, 187);">Produto&nbsp;</span><span style="color: rgb(0, 119, 0);">{
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;</span><span style="color: rgb(0, 0, 187);">$id&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">0</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;</span><span style="color: rgb(0, 0, 187);">$name</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected&nbsp;</span><span style="color: rgb(0, 0, 187);">$price&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">0.0</span><span style="color: rgb(0, 119, 0);">;
+
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">__construct</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$id&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">0</span><span style="color: rgb(0, 119, 0);">){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: rgb(0, 0, 187);">0</span><span style="color: rgb(0, 119, 0);">!=</span><span style="color: rgb(0, 0, 187);">$id</span><span style="color: rgb(0, 119, 0);">)&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">loadById</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$id</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">loadById</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$id</span><span style="color: rgb(0, 119, 0);">){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$db&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">PDO</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">'mysql:host=localhost;dbname=database'</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">'usuario'</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(221, 0, 0);">'senha'</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$result&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$db</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">query</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"SELECT&nbsp;*&nbsp;FROM&nbsp;produtos&nbsp;WHERE&nbsp;id&nbsp;=&nbsp;"</span><span style="color: rgb(0, 119, 0);">.</span><span style="color: rgb(0, 0, 187);">intval</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$id</span><span style="color: rgb(0, 119, 0);">));
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(</span><span style="color: rgb(0, 0, 187);">$row&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$result</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">fetch</span><span style="color: rgb(0, 119, 0);">()){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">setId</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$row</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">'id'</span><span style="color: rgb(0, 119, 0);">]);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">setName</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$row</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">'nome'</span><span style="color: rgb(0, 119, 0);">]);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">setPrice</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$row</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">'preco'</span><span style="color: rgb(0, 119, 0);">]);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: rgb(0, 0, 187);">true</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: rgb(0, 0, 187);">false</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">getId</span><span style="color: rgb(0, 119, 0);">(){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">id</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">setId</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$id</span><span style="color: rgb(0, 119, 0);">){
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">id&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">intval</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$id</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">getName</span><span style="color: rgb(0, 119, 0);">(){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">name</span><span style="color: rgb(0, 119, 0);">;
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">setName</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$name</span><span style="color: rgb(0, 119, 0);">){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">name&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$name</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">getPrice</span><span style="color: rgb(0, 119, 0);">(){
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">price</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;function&nbsp;</span><span style="color: rgb(0, 0, 187);">setPrice</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$price</span><span style="color: rgb(0, 119, 0);">){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$this</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">price&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">floatval</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$price</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Usando a classe acima, esta é a forma como estamos fazendo até agora para montar uma página PHP que exibe os dados do produto:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"produtos.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Id&nbsp;do&nbsp;produto&nbsp;vem&nbsp;por&nbsp;GET
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$p&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Produto</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$_GET</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">'id'</span><span style="color: rgb(0, 119, 0);">]);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">NAME&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">getName</span><span style="color: rgb(0, 119, 0);">();
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">ID&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">getId</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">PRICE&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(0, 0, 187);">$p</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">getPrice</span><span style="color: rgb(0, 119, 0);">();
+<br>
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>Agora o respectivo arquivo HTML:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">
+	Nome: <span class="template_var">{NAME}</span> &lt;<span class="tag">br/</span>&gt;
+	Id: <span class="template_var">{ID}</span> &lt;<span class="tag">br/</span>&gt;
+	Preço: <span class="template_var">{PRICE}</span> &lt;<span class="tag">br/</span>&gt;
+</span>
+</pre>
+</div>
+<p></p>
+
+<p>Vamos então modificar o arquivo PHP para usar o suporte à objetos de Template:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"produtos.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Id&nbsp;do&nbsp;produto&nbsp;vem&nbsp;por&nbsp;GET
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">P&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Produto</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$_GET</span><span style="color: rgb(0, 119, 0);">[</span><span style="color: rgb(221, 0, 0);">'id'</span><span style="color: rgb(0, 119, 0);">]);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>
+
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+<p>O arquivo HTML também deve ser modificado pra exibir as propriedades de Produto:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">
+	Nome: <span class="template_var">{P-&gt;NAME}</span> &lt;<span class="tag">br/</span>&gt;
+	Id: <span class="template_var">{P-&gt;ID}</span> &lt;<span class="tag">br/</span>&gt;
+	Preço: <span class="template_var">{P-&gt;PRICE}</span> &lt;<span class="tag">br/</span>&gt;
+</span>
+</pre>
+</div>
+<p></p>
+<p>A instrução <strong>P-&gt;NAME</strong> chamará o método <strong>$p-&gt;getName()</strong>, caso exista, ou <strong>$p-&gt;isName()</strong>. Se nenhum deles existir, um erro será disparado.</p>
+
+<p>Isso vale para qualquer atributo que tentarmos chamar no HTML: será traduzido para <strong>$meuObjeto-&gt;getAtributo()</strong> ou <strong>$meuObjeto-&gt;isAtributo()</strong>.</p>
+
+<p>Se o nome do método PHP for composto, como por exemplo <strong>$p-&gt;getExpirationDate()</strong>, basta usar underscore (_) no HTML como separador dos nomes: no caso do exemplo, ficaria <strong>P-&gt;EXPIRATION_DATE</strong>.</p>
+
+<p>A classe Template também entende a existência do método <a href="http://br.php.net/manual/pt_BR/language.oop5.magic.php" target="new" title="Leia sobre Métodos Mágicos no Manual do PHP">__toString()</a>.</p>
+
+
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="other_files">Criando XML, CSV e outros</a></strong></p>
+
+<p>O uso mais comum de templates é com arquivos HTML. Mas como essa
+biblioteca é direcionada ao uso de qualquer tipo de arquivo de texto,
+podemos usá-la com vários outros formatos de arquivo, como XMLs e
+arquivos CSVs.</p>
+<p>Como fazer isso? Mais simples impossível: não muda nada, basta
+apenas ao invés de indicar um arquivo HTML para o Template, indicar
+qualquer outro arquivo de texto. E usar variáveis e blocos nele
+conforme já vimos, exibindo o conteúdo na tela, ou salvando em arquivos.</p>
+
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="office_files">Criando arquivos do Office</a></strong></p>
+
+<p>Se você precisa elaborar um relatório que deve ser exibido em
+formato do Word (.doc) ou do Excel (.xls), também podemos usar a classe
+Template para isso.</p>
+<p>Em primeiro lugar, crie normalmente no Office seu relatório. Após
+terminar, escolha a opção "Salvar como", e selecione o formato HTML.
+Feito isso, abra este arquivo HTML em seu editor PHP (não se assuste, é
+bastante poluído e cheio de tags estranhas) e use-o conforme visto até
+agora: crie variáveis, declare blocos, nada de diferente.</p>
+
+<p>Se você for salvar o conteúdo em um arquivo, coloque neste arquivo a
+extensão .doc" (ou .xls no caso de uma planilha). O Office abrirá
+normalmente este arquivo, convertendo-o automaticamente de HTML para o
+formato desejado na primeira vez em que for aberto.</p>
+
+<p>Se você for exibir o conteúdo no navegador ao invés de salvá-lo num
+arquivo, você precisa modificar o header para avisar o navegador que se
+trata de um documento do Office, forçando o navegador à interpretá-lo
+como tal (o Firefox irá fazer o download do arquivo, o IE irá abrir o
+Microsoft Office como um plugin e exibir o arquivo dentro do navegador
+mesmo). Faça isso com a instrução <strong>header()</strong> do PHP:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Forçando&nbsp;o&nbsp;cabeçalho&nbsp;para&nbsp;o&nbsp;formato&nbsp;escolhido&nbsp;do&nbsp;Office
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">header</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">'Content-type:&nbsp;application/msword'</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">header</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">'Content-Disposition:&nbsp;attachment;&nbsp;filename="Relatorio.doc"'</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">header</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"Pragma:&nbsp;no-cache"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">header</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"Expires:&nbsp;0"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Arquivo&nbsp;relatorio.html,&nbsp;gerado&nbsp;no&nbsp;Word
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"relatorio.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Variáveis,&nbsp;blocos,&nbsp;etc
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">FULANO&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"Rael"</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="errors">Gerenciando erros</a></strong></p>
+
+<p>Quando um erro acontece, você deve ter reparado que a mensagem de
+erro gerada pela classe Template é um pouco diferente do usual em PHP:
+ao invés de ser apenas um <strong>die()</strong> com a mensagem de erro, é gerada uma exceção (Exception). Por que isso?</p>
+
+<p>Com as exceptions, temos duas vantagens: a primeira é ver todo o <i>stack</i>
+do erro, ou seja, ver desde o lugar em que foi originado o erro,
+passando por todos os arquivos em que ele apareceu. Isso facilita muito
+o trabalho de <i>debug</i> e correção. Para ver o código de erro e a <i>stack</i>
+corretamente, peça para o navegador exibir o código-fonte da página,
+pois somente neste modo as quebras de linhas são visualizadas
+corretamente.</p>
+
+<p>A segunda vantagem é poder gerenciar o erro, se desejarmos, e
+fazermos com que a execução de nosso script não seja interrompida,
+através do uso de <a href="http://br.php.net/manual/pt_BR/language.exceptions.php" target="new" title="Leia sobre Exceções no Manual do PHP">try/catch</a>:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"index.html"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Tentando&nbsp;acessar&nbsp;variável&nbsp;que&nbsp;não&nbsp;existe
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">try&nbsp;{
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">FOO&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"bar"</span><span style="color: rgb(0, 119, 0);">;
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Capturando erro e evitando que o script seja interrompido
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">}&nbsp;catch&nbsp;(</span><span style="color: rgb(0, 0, 187);">Exception&nbsp;$e</span><span style="color: rgb(0, 119, 0);">){
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span style="color: rgb(221, 0, 0);">"FOO&nbsp;não&nbsp;existe!"</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+
+<br>
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="varvars">Variáveis Dinâmicas</a></strong></p>
+
+<p>Imagine um caso onde você tem várias variáveis de template em seu
+arquivo HTML, e tem um valor que precisa atribuir à uma delas. Mas o
+problema é: a variável que precisa receber o valor é definida apenas
+durante a execução do script. Ou seja, é uma variável dinâmica, ou como
+alguns chamam, uma "variável variável". Nosso arquivo HTML então seria:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+</code><pre><span class="text">&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+	Olá <span class="template_var">{NOME_FULANO}</span>!
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</span>
+</pre>
+</div>
+<p></p>
+
+
+<p>Repare que no arquivo HTML não há nada de diferente. No arquivo PHP então, basta usar chaves:</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"base.html"</span><span style="color: rgb(0, 119, 0);">);
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Nome&nbsp;da&nbsp;variável&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$varname&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;</span><span style="color: rgb(221, 0, 0);">"fulano"</span><span style="color: rgb(0, 119, 0);">;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Variável&nbsp;definida&nbsp;dinamicamente
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;{</span><span style="color: rgb(221, 0, 0);">"NOME_"</span><span style="color: rgb(0, 119, 0);">.</span><span style="color: rgb(0, 0, 187);">strtoupper</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(0, 0, 187);">$varname</span><span style="color: rgb(0, 119, 0);">)}&nbsp;=&nbsp;</span><span style="color: rgb(221, 0, 0);">"Rael"</span><span style="color: rgb(0, 119, 0);">;
+
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="messages">Mensagens de Erro</a></strong></p>
+
+<p>Abaixo estão os significados para as mensagens de erro exibidas pela classe Template.</p>
+
+<p>
+</p><ol>
+
+<li><span class="error">Parse error: syntax error, unexpected T_STRING, expecting T_OLD_FUNCTION or T_FUNCTION or T_VAR or '}'</span>: provavelmente você está usando PHP 4 (veja os <a href="#requirements">requisitos necessários</a> para usar esta biblioteca).</li>
+
+<li><span class="error">addFile: var &lt;varname&gt; não existe</span>: você está usando o método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#addFile" target="new" title="Link para a documentação do método">addFile()</a> para adicionar um arquivo HTML (ou equivalente), mas 
+a variável de template na qual você quer jogar o conteúdo, não existe.</li>
+
+<li><span class="error">var &lt;varname&gt; não existe</span>: você
+está tentando atribuir valor à uma variável que não existe.
+Certifique-se de que o nome da variável de template está correto, e que
+você está utilizando como nome desta variável somente letras, números e
+underscore, entre chaves.</li>
+
+<li><span class="error">arquivo &lt;filename&gt; não existe</span>: você está informando o caminho para um arquivo HTML (ou equivalente) que não existe, ou cuja 
+permissão de leitura é negada.</li>
+
+<li><span class="error">arquivo &lt;filename&gt; está vazio</span>: o arquivo HTML (ou equivalente) que você está passando como parâmetro está vazio. Se está vazio, ou você está 
+informando um arquivo errado, ou esqueceu de colocar conteúdo nele.</li>
+
+<li><span class="error">bloco duplicado: &lt;blockname&gt;</span>: o
+nome que você está tentando atribuir ao bloco já foi dado para outro
+bloco. Lembre-se que o nome do blocos deve ser único. Se você estiver
+usando mais de um arquivo HTML (ou equivalente), o bloco com o mesmo
+nome que o seu pode estar em um dos outros arquivo.</li>
+
+<li><span class="error">bloco &lt;blockname&gt; está mal formado</span>:
+o bloco que você declarou está com defeitos. Talvez você tenha usado a
+tag BEGIN BLOCK com um nome, e tenha terminado (a tag END BLOCK) com
+outro. Ou então, esqueceu da tag END BLOCK.</li>
+
+<li><span class="error">bloco &lt;blockname&gt; não existe</span>: você está informando ao método <a href="http://www.raelcunha.com/packages/extra/template/pt-br/api/index.html#parseBlock" target="new" title="Link para a documentação do método">parseBlock()</a> o nome de um bloco que não existe. Certifique-se de que o nome do bloco está correto, 
+e que você está utilizando como nome deste bloco somente letras, números e underscore.</li>
+
+<li><span class="error">não existe método na classe &lt;classname&gt; para acessar &lt;objeto&gt;-&gt;&lt;propriedade&gt;</span>: não existe método para acessar a propriedade que você está chamando. Se você chamar no HTML por <strong>OBJETO-&gt;NOME</strong>, a classe deste objeto precisa ter um método chamado <strong>getNome()</strong> ou <strong>isNome()</strong>. Veja maiores detalhes na seção "<a href="#objects">Usando Objetos</a>".</li>
+
+</ol>
+<p></p>
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="performance">Precisão e Desempenho</a></strong></p>
+
+<p>Uma dúvida comum ao uso de templates é: o quanto isso afeta o
+desempenho? A resposta é: menos do que você imagina. Deixe-me explicar
+o motivo.</p>
+
+<p>Esta biblioteca é muito mais rápida que as bibliotecas de template
+antigas, como a finada PHPLib, e outras similares. O motivo é que o uso
+de expressões regulares dentro dela é evitado, não sendo usado para
+fazer todo o funcionamento, como as bibliotecas antigas faziam.</p>
+
+<p>Ainda assim, esta biblioteca não possui um mecanismo de cache, como por exemplo, o template <a href="http://www.smarty.net/" target="new" title="Site do Smarty">Smarty</a>
+possui. Por duas razões. A primeira é a simplicidade de uso: não é
+preciso criar nem configurar diretórios, nem permissões Unix, etc. A
+segunda é que o desempenho é bom o suficiente para manter esta
+simplicidade. De qualquer forma, sinta-se à vontade para criar um
+mecanismo de cache.</p>
+
+<p>Eu uso esta biblioteca durante anos, e fui aperfeiçoando seu
+desempenho. Ela já foi usada em sites de grande tráfego, e nunca foi o
+gargalo. Se você usa esta biblioteca e fizer uma medição de desempenho
+de seu sistema, verá que em 98% dos casos, o gargalo é o banco de
+dados, e não o uso do processador. Sempre são consultas mal
+construídas, ou consultas feitas dentro de laços, este tipo de coisa.</p>
+
+<p>Um efeito colateral do bom desempenho desta biblioteca: se você
+pedir para seu navegador exibir o código fonte de uma página gerada
+pela classe Template, irá ver que o código final não remove algumas
+tabulações (tab ou \t) que existiam no começo de cada bloco do
+template, dando a aparência de que o código final está um pouco mais
+bagunçado do que deveria.</p>
+
+<p>A razão disto é que se essas tabulações fossem removidas por padrão,
+esta remoção traria uma queda na performance da classe Template. E em
+algumas versões iniciais do PHP 5, isso chegaria à ser mais do que o
+dobro de penalidade na performance. O motivo é um bug existente na
+biblioteca PCRE, responsável pelas expressões regulares. Em versões
+mais recentes, isso foi corrigido, mas ainda assim, acarreta uma
+pequena penalidade na performance.</p>
+
+<p>Como uma tabulação no código fonte não traz efeito algum para o
+conteúdo HTML final, o comportamento padrão da classe Template é
+ignorar estas tabulações de início de bloco, deixando elas no código
+final. O único caso em que isso pode ser um problema é quando você
+precisa de uma reprodução fiel dos seus arquivos HTML, como no uso das
+tags &lt;pre&gt; e &lt;code&gt;. Já prevendo isso, existe um segundo
+parâmetro (opcional) usado na declaração do objeto Template: o
+parâmetro <strong>$accurate</strong>. Se você usar ele com o valor <strong>true</strong>, então seu código final HTML será uma reprodução fiel dos arquivos HTML usados no Template (com a devida penalidade em 
+performance):</p>
+
+<p>
+</p><div class="code">
+<code class="prettyprint" style="width: 100%;">
+<code><span style="color: rgb(0, 0, 0);">
+<span style="color: rgb(0, 0, 187);">&lt;?php
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 119, 0);">require(</span><span style="color: rgb(221, 0, 0);">"Template.class.php"</span><span style="color: rgb(0, 119, 0);">);
+<br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;Parâmetro&nbsp;$accurate&nbsp;com&nbsp;valor&nbsp;TRUE
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl&nbsp;</span><span style="color: rgb(0, 119, 0);">=&nbsp;new&nbsp;</span><span style="color: rgb(0, 0, 187);">Template</span><span style="color: rgb(0, 119, 0);">(</span><span style="color: rgb(221, 0, 0);">"base.html"</span><span style="color: rgb(0, 119, 0);">,&nbsp;</span><span style="color: rgb(0, 0, 187);">true</span><span style="color: rgb(0, 119, 0);">);
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(255, 153, 0);">//&nbsp;...
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br>&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: rgb(0, 0, 187);">$tpl</span><span style="color: rgb(0, 119, 0);">-&gt;</span><span style="color: rgb(0, 0, 187);">show</span><span style="color: rgb(0, 119, 0);">();
+
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<br></span><span style="color: rgb(0, 0, 187);">?&gt;</span>
+</span>
+</code>
+</code></div>
+<p></p>
+ 
+
+<br>
+<hr>
+
+<br>
+<p><strong><a name="conclusion">Conclusão</a></strong></p>
+
+<p>O uso de mecanismos de Template é um grande avanço no
+desenvolvimento de aplicações web, pois nos permite manter a estrutura
+visual de nosso aplicativo separado da programação PHP.</p>
+
+<p>Eu tentei incluir neste tutorial todos os tópicos que cobrem o uso
+de templates. Se você tiver problemas, procure primeiro em todos os
+tópicos aqui. Lembre-se que este trabalho é voluntário, e que eu gastei
+muito tempo escrevendo este tutorial, além do tempo gasto nesta
+biblioteca. Portanto, antes de me enviar um email com algum problema,
+tente resolvê-lo sozinho: grande parte do aprendizado está nisso. Se
+você não conseguir, vá em frente, e fale comigo.</p>
+
+<p>Use os <a href="http://raelcunha.com/packages/blog/pages/index.tpl.php?post=328">comentários</a>
+para dizer se este tutorial lhe foi útil ou não, sugerir melhorias ou
+correções. Se você encontrou uma maneira de fazer algo melhor, seja
+bonzinho e me avise, eu publicarei aqui com os devidos créditos.</p>
+
+
+   
+		</div>
+
+		<div class="add" style="margin-top: 25px; margin-bottom: 10px;">
+			<script type="text/javascript"><!--
+			google_ad_client = "pub-1324327298235207";
+			//468x15, criado 11/12/07
+			google_ad_slot = "9989311899";
+			google_ad_width = 468;
+			google_ad_height = 15;
+			//--></script>
+			<script type="text/javascript" src="template.php_arquivos/show_ads.js">
+			</script><script>window.google_render_ad();</script><iframe name="google_ads_frame" src="template.php_arquivos/ads_002.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" width="468" frameborder="0" height="15"></iframe>		
+		</div>
+		
+	<div id="footer">
+		<p>Developed by myself :)</p>
+	</div>
+	</div>
+
+</div>
+
+</body></html>

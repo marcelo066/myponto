@@ -1,0 +1,517 @@
+@CHARSET "ISO-8859-1";
+
+/*estilo padr�o para o body */
+body {
+	font: 0.7em Verdana, Arial, Lucida, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+	/* 99.9999% para evitar que o firefox coloque a barra de rolagem horizontal sem necessidade */
+	width: 99.9999%;
+	height: 100%;
+}
+
+/*estilo do cabe�alho*/
+#cabecalho {
+	height: 60px;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	clear: both;
+	background: url(/images/HeaderBack.gif) repeat-y;
+	clear: both;
+}
+
+#cabecalho span {
+	font-size: large;
+}
+
+/*div que posiciona os detalhes do sistema*/
+#detalhes-sistema {
+	width: 30em;
+	float: right;
+	padding: 4px 2em 0 0;
+	text-align: right;
+}
+
+#detalhes-sistema h1 {
+	font-size: 160%;
+	/*margin-bottom: -.7em;*/
+	font-weight: normal;
+	margin-top: 0;
+	text-align: right;
+	
+}
+
+/*Posicionamento da Figura MarcaCliente*/
+#portal-logo {
+	width: 40%;
+	float: left;
+	margin: .88em 1em;
+	_margin: .8em 1em;
+	/*padding-bottom:2em;*/
+}
+
+#marca-sistema {
+	margin-top: 2em;
+	_margin-top: 1em;
+}
+
+/*Barra com os links voltar - imprimir - topo*/
+#barraTexto {
+	border-color: #3333CC;
+	border-top-style: solid;
+	border-top-width: 1px;
+	clear: both;
+	margin-top: 1.5em;
+	margin-bottom: 1em;
+	text-align: right;
+}
+
+/*div com o conteudo da tela logado*/
+#conteudoLogado {
+	margin: 2em;
+	margin-left: 20%;
+	margin-right: 20%;
+	min-width: 50%;
+	text-align: center;
+}
+
+/*div que cont�m o aviso na tela de login */
+#principal {
+	padding-top: 1em;
+	float: left;
+	width: 70%;
+	margin-right: -16em;
+	text-align: left;
+}
+
+/*Aviso na tela de login */
+#aviso {
+	margin: 10px;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+#aviso h2 {
+	border: none;
+	text-transform: none;
+	color: #000;
+	font-size: 120%;
+	padding-left: 0;
+	padding-top: 0;
+}
+
+/*div que cont�m o formulario de login e a mensagem especial na tela de login*/
+#direita {
+	float: right;
+	width: 180px;
+	padding-top: 1em;
+	padding-bottom: 0.8em;
+	padding-right: 3em;
+}
+
+#direita p {
+	font-size: 0.9em;
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+}
+
+/*mensagem especial na tela de login*/
+#mensagem {
+	color: red;
+	border-style: none;
+	border-width: 1px;
+	margin-top: 1em;
+	text-align: center;
+	font-weight: bold;    
+}
+
+/*estilo para o formul�rio de login e seus inputs*/
+#formulario {
+	padding: 1em;
+	padding-left: 1.3em;
+	background-color: #ecf2ff;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #87AEFC;
+}
+
+#formulario input.button {
+	color: white;
+	background-color: #87AEFC;
+}
+
+#formulario input.text {
+	width: 95%;
+	margin-bottom: 0.3em;
+}
+
+/*estilo das p�ginas de menus*/
+#subMenu {
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	text-align: left;
+	border-color: #0000FF;
+	background-color: #ecf2ff;
+}
+
+/*estilo dos links*/
+a:link {
+	color: #0000FF;
+	text-decoration: none
+}
+
+a:visited {
+	color: #0000FF;
+	text-decoration: none
+}
+
+a:hover {
+	color: #FF0000;
+	text-decoration: underline
+}
+
+a:active {
+	color: #FF0000;
+	text-decoration: none
+}
+
+/*estilo das listas n�o ordenadas*/
+ul li {
+	font-weight: bold;
+	list-style-image: url(/images/bullet1a.gif);
+}
+
+ul li li {
+	font-weight: normal;
+	list-style-image: url(/images/bullet1a.gif);
+}
+
+/*div que cont�m todas as outras estruturas*/
+#estrutura {
+	padding-top: 2em;
+	padding-left: 60px;
+	padding-right: 60px;
+	min-height: 40em;
+	_height: 41em;
+}
+
+/*div contendo o menu horizontal*/
+#menu {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color:  #cc6600;
+	float: left;
+}
+
+/*estilos do menu*/
+#menulist {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+	font-size: 1em;
+	background-color: #cc6600;
+	color: White;
+	font-family: verdana, arial, helvetica, sans-serif;
+	clear: both;
+	list-style-type: none;
+}
+
+#menulist ul {
+	height: 20px;
+}
+
+#menulist li {
+	display: inline;
+}
+
+.primeiro {
+	border-left: 1px solid #fff;
+}
+
+#menulist li a {
+	padding: 0.2em 1em;
+	text-decoration: none;
+	float: left;
+	background-color: #cc6600;
+	color: White;
+	border-right: 1px solid #fff;
+	height: 15px;
+	_height: 16px;
+}
+
+#menulist li a:hover {
+	background-color: #369;
+	color: #fff;
+}
+
+/*div que posiciona a barra de caminho do sistema "bread-crumbs"*/
+#caminho {
+	border-bottom-color: #8cacbb;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-top-color: #8cacbb;
+	border-top-style: solid;
+	border-top-width: 1px;
+	padding-left: 1em;
+	clear: both;
+}
+
+/*div com o rodap� do sistema*/
+#rodape {
+	bottom: 0;
+	clear: both;
+	width: 100%;
+	border-top: 1px solid #8cacbb;
+	border-bottom: 1px solid #8cacbb;
+	text-align: center;
+	background: url(/images/HeaderBack.gif) repeat-y;
+}
+
+/*Estilos dos t�tulos*/
+h1 {
+	font-weight: bold;
+	font-size: 1.2em;
+	text-align: left;
+}
+
+h1.central {
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #3333CC;
+	padding-top: 0.2em;
+	padding-right: 0.2em;
+	padding-bottom: 0em;
+	padding-left: 0.2em;
+	font-size: 1.2em;
+	text-align: center;
+	border-color: #3333CC;
+	border-bottom-style: solid;
+	border-bottom-width: 3px;
+	margin-top: 1em;
+}
+
+h2 {
+	font-size: 1em;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #3333CC;
+	padding-top: 0.2em;
+	padding-right: 0.2em;
+	padding-bottom: 0em;
+	padding-left: 0.2em;
+	border-color: #3333CC;
+	border-style: solid;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 2px;
+	border-left-width: 0px;
+	margin-bottom: 1.5em;
+}
+
+h3 {
+	font-size: 1em;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #3333CC;
+	padding-top: 0.2em;
+	padding-right: 0.2em;
+	padding-bottom: 0em;
+	padding-left: 0.2em;
+	border-color: #3333CC;
+	border-style: solid;
+	border-top-width: 0px;
+	border-right-width: 0px;
+	border-bottom-width: 1px;
+	border-left-width: 0px;
+	margin-bottom: 1.5em;
+}
+
+h6 {
+	font-size: 0.8em;
+	margin: 0;
+	padding: 0;
+}
+
+/*Estilos para as tabelas do sistema*/
+/*table {
+	background-color: #4582FC;
+	margin-right: auto;
+	margin-left: auto;
+	border-spacing: 1px;
+	_border-collapse: collapse;
+	border-width: 1px;
+	width: 100%;
+}
+
+.cinquenta {
+	width: 50%;
+}
+
+.setenta {
+	width: 70%;
+}
+
+.trintaecinco {
+	width: 35%;
+}
+
+.direita {
+	text-align: right;
+}
+
+table td {
+	padding: 2px;
+	font-size: 1em;
+	background-color: #FFFFFF;
+	border-width: 1px;
+}
+
+table th {
+	font-size: 1em;
+	font-weight: normal;
+	text-align: left;
+	background-color: #FFFFFF;
+	border-width: 1px;
+}
+
+th,td {
+	_border: solid #4582FC;
+	padding: 2px;
+}  /* common properties */
+/*td.left,th.left {
+	_border-width: 1px 1px 0px 1px;
+}  /* cells on the left */
+/*td.right,th.right {
+	_border-width: 1px 1px 0px 0px;
+}  /* other */
+/*.leftLast {
+	_border-width: 1px 1px 1px 1px;
+}  /* the last cell on the left */
+/*.rightLast {
+	_border-width: 1px 1px 1px 0px;
+}  /* other cells on the last row */
+/*table caption {
+	color: #3333CC;
+	font-weight: bold;
+	text-align: center;
+	font-size: 1em;
+}
+
+.tdHeader1 {
+	background-color: #87AEFC;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-align: center
+}
+
+.tdHeader2 {
+	background-color: #87AEFC;
+}
+
+.tdHeader3 {
+	background-color: #D5E1FA;
+}
+
+.tdHeader3right {
+	background-color: #D5E1FA;
+	text-align: right
+}
+
+.tdHeader4 {
+	background-color: #ECF2FF;
+}
+
+.contentBold {
+	font-weight: bold;
+	text-align: auto
+}
+
+.contentRight {
+	text-align: right
+}
+
+.contentCenter {
+	text-align: center
+}
+
+.contentRightpad {
+	text-align: right;
+	padding-right: 6px
+}
+
+/*estilos para os inputs*/
+select {
+	font-size: 100%
+}
+
+.text {
+	border: 1px solid #4582FC;
+	font-size: 1em
+}
+
+.button {
+	border: 1px solid #4582FC;
+	font-size: 1em;
+	font-weight: bold;
+	background-color: #ECF2FF;
+}
+
+/* pular para conteudo*/
+#skip a {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	overflow: hidden;
+	width: 0;
+	height: 0;
+	color: #666;
+	text-decoration: none;
+}
+
+#skip a:active,#skip a:focus {
+	position: absolute;
+	overflow: visible;
+	margin: 0;
+	padding: 1px;
+	width: auto;
+	height: auto;
+	border: 0;
+	text-decoration: none;
+	background: #ffffcc;
+}
+
+.hide a {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	width: 0;
+	height: 0;
+	font-size: 0;
+	color: #white;
+	overflow: hidden;
+	text-decoration: none;
+}
+
+.hide a:active,.hide a:focus {
+	position: absolute;
+	overflow: visible;
+	margin: 0;
+	padding: 1px;
+	width: auto;
+	height: auto;
+	font-size: 0.8em;
+	border: 0;
+	text-decoration: none;
+	background: #ffffcc;
+	color: #666;
+}
+
+
+.tooltiptitle{COLOR: #000000; TEXT-DECORATION: none; CURSOR: Default; font-family: arial; font-weight: bold; font-size: 8pt;	}
+.tooltipcontent{COLOR: #000000; TEXT-DECORATION: none; CURSOR: Default; font-family: arial; font-size: 8pt}
+
