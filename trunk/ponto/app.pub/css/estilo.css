@@ -12,12 +12,13 @@ body {
 
 /*estilo do cabe�alho*/
 #cabecalho {
-	height: 60px;
+	height: 75px;
 	margin: 0;
 	padding: 0;
 	width: 100%;
 	clear: both;
-	background: url(/images/HeaderBack.gif) repeat-y;
+	/*background: url(/images/HeaderBack.gif) repeat-y;*/
+    background: url(header.png) repeat-x;
 	clear: both;
 }
 
