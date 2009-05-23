@@ -14,14 +14,12 @@
 	</div>
 	<div id="detalhes-sistema">
 		<h1>Sistema de Controle de Ponto </h1>
+        Controle eletrônico dos horários<br/>de entrada saída de funcionários
 	</div>
-
 	<div id="caminho"></div>
 </div>
-
 <div id="estrutura">
-	<script language="javascript">
-	
+	<script language="javascript">	
 	function SaltaCampo(campoAtual, proximoCampo, tamanhoMaximo, teclapres)
 	{	
 		var tecla = teclapres.keyCode;
@@ -33,8 +31,7 @@
 			document.getElementById(proximoCampo).focus();
 		}
 	}
-	</script>
-	
+	</script>	
 	<div id="principal">
 		<div id="aviso">
 			<h2>Aviso Importante</h2>
@@ -61,18 +58,17 @@
 
 	<div id="direita">
 		<p>Antes de iniciar suas consultas habilite-se no Setor Pessoal.</p>
+        <div id="caixa">
+        <div id="barraTitulo" ><div id="barraTituloTexto">Login</div></div>
 		<div id="formulario">						
 			<form name="frmLogin" method="post" action="./?_task=Login&_action=fazerLogin">
 				<input name="pesq_per_cd" id="pesq_per_cd" value="163" type="hidden">
 				<label for="matricula">Matricula</label><br>
 				<input name="matricula" id="matricula" value="" class="text" onkeyup="SaltaCampo('matricula', 'senha', 11, event)" type="text">
-
 				<label for="senha">Senha</label><br>
 				<input name="senha" id="senha" value="" class="text" maxlength="12" type="password">
-
 				<label for="nova_senha">Nova Senha</label><br>
-				<input name="nova_senha" id="nova_senha" value="" class="text" maxlength="12" type="password">
-					
+				<input name="nova_senha" id="nova_senha" value="" class="text" maxlength="12" type="password">					
 				<label for="conf_n_senha">Confirme Nova Senha</label><br>
 				<input name="conf_n_senha" id="conf_n_senha" value="" class="text" maxlength="12" type="password">				
 				<br>
@@ -81,15 +77,13 @@
 				<input name="reset" value="Cancelar" class="button" type="reset">					
 			</form> 			
 		</div>
-
+    </div>
 		<div id="mensagem">
             {MSG}
 		</div>
 	</div>	
 </div>	
-
 <div id="rodape">
 	Produto Desenvolvido pelo DTI - Software Livre - UFC Engenharia Ltda.
 </div>
-
 </body></html>

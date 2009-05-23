@@ -85,7 +85,7 @@ class RegistroController
         }
         $this->view->addFile("TOPO","topo.html");
         $vTitulo = ":: REGISTRO DE PONTO :: ". date("H:i:s") . " :: " . $oProf->getMatricula() . " - " . $oProf->getNome() . " :: " . $oProf->getFuncao() ;
-        $this->view->setValue("TITULO", $vTitulo);
+        $this->view->setValue("TITULO",  $vTitulo);
         $this->view->addFile("FOOTER","rodape.html");
         $this->view->show();
     }
