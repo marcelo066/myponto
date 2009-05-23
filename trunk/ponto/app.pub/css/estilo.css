@@ -1,6 +1,6 @@
 @CHARSET "ISO-8859-1";
 
-/*estilo padr�o para o body */
+/*estilo padrão para o body */
 body {
 	font: 0.7em Verdana, Arial, Lucida, Helvetica, sans-serif;
 	margin: 0;
@@ -10,15 +10,14 @@ body {
 	height: 100%;
 }
 
-/*estilo do cabe�alho*/
+/*estilo do cabeçalho*/
 #cabecalho {
 	height: 75px;
 	margin: 0;
 	padding: 0;
 	width: 100%;
 	clear: both;
-	/*background: url(/images/HeaderBack.gif) repeat-y;*/
-    background: url(header.png) repeat-x;
+    background: url(header.png);
 	clear: both;
 }
 
@@ -40,7 +39,6 @@ body {
 	font-weight: normal;
 	margin-top: 0;
 	text-align: right;
-	
 }
 
 /*Posicionamento da Figura MarcaCliente*/
@@ -129,18 +127,26 @@ body {
 }
 
 /*estilo para o formul�rio de login e seus inputs*/
-#formulario {
-	padding: 1em;
-	padding-left: 1.3em;
-	background-color: #ecf2ff;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #87AEFC;
+#barraTitulo {
+    background: url(top-bottom.gif);
+    height: 2em;
 }
 
-#formulario input.button {
-	color: white;
-	background-color: #87AEFC;
+#barraTituloTexto {
+    color: navy;
+    font-size: 1.1em;
+    padding-top: 0.3em;
+    padding-left: 0.3em;
+}
+#formulario {
+    padding: 1em 1em 1em 1em;
+	background-color: #ecf2ff;
+    }
+
+#caixa{
+    border-style: solid;
+	border-width: 1px;
+	border-color: #87AEFC;
 }
 
 #formulario input.text {
@@ -460,6 +466,8 @@ select {
 	font-size: 1em;
 	font-weight: bold;
 	background-color: #ECF2FF;
+    background-image: url(top-bottom.gif);
+    height: 2em;
 }
 
 /* pular para conteudo*/

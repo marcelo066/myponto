@@ -1,72 +1,72 @@
 {TOPO}
-{TITULO}
 <p></p>
-<div id="contents">
-    <div id="formulario">
-<form id="form1" name="form1" method="post" action="?task=Registro&_action=editarRegistro">
-  <table width="391" border="0">
-    <tr>
-      <td rowspan="2"><div align="center">Registro</div></td>
-      <td width="128"><label>Data</label></td>
-      <td width="144">{DATA}</td>
-      <td>&nbsp;</td>
-      </tr>
-    <tr>
-      <td>Dia da Semana </td>
-      <td>{DIASEMANA}</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td rowspan="2"><div align="center">1&ordm; Turno</div></td>
-      <td>Entrada</td>
-      <td><input name="txtEntrada" class="text" type="text" id="txtEntrada" value="{ENTRADA}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
-      <td>
-        <select name="lsOcorrencia1">
-            <!-- BEGIN BLOCK_OCORRENCIA1 -->
-            <option value="{CODIGO}">{DESCRICAO}</option>
-            <!-- END BLOCK_OCORRENCIA1 -->
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td>Sa&iacute;da</td>
-      <td><input name="txtAlmoco" class="text" type="text" id="txtAlmoco" value="{ALMOCO}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
-      <td>
-        <select name="lsOcorrencia2">
-            <!-- BEGIN BLOCK_OCORRENCIA2 -->
-            <option value="{CODIGO}">{DESCRICAO}</option>
-            <!-- END BLOCK_OCORRENCIA2 -->
-        </select>
-    </tr>
-    <tr>
-      <td rowspan="2"><div align="center">2&ordm; Turno</div></td>
-      <td>Entrada</td>
-      <td><input name="txtRetorno" class="text" type="text" id="txtRetorno" value="{RETORNO}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
-      <td>
-        <select name="lsOcorrencia3">
-            <!-- BEGIN BLOCK_OCORRENCIA3 -->
-            <option value="{CODIGO}">{DESCRICAO}</option>
-            <!-- END BLOCK_OCORRENCIA3 -->
-        </select>
-    </tr>
-    <tr>
-      <td>Sa&iacute;da</td>
-      <td><input name="txtSaida" class="text" type="text" id="txtSaida" value="{SAIDA}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
-      <td>
-        <select name="lsOcorrencia4">
-            <!-- BEGIN BLOCK_OCORRENCIA4 -->
-            <option value="{CODIGO}">{DESCRICAO}</option>
-            <!-- END BLOCK_OCORRENCIA4 -->
-        </select>
-    </tr>
-  </table>
-  <p>
-    <label>
-    <input type="submit" class="button" name="Submit" value="Confirmar" />
-    </label>
-  </p>
-</form>
-</div>
-<div id="mensagem"></div>
-</div>
+    <div id="caixa" style="width: 400px; margin-left: 30%">
+        <div id="barraTitulo" ><div id="barraTituloTexto">Ajustar Frequencia</div></div>
+        <div id="formulario">
+            <form id="form1" name="form1" method="post" action="?task=Registro&_action=editarRegistro">
+                <table style="width:100%; border-style: solid; border-width: 1px; border-color: green">
+                    <tr>
+                        <td rowspan="2" width="20%"><div align="center">Registro</div></td>
+                        <td width="30%"><label>Data</label></td>
+                        <td width="10%">{DATA}</td>
+                        <td width="40%">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td>Dia da Semana </td>
+                        <td>{DIASEMANA}</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><div align="center">1&ordm; Turno</div></td>
+                        <td>Entrada</td>
+                        <td><input name="txtEntrada" class="text" type="text" id="txtEntrada" value="{ENTRADA}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
+                        <td>
+                            <select name="lsOcorrencia1">
+                                <!-- BEGIN BLOCK_OCORRENCIA1 -->
+                                <option value="{CODIGO}">{DESCRICAO}</option>
+                                <!-- END BLOCK_OCORRENCIA1 -->
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sa&iacute;da</td>
+                        <td><input name="txtAlmoco" class="text" type="text" id="txtAlmoco" value="{ALMOCO}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
+                        <td>
+                        <select name="lsOcorrencia2">
+                            <!-- BEGIN BLOCK_OCORRENCIA2 -->
+                            <option value="{CODIGO}">{DESCRICAO}</option>
+                            <!-- END BLOCK_OCORRENCIA2 -->
+                        </select>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><div align="center">2&ordm; Turno</div></td>
+                        <td>Entrada</td>
+                        <td><input name="txtRetorno" class="text" type="text" id="txtRetorno" value="{RETORNO}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
+                        <td>
+                        <select name="lsOcorrencia3">
+                            <!-- BEGIN BLOCK_OCORRENCIA3 -->
+                            <option value="{CODIGO}">{DESCRICAO}</option>
+                            <!-- END BLOCK_OCORRENCIA3 -->
+                        </select>
+                    </tr>
+                    <tr>
+                        <td>Sa&iacute;da</td>
+                        <td><input name="txtSaida" class="text" type="text" id="txtSaida" value="{SAIDA}" onKeyUp="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" /></td>
+                        <td>
+                        <select name="lsOcorrencia4">
+                            <!-- BEGIN BLOCK_OCORRENCIA4 -->
+                            <option value="{CODIGO}">{DESCRICAO}</option>
+                            <!-- END BLOCK_OCORRENCIA4 -->
+                        </select>
+                    </tr>
+                </table>
+                <p>
+                    <label>
+                        <input type="submit" class="button" name="Submit" value="Confirmar" />
+                    </label>
+                </p>
+            </form>
+        </div>
+    </div>
+    <div id="mensagem"></div>
 {FOOTER}

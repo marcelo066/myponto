@@ -1,22 +1,22 @@
 {TOPO}
-{TITULO}
-<div id="mainav">
+    <div id="caixa"  style="width: 200px; margin-left: 40%; margin-right: 40%;">
+    <div id="barraTitulo" ><div id="barraTituloTexto">Registrar Ponto</div></div>
     <div id="formulario">
     <form id="form1" name="form1" method="post" action="./?_task=Registro&_action=addRegistro">
-        <fieldset> <legend>1º Turno:</legend>
+        <fieldset>Turno 1:
             <input name="optTurno" value="entrada" lang="pt" type="radio" {OPTENT} />Entrada {MSGENT}<br />
-            <input name="optTurno" value="almoco" lang="pt" type="radio" {OPTALM} />Saída {MSGALM}<br />
+            <input name="optTurno" value="almoco" lang="pt" type="radio" {OPTALM} />Saida {MSGALM}<br />
         </fieldset>
-        <fieldset> <legend>2º Turno:</legend>
+        <fieldset> <legend>Turno 2:</legend>
             <input name="optTurno" value="retorno" lang="pt" type="radio" {OPTRET} />Entrada {MSGRET}<br />
-            <input name="optTurno" value="saida" lang="pt" type="radio" {OPTSAI} />Saída {MSGSAI}<br />
+            <input name="optTurno" value="saida" lang="pt" type="radio" {OPTSAI} />Saida {MSGSAI}<br />
         </fieldset>
-        <input name="chkApropriar" value="true" type="checkbox" /> Apropriar Horários
-        <p><input name="btnRegistrar" value="Registrar" type="submit" class="button" {OPTBTN} /> </p>
+        <input name="chkApropriar" value="true" type="checkbox" /> Apropriar Horarios
+        <br/><br/><input name="btnRegistrar" value="Registrar" type="submit" class="button" {OPTBTN} />
     </form>
+    </div>
     </div>
     <div id="mensagem">
             {MSG}
 	</div>
-</div>
 {FOOTER}
