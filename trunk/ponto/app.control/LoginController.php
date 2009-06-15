@@ -49,7 +49,7 @@ class LoginController extends Controller {
                 Sessao::setObject('oPeriodo', $oPeriodo);
 
                 $oRegistro = new RegistroController;
-                $oRegistro->exibirRegistro();
+                $oRegistro->show();
                 $oRegistro = null;
 
 /*

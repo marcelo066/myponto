@@ -17,6 +17,7 @@ class Registro {
     private $total;
     private $extra50;
     private $extra100;
+    private $ocorrencias;
     public function getData (){
         //return $this->data->format('d/m/Y');
         return $this->data;
@@ -83,6 +84,14 @@ class Registro {
     }
     public function setExtra100 ($pExtra100){
         $this->extra100 = number_format($pExtra100,2,',','.');
+    }
+    public function addOcorrencia(Ocorrencia $pOcorrencia)
+    {
+        $this->ocorrencias[] = $pOcorrencia;
+    }
+    public function getOcorrencia()
+    {
+        return $this->ocorrencias;
     }
 }
 ?>

@@ -1,8 +1,8 @@
 <?php
 /**
- * Esta p�gina � um front-controller
- * � respons�vel por receber e redirecionar requisi��es
- * para o controller respons�vel
+ * Esta página é um front-controller
+ * é responsável por receber e redirecionar requisições
+ * para o controller responsável
  * @author ivan
  */
 function __autoload($classe)
