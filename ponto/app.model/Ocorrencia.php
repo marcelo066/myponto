@@ -18,6 +18,6 @@ class Ocorrencia {
 
     public function setDescricao($descricao) {
         $this->descricao = $descricao;
-    }      
+    }    
 }
 ?>

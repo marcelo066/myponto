@@ -13,10 +13,9 @@ class RegistroController
         $this->view = new View("registro.html");
     }
 
-    public function addRegistro()
+    public function add()
     {
         // instancia ponto
-
         $oPonto = new Ponto;
         $oPonto->setData(date("Y-m-d"));
         $oPonto->setHora(date("H:i:s"));
@@ -39,7 +38,47 @@ class RegistroController
         $this->exibirRegistro();
     }
 
-    public function exibirRegistro()
+    public function update()
+    {        
+        // coleta ocorrencias
+        $oOcorrencia1 = new Ocorrencia;
+        $oOcorrencia2 = new Ocorrencia;
+        $oOcorrencia3 = new Ocorrencia;
+        $oOcorrencia4 = new Ocorrencia;
+        $oOcorrencia1->setCodigo($_POST["lsOcorrencia1"]);
+        $oOcorrencia2->setCodigo($_POST["lsOcorrencia2"]);
+        $oOcorrencia3->setCodigo($_POST["lsOcorrencia3"]);
+        $oOcorrencia4->setCodigo($_POST["lsOcorrencia4"]);
+
+        // registro
+        $oRegistro = new Registro;
+        $oRegistro->addOcorrencia($oOcorrencia1);
+        $oRegistro->addOcorrencia($oOcorrencia2);
+        $oRegistro->addOcorrencia($oOcorrencia3);
+        $oRegistro->addOcorrencia($oOcorrencia4);
+        $oRegistro->setData($_POST["txtData"]);
+        $oRegistro->setEntradaManha($_POST["txtEntrada"]);
+        $oRegistro->setSaidaManha($_POST["txtAlmoco"]);
+        $oRegistro->setEntradaTarde($_POST["txtRetorno"]);
+        $oRegistro->setEntradaNoite($_POST["txtSaida"]);
+
+        // instancia profissional
+        $oProf = new Profissional;
+        $oProf = Sessao::getObject("oProf");
+
+        // vai para o banco
+        $this->model->update($oProf, $oRegistro);
+
+        // destroi objetos
+        unset($oOcorrencia1);
+        unset($oOcorrencia2);
+        unset($oOcorrencia3);
+        unset($oOcorrencia4);
+        unset($oRegistro);
+        unset($oProf);
+    }
+
+    public function show()
     {        
         // obtem profissional logado, armazenado na sessao
         $oProf = new Profissional;
@@ -48,7 +87,6 @@ class RegistroController
         // checa quais
         $oRegistro = new Registro;        
         $oRegistro = $this->model->getByDate($oProf, new DateTime(date("Y-m-d")));
-
         if($oRegistro){
             // se ja clicou entrada, desabilita controle
             if($oRegistro->getEntradaManha())
@@ -90,13 +128,12 @@ class RegistroController
         $this->view->show();
     }
 
-    public function editarRegistro()
+    public function edit()
     {
         // define view
         $view = new View("editar_registro.html");
         $view->addFile("TOPO", "topo.html");
-
-        $vData = new DateTime(str_replace("/","-",$_GET["_rowData"] ));
+        $vData = new DateTime(str_replace("/","-",$_GET["_Id"] ));
 
         // preenche view com dados do profissional
         $oProf = new Profissional;
@@ -132,8 +169,8 @@ class RegistroController
         }
 
         // destroi objetos
-        $oOcorrenciaDao = null;
-        $oOcorrencia = null;
+        unset($oOcorrenciaDao);
+        unset($oOcorrencia);
 
         // exibe view
         $view->addFile("FOOTER", "rodape.html");

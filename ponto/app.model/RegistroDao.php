@@ -32,6 +32,21 @@ class RegistroDao extends Dao
         parent::executar($sql);
     }
 
+    public function update(Profissional $pProf, Registro $pRegistro)
+    {
+        echo $pProf->getCodProfFuncao() . '<br>';
+        echo $pProf->getNome() . '<br>';
+        echo $pRegistro->getData()->format("d-m-Y") . '<br>';
+        echo $pRegistro->getEntradaManha() . '<br>';
+        echo $pRegistro->getSaidaManha() . '<br>';
+        echo $pRegistro->getEntradaTarde() . '<br>';
+        echo $pRegistro->getEntradaTarde() . '<br>';
+        foreach($pRegistro->getOcorrencia() as $row )
+        {
+            echo $row->getCodigo()  . '<br>';
+        }
+    }
+
     public function getByDate(Profissional $pProf, DateTime $pData)
     {
         $sql = "SELECT hf.data, DAYNAME(hf.data) as dia, hf.entrada, hf.almoco,
@@ -59,8 +74,7 @@ class RegistroDao extends Dao
         else
         {
             return false;
-        }
-        
+        }        
     }
 
     public function getByRange($pCodProfFuncao, DateTime $pInicio, DateTime $pFim)

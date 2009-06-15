@@ -64,7 +64,7 @@ class FrequenciaController extends Controller
             $this->view->setValue("TOTAL", $vFreq->getTotal());
             $this->view->setValue("EXTRA50", $vFreq->getExtra50());
             $this->view->setValue("EXTRA100", $vFreq->getExtra100());
-            $this->view->setValue("IDAJUSTE",  "?_task=Registro&_action=editarRegistro&_rowData=" . $vFreq->getData()->format('d/m/Y'));
+            $this->view->setValue("IDAJUSTE",  "?_task=Registro&_action=edit&_Id=" . $vFreq->getData()->format('d/m/Y'));
             $this->view->parseBlock("BLOCK_FREQUENCIA", true);
         }        
 

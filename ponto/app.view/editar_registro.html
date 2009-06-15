@@ -3,12 +3,12 @@
     <div id="caixa" style="width: 400px; margin-left: 30%">
         <div id="barraTitulo" ><div id="barraTituloTexto">Ajustar Frequencia</div></div>
         <div id="formulario">
-            <form id="form1" name="form1" method="post" action="?task=Registro&_action=editarRegistro">
+            <form id="form1" name="form1" method="post" action="?_task=Registro&_action=update">
                 <table style="width:100%; border-style: solid; border-width: 1px; border-color: green">
                     <tr>
                         <td rowspan="2" width="20%"><div align="center">Registro</div></td>
                         <td width="30%"><label>Data</label></td>
-                        <td width="10%">{DATA}</td>
+                        <td width="10%"><input name="txtData" class="text" type="text" id="txtEntrada" value="{DATA}" readonly  /></td>
                         <td width="40%">&nbsp;</td>
                     </tr>
                     <tr>
