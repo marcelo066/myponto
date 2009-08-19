@@ -14,10 +14,10 @@ class BancoController {
         $this->view = new View("banco.html");
     }
 
-    public function exibirBanco()
+    public function show()
     {
         $oBancoDao = new BancoDao();
-        $oBanco = $oBancoDao->getBancoDeHoras(93);
+        $oBanco = $oBancoDao->get(93);
 
         // obtém objetos da sessão
         $oPeriodo = Sessao::getObject("oPeriodo");

@@ -30,7 +30,7 @@ try{
 
     // define metodo padrao
     if (empty($metodo)) {
-        $metodo = 'fazerLogin';
+        $metodo = 'login';
     }
 
     // prepara arquivo para inclusão
@@ -51,7 +51,7 @@ try{
     // se método não existe, lança exceção
     if(!method_exists($instancia, $metodo))
     {
-        $instancia = null;
+        //unset($instancia);
         throw new Exception("Url inválida!");
     }
     

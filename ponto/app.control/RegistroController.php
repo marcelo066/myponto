@@ -35,7 +35,7 @@ class RegistroController
         {
             $this->view->setValue("MSG", "Não pode clicar.");
         }        
-        $this->exibirRegistro();
+        $this->show();
     }
 
     public function update()
@@ -130,51 +130,58 @@ class RegistroController
 
     public function edit()
     {
-        // define view
-        $view = new View("editar_registro.html");
-        $view->addFile("TOPO", "topo.html");
-        $vData = new DateTime(str_replace("/","-",$_GET["_Id"] ));
-
-        // preenche view com dados do profissional
-        $oProf = new Profissional;
-        $oProf = Sessao::getObject("oProf");
-        $vTitulo = ":: EDITAR REGISTRO DE PONTO :: " . $oProf->getMatricula() . " - " . $oProf->getNome() . " :: " . $oProf->getFuncao() ;
-        $view->setValue("TITULO", $vTitulo);
-
-        // preenche view com dados do registro
-        $oRegistro = new Registro;
-        $oRegistro = $this->model->getByDate($oProf, $vData);
-        $view->setValue("DATA", $vData->format("d-m-Y"));
-        $view->setValue("DIASEMANA", Data::getDiaSemana($vData));
-        if($oRegistro)
-        {            
-            $view->setValue("ENTRADA", $oRegistro->getEntradaManha());
-            $view->setValue("ALMOCO", $oRegistro->getSaidaManha());
-            $view->setValue("RETORNO", $oRegistro->getEntradaTarde());
-            $view->setValue("SAIDA", $oRegistro->getSaidaTarde());
-        }
-
-        // carrega selects de ocorrencia
-        $oOcorrencia = new Ocorrencia;
-        $oOcorrenciaDao = new OcorrenciaDao;
-        $oOcorrencia = $oOcorrenciaDao->getList();
-        foreach($oOcorrencia as $row )
+        try
         {
-            $view->setValue("CODIGO", $row->getCodigo());
-            $view->setValue("DESCRICAO", $row->getDescricao());
-            $view->parseBlock("BLOCK_OCORRENCIA1", true);
-            $view->parseBlock("BLOCK_OCORRENCIA2", true);
-            $view->parseBlock("BLOCK_OCORRENCIA3", true);
-            $view->parseBlock("BLOCK_OCORRENCIA4", true);
+            // define view
+            $view = new View("editar_registro.html");
+            $view->addFile("TOPO", "topo.html");
+            $vData = new DateTime(str_replace("/","-",$_GET["_Id"] ));
+
+            // preenche view com dados do profissional
+            $oProf = new Profissional;
+            $oProf = Sessao::getObject("oProf");
+            $vTitulo = ":: EDITAR REGISTRO DE PONTO :: " . $oProf->getMatricula() . " - " . $oProf->getNome() . " :: " . $oProf->getFuncao() ;
+            $view->setValue("TITULO", $vTitulo);
+
+            // preenche view com dados do registro
+            $oRegistro = new Registro;
+            $oRegistro = $this->model->getByDate($oProf, $vData);
+            $view->setValue("DATA", $vData->format("d-m-Y"));
+            $view->setValue("DIASEMANA", Data::getDiaSemana($vData));
+            if($oRegistro)
+            {
+                $view->setValue("ENTRADA", $oRegistro->getEntradaManha());
+                $view->setValue("ALMOCO", $oRegistro->getSaidaManha());
+                $view->setValue("RETORNO", $oRegistro->getEntradaTarde());
+                $view->setValue("SAIDA", $oRegistro->getSaidaTarde());
+            }
+
+            // carrega selects de ocorrencia
+            $oOcorrencia = new Ocorrencia;
+            $oOcorrenciaDao = new OcorrenciaDao;
+            $oOcorrencia = $oOcorrenciaDao->getList();
+            foreach($oOcorrencia as $row )
+            {
+                $view->setValue("CODIGO", $row->getCodigo());
+                $view->setValue("DESCRICAO", $row->getDescricao());
+                $view->parseBlock("BLOCK_OCORRENCIA1", true);
+                $view->parseBlock("BLOCK_OCORRENCIA2", true);
+                $view->parseBlock("BLOCK_OCORRENCIA3", true);
+                $view->parseBlock("BLOCK_OCORRENCIA4", true);
+            }
+
+            // destroi objetos
+            unset($oOcorrenciaDao);
+            unset($oOcorrencia);
+
+            // exibe view
+            $view->addFile("FOOTER", "rodape.html");
+            $view->show();
         }
+        catch(Exception $e)
+        {
 
-        // destroi objetos
-        unset($oOcorrenciaDao);
-        unset($oOcorrencia);
-
-        // exibe view
-        $view->addFile("FOOTER", "rodape.html");
-        $view->show();
+        }
 
     }
 }

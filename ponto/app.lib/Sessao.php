@@ -14,6 +14,9 @@ class Sessao
 {
     function  __construct()
     {
+        session_cache_limiter('private');
+        $cache_limiter = session_cache_limiter();
+        session_cache_expire(1);
         session_start();
     }
 

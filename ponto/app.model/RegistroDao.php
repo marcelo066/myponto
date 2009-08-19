@@ -34,16 +34,24 @@ class RegistroDao extends Dao
 
     public function update(Profissional $pProf, Registro $pRegistro)
     {
-        echo $pProf->getCodProfFuncao() . '<br>';
-        echo $pProf->getNome() . '<br>';
-        echo $pRegistro->getData()->format("d-m-Y") . '<br>';
-        echo $pRegistro->getEntradaManha() . '<br>';
-        echo $pRegistro->getSaidaManha() . '<br>';
-        echo $pRegistro->getEntradaTarde() . '<br>';
-        echo $pRegistro->getEntradaTarde() . '<br>';
-        foreach($pRegistro->getOcorrencia() as $row )
+        try
         {
-            echo $row->getCodigo()  . '<br>';
+            echo $pProf->getCodProfFuncao() . '<br>';
+            echo $pProf->getNome() . '<br>';
+            echo $pRegistro->getData()->format("d-m-Y") . '<br>';
+            echo $pRegistro->getEntradaManha() . '<br>';
+            echo $pRegistro->getSaidaManha() . '<br>';
+            echo $pRegistro->getEntradaTarde() . '<br>';
+            echo $pRegistro->getEntradaTarde() . '<br>';
+            // lista de ocorrências
+            foreach($pRegistro->getOcorrencia() as $row )
+            {
+                echo $row->getCodigo()  . '<br>';
+            }
+        }
+        catch(Exception $e)
+        {
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -143,7 +151,7 @@ class RegistroDao extends Dao
             $ObjInicio->modify("+1 day");
             $ret[] = $reg;
         }
-        return $ret;
+        return $ret; 
     }
 }
 ?>

@@ -32,7 +32,10 @@ class OcorrenciaDao extends Dao
         }
         return $oOcorrencia;
     }
-
+    public function Add(Ocorrencia $pOcorrencia, Profissional $pProfissional)
+    {
+        
+    }
     /**
      * M�todo getMotivo
      * retorna o motivo pelo qual n�o h� registro de frequencia para uma data

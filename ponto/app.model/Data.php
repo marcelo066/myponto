@@ -4,16 +4,16 @@ include_once ("FeriadoDao.php");
 
 abstract class Data {
     /**
-     * M�todo getDiaSemana
+     * Método getDiaSemana
      * retorna o dia da semana de uma data
      * @param DateTime $data
      * @return String
      */
     public static function getDiaSemana(DateTime $data) {
         $ds = $data->format("w");
-        $dias_semana = array('Domingo', 'Segunda-Feira', 'Terça-Feira',
+        $dias_semana = array('Domingo', 'Segunda-Feira', 'Ter&ccedil;a-Feira',
                             'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira',
-                            'Sábado');
+                            'S&aacute;bado');
         return $dias_semana[$ds];
     }
 

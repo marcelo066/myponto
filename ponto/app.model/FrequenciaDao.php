@@ -2,7 +2,7 @@
 
 class FrequenciaDao 
 {
-    public function obterFrequencia($pCodProfFuncao, DateTime $pInicio, DateTime $pFim)
+    public function get($pCodProfFuncao, DateTime $pInicio, DateTime $pFim)
     {
         // instancia objetos que comp�e a frequencia
         $freq = new Frequencia();
