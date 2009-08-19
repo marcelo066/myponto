@@ -4,7 +4,9 @@
     if(!Sessao::getValue('logado'))
     {
         header("location:./?_task=Login&_action=login");
-    }   else{
+   /* }   else{
         echo "Expira em: " . session_cache_expire();
+    
+    */
     }
 ?>

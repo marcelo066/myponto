@@ -1,0 +1,30 @@
+{TOPO}<script src="../resources/jmaki.js"></script>
+<script src="../resources/wfactory.js"></script>
+
+{TITULO}
+<form id="form1" name="form1" method="post" action="?_task=Apropriacao&_action=incluir">
+    <input type="text" name="txtCC" id="txtCC" value="0000" size="4" onkeyup="checkCC();" />
+    <div id="desccc"></div>
+    <input type="text" name="txtValor" id="txtValor" value="0,00" size="5" />
+    <input name="btnOk" value="Ok" class="button" type="submit" />
+    <div id="mensagem">{MSG}</div>
+</form>
+<br />    
+    <table  border="1" width="100%">
+        <tbody>
+            <tr>
+                <td align="center">CC</td>
+                <td align="center">VALOR </td>
+                <td align="center">EXCLUIR</td>
+            </tr>
+            <!-- BEGIN BLOCK_APROPRIACAO -->
+            <tr>
+                <td align="center">{CC}</td>
+                <td align="center">{VALOR}</td>
+                <td align="center"><a href="{LINK}">excluir</a></td>
+            </tr>
+            <!-- END BLOCK_APROPRIACAO -->
+        </tbody>
+    </table>   
+
+{FOOTER}
