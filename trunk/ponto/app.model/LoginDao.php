@@ -13,7 +13,7 @@ class LoginDao extends Dao
         parent::desconectar();
     }
 
-    public function fazerLogin($pUsuario){
+    public function login($pUsuario){
         $sql = "SELECT pf.codigo
             FROM profs_pwd pp
             INNER JOIN profs_funcoes pf ON (pp.cod_prof_Funcao = pf.codigo)

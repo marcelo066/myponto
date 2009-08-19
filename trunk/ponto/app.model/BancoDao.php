@@ -12,9 +12,9 @@ class BancoDao extends Dao
         parent::desconectar();
     }
 
-    function getBancoDeHoras($pCodProfFuncao)
+    function get($pCodProfFuncao)
     {
-        // horista n�o possui banco de horas
+        // horista não possui banco de horas
         $oProfD = new ProfissionalDao();
         $oProf = $oProfD->getProfissional($pCodProfFuncao);
         if($oProf->getHorista())

@@ -14,7 +14,7 @@ class FrequenciaController extends Controller
         $this->view = new View("frequencia.html");
     }
 
-    public function exibirFrequencia()
+    public function show()
     {
         // define per�odo da frequencia
         // obtendo objeto armazenado na sess�o        
@@ -23,7 +23,7 @@ class FrequenciaController extends Controller
         $vInicio = new DateTime($oPeriodo->getInicio());
         $vFim = new DateTime($oPeriodo->getFim());                     
         $oProf = Sessao::getObject("oProf");
-        $oFreq = $this->model->obterFrequencia($oProf->getCodProfFuncao(), $vInicio, $vFim);
+        $oFreq = $this->model->get($oProf->getCodProfFuncao(), $vInicio, $vFim);
 
         /************************
         * Preenche View

@@ -11,7 +11,7 @@ class LoginController extends Controller {
         $this->view = new View("login.html");
     }
   
-    public function fazerLogin()
+    public function login()
     {
         // Valida usuario e sanha
         if (!$_POST['matricula'] && !$_POST['senha'])
@@ -24,16 +24,16 @@ class LoginController extends Controller {
             $oUser = new Usuario();
             $oUser->setLogin($_POST['matricula']);
             $oUser->setSenha($_POST['senha']);
-            $varCodProfFuncao = $this->model->fazerLogin($oUser);
+            $varCodProfFuncao = $this->model->login($oUser);
             if(!$varCodProfFuncao)
             {
-                // Redireciona para a p�gina de login, com status de erro
+                // Redireciona para a página de login, com status de erro
                 $this->view->setValue("MSG", "Usuário ou senha Inválidos");
                 $this->view->show();
             }
             else
             {
-                // Registra Sess�o
+                // Registra Sessão
                 new Sessao();
                 if(!Sessao::getValue('logado'))
                 {
@@ -63,7 +63,7 @@ class LoginController extends Controller {
         //return false;
     }
 
-    public function fazerLogout(){
+    public function Logout(){
         // Libera sess�o
         new Sessao();
         Sessao::free();
