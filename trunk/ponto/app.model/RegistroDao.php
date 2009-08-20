@@ -57,32 +57,36 @@ class RegistroDao extends Dao
 
     public function getByDate(Profissional $pProf, DateTime $pData)
     {
-        $sql = "SELECT hf.data, DAYNAME(hf.data) as dia, hf.entrada, hf.almoco,
+        try{
+            $sql = "SELECT hf.data, DAYNAME(hf.data) as dia, hf.entrada, hf.almoco,
                         hf.retorno, hf.saida, hf.total, hf.h_50, hf.h_100
                     FROM hor_frequencia hf
                     WHERE hf.cod_prof_funcao = " . $pProf->getCodProfFuncao() . "
-                    AND hf.data = '" . $pData->format("Y-m-d") . "';";
-        $row = parent::obterRecordSet($sql);
-        if($row)
-        {
-            $oRegistro = new Registro;
-            $oRegistro->setData($row[0]["data"]);
-            $oRegistro->setDiaDaSemana(Data::getTipoDia(new DateTime($row[0]["data"])));
-            $oRegistro->setEntradaManha($row[0]["entrada"]);
-            $oRegistro->setSaidaManha($row[0]["almoco"]);
-            $oRegistro->setEntradaTarde($row[0]["retorno"]);
-            $oRegistro->setSaidaTarde($row[0]["saida"]);
-            $oRegistro->setEntradaNoite('-');
-            $oRegistro->setSaidaNoite('-');
-            $oRegistro->setTotal($row[0]["total"]);
-            $oRegistro->setExtra50($row[0]["h_50"]);
-            $oRegistro->setExtra100($row[0]["h_100"]);
-            return $oRegistro;
+                    AND hf.data = '" . $pData->format("Y-m-d") . "';";          
+            $row = parent::obterRecordSet($sql);
+            if($row)
+            {
+                $oRegistro = new Registro;
+                $oRegistro->setData($row[0]["data"]);
+                $oRegistro->setDiaDaSemana(Data::getTipoDia(new DateTime($row[0]["data"])));
+                $oRegistro->setEntradaManha($row[0]["entrada"]);
+                $oRegistro->setSaidaManha($row[0]["almoco"]);
+                $oRegistro->setEntradaTarde($row[0]["retorno"]);
+                $oRegistro->setSaidaTarde($row[0]["saida"]);
+                $oRegistro->setEntradaNoite('-');
+                $oRegistro->setSaidaNoite('-');
+                $oRegistro->setTotal($row[0]["total"]);
+                $oRegistro->setExtra50($row[0]["h_50"]);
+                $oRegistro->setExtra100($row[0]["h_100"]);
+                return $oRegistro;
+            }
+            else
+            {
+                return false;
+            }        
+        }catch(Exception $e){
+            throw new Exception($e->getMessage());
         }
-        else
-        {
-            return false;
-        }        
     }
 
     public function getByRange($pCodProfFuncao, DateTime $pInicio, DateTime $pFim)
