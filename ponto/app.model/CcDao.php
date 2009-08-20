@@ -19,5 +19,12 @@ class CcDao extends Dao
         $rs = parent::obterRecordSet($sql);
         return $rs[0]["nome"];
     }
+
+    function existe($cc)
+    {
+        $sql = "SELECT COUNT(*) FROM cc WHERE cc = $cc;";
+        $rs = parent::executarScalar($sql);
+        return $rs > 0;
+    }
 }
 ?>

@@ -9,7 +9,8 @@ abstract class Dao {
  */
     protected function conectar(){
         try{
-            $this->conn = new PDO('mysql:unix_socket=/tmp/mysql.sock;host=127.0.0.1;port=3306;dbname=new_ufc','root','h4ck3r');
+            //$this->conn = new PDO('mysql:unix_socket=/tmp/mysql.sock;host=127.0.0.1;port=3306;dbname=new_ufc','root','h4ck3r');
+            $this->conn = new PDO('mysql:unix_socket=/tmp/mysql.sock;host=127.0.0.1;port=3306;dbname=new_ufc','root','hack3r');
             return true;
         }catch(PDOException $e){
             throw new Exception($e->getMessage());

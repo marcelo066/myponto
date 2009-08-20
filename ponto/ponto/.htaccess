@@ -1,8 +1,0 @@
-AddDefaultCharset	UTF-8
-#Options +FollowSymlinks
-RewriteEngine on
-#RewriteCond %{SCRIPT_FILENAME} !-f
-#RewriteCond %{SCRIPT_FILENAME} !-d
-RewriteRule !\.(gif|jpg|png|css|js|swf)$ index.php
-#php_flag magic_quotes_gpc off
-#php_flag register_globals off
