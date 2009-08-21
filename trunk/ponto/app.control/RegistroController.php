@@ -56,11 +56,11 @@ class RegistroController
         $oRegistro->addOcorrencia($oOcorrencia2);
         $oRegistro->addOcorrencia($oOcorrencia3);
         $oRegistro->addOcorrencia($oOcorrencia4);
-        $oRegistro->setData($_POST["txtData"]);
+        $oRegistro->setData($_POST["txtData"]);     
         $oRegistro->setEntradaManha($_POST["txtEntrada"]);
         $oRegistro->setSaidaManha($_POST["txtAlmoco"]);
         $oRegistro->setEntradaTarde($_POST["txtRetorno"]);
-        $oRegistro->setEntradaNoite($_POST["txtSaida"]);
+        $oRegistro->setEntradaNoite($_POST["txtSaida"]);      
 
         // instancia profissional
         $oProf = new Profissional;
@@ -69,13 +69,6 @@ class RegistroController
         // vai para o banco
         $this->model->update($oProf, $oRegistro);
 
-        // destroi objetos
-        unset($oOcorrencia1);
-        unset($oOcorrencia2);
-        unset($oOcorrencia3);
-        unset($oOcorrencia4);
-        unset($oRegistro);
-        unset($oProf);
     }
 
     public function show()
@@ -115,6 +108,7 @@ class RegistroController
                 $this->view->setValue("OPTSAI", "disabled");
                 $this->view->setValue("MSGSAI", " - " . $oRegistro->getSaidaTarde());
                 $this->view->setValue("OPTBTN", "disabled");
+                header( 'Location: ?_task=Apropriacao&_action=show' ) ;
             }
         }
         else
@@ -180,9 +174,11 @@ class RegistroController
         }
         catch(Exception $e)
         {
+            die($e->getMessage());
 
         }
 
     }
+
 }
 ?>

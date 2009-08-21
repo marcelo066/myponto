@@ -28,6 +28,7 @@ class RegistroDao extends Dao
                 . $pPonto->getHora() ."' WHERE data = '"
                 . $pPonto->getData()."' AND cod_prof_funcao = "
                 . $pProf->getCodProfFuncao() . ";";
+
         }      
         parent::executar($sql);
     }
@@ -36,6 +37,7 @@ class RegistroDao extends Dao
     {
         try
         {
+            /*
             echo $pProf->getCodProfFuncao() . '<br>';
             echo $pProf->getNome() . '<br>';
             echo $pRegistro->getData()->format("d-m-Y") . '<br>';
@@ -43,17 +45,43 @@ class RegistroDao extends Dao
             echo $pRegistro->getSaidaManha() . '<br>';
             echo $pRegistro->getEntradaTarde() . '<br>';
             echo $pRegistro->getEntradaTarde() . '<br>';
+            */
+
+            // a START time value
+            $start = $pRegistro->getEntradaManha();
+            // an END time value
+            $end   = $pRegistro->getSaidaManha();
+
+            // what is the time difference between $end and $start?
+            if( $diff =@ Data::get_time_difference($start, $end) )
+            {
+                
+                $d = strtotime($diff['hours'].":".$diff['minutes'].":".$diff['seconds']);                
+                echo strftime("%H:%M:%S",$d);
+                
+            }
+            else
+            {
+                echo "Horas: Error";
+            }
+
+
+
+
+/*
             // lista de ocorrências
             foreach($pRegistro->getOcorrencia() as $row )
             {
                 echo $row->getCodigo()  . '<br>';
-            }
+            }*/
         }
         catch(Exception $e)
         {
             throw new Exception($e->getMessage());
         }
     }
+
+
 
     public function getByDate(Profissional $pProf, DateTime $pData)
     {
