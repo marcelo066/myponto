@@ -56,9 +56,16 @@ class RegistroDao extends Dao
             if( $diff =@ Data::get_time_difference($start, $end) )
             {
                 
-                $d = strtotime($diff['hours'].":".$diff['minutes'].":".$diff['seconds']);                
-                echo strftime("%H:%M:%S",$d);
-                
+                //$d = strtotime($diff['hours'].":".$diff['minutes'].":".$diff['seconds']);
+                //echo strftime("%H:%M:%S",$d);
+                $h = $diff['hours'];
+                $m = $diff['minutes'];
+                $s = $diff['seconds'];
+
+                $r = $h + ($m/60);
+
+                echo($r);
+
             }
             else
             {
