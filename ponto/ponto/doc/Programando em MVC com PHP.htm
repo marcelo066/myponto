@@ -1,0 +1,625 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="pt" xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head>
+
+
+<title>Programando em MVC com PHP</title>
+<meta name="description" content="Muita gente me pergunta sobre a maneira que eu programo usando MVC com PHP. É claro que já existem vários frameworks que utilizam essa técnica no desenvolvimento PHP. Porém eu resolvi apresentar aqui o conceitual do que eu uso que pode ser de material....">
+<meta name="keywords" content="mvc, PHP, Programando, em, MVC, com, PHP">
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="pragma" content="no-cache">
+<meta name="title" content="htmlstaff.org">
+<meta name="url" content="http://www.htmlstaff.org">
+<meta name="copyright" content="Conteúdo sob licença Creative Commons 2.5">
+<meta name="language" content="pt-br">
+<meta name="rating" content="general">
+<meta name="robots" content="all">
+<meta name="revisit-after" content="1 days">
+<meta name="doc-class" content="Completed">
+<meta name="doc-rights" content="Public">
+<link rel="STYLESHEET" type="text/css" href="Programando%20em%20MVC%20com%20PHP_arquivos/components.css">
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" media="screen" href="css/components_ie.css"/><![endif]-->
+<link rel="STYLESHEET" type="text/css" href="Programando%20em%20MVC%20com%20PHP_arquivos/skeleton_default.css">
+ <link rel="stylesheet" href="Programando%20em%20MVC%20com%20PHP_arquivos/style_print.css" media="print" type="text/css"> <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.htmlstaff.org/rss.php">
+<script type="text/javascript">
+window.defaultStatus = "htmlstaff.org";
+</script>
+<script type="text/javascript">
+function IEHoverPseudo() {
+	var navItems = document.getElementById("menu").getElementsByTagName("li");
+
+	for(var i=0; i<navItems.length; i++) {
+		if(navItems[i].className == "sub_menu") {
+			navItems[i].onclick=function() { if (this.className=="over") { this.className = "sub_menu"; } else { this.className = "over"; } }
+			//navItems[i].onmouseover=function() { this.className = "over"; }
+			//navItems[i].onmouseout=function() { this.className = "sub_menu"; }
+		}
+	}
+}
+
+window.onload = IEHoverPseudo;
+</script><script src="Programando%20em%20MVC%20com%20PHP_arquivos/script.jsp" charset="ISO-8859-1" type="text/javascript"></script><script src="Programando%20em%20MVC%20com%20PHP_arquivos/mostra.jsp" charset="ISO-8859-1" type="text/javascript"></script><script src="Programando%20em%20MVC%20com%20PHP_arquivos/mostra_002.jsp" charset="ISO-8859-1" type="text/javascript"></script><script src="Programando%20em%20MVC%20com%20PHP_arquivos/mostra_003.jsp" charset="ISO-8859-1" type="text/javascript"></script><script src="Programando%20em%20MVC%20com%20PHP_arquivos/mostraPx.jsp" charset="ISO-8859-1" type="text/javascript"></script>
+<link href="Programando%20em%20MVC%20com%20PHP_arquivos/hw_csspadrao_0_v2.css" type="text/css" rel="stylesheet"></head><body>
+<div id="container">
+<div style="text-align: center;"> 
+<iframe src="Programando%20em%20MVC%20com%20PHP_arquivos/barra.htm" marginwidth="0" marginheight="0" style="margin-left: 4px;" scrolling="no" width="1004" frameborder="0" height="29"></iframe>
+</div><div id="page"><!-- header --><div id="header"><div class="header"><!-- logo --><h1 class="logo"><a href="http://www.htmlstaff.org/"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/logo.gif" alt="htmlstaff.org" title="htmlstaff.org - Versão beta - Há 7 anos (2001-2008) no ar!"></a></h1><!-- fim logo --><!-- componente bannerHeader --><div class="bannerHeader"><script type="text/javascript"><!--
+google_ad_client = "pub-6654694818223278";
+/* 468x60, criado 05/07/08 */
+google_ad_slot = "3936295862";
+google_ad_width = 468;
+google_ad_height = 60;
+//-->
+</script>
+<script type="text/javascript" src="Programando%20em%20MVC%20com%20PHP_arquivos/show_ads.js">
+</script><script src="Programando%20em%20MVC%20com%20PHP_arquivos/test_domain.js"></script><script>window.google_render_ad();</script><iframe name="google_ads_frame" src="Programando%20em%20MVC%20com%20PHP_arquivos/ads.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" width="468" frameborder="0" height="60"></iframe>
+</div><!-- fim componente bannerHeader --><!-- componente search -->
+<script type="text/javascript">
+function validar_18() {
+<!--
+	var buscar = document.form_busca_interna.buscar.value;
+	if(buscar=="") {
+		alert("É necessário o preenchimento deste campo.");
+		document.form_busca_interna.buscar.focus();
+		return false;
+	}
+	if(document.form_busca_interna.buscar.value.length < 3) {
+		alert("A sua busca deve conter pelo menos 3 caracteres.");
+		document.form_busca_interna.buscar.focus();
+		return false;
+	}
+}
+//-->
+</script><form action="buscar.php" id="form_busca_interna" name="form_busca_interna" method="post" onsubmit="return validar_18();"><fieldset class="search"><label>Busca:</label><input name="buscar" maxlength="30" value="Procurar por..." onfocus="if(this.value=='Procurar por...') this.value='';" type="text"><input name="radio_escolhido" value="1" type="hidden"><button name="submit" type="submit"><span>ok</span></button></fieldset></form><!-- fim componente search --></div></div><!-- fim header --><!-- content --><div id="content"><!-- main --><div id="main"><div id="area1"><!-- componente breadcrumbs --><div class="breadcrumbs"><p>Você está em: <a href="http://www.htmlstaff.org/">Home</a> &gt; <a href="http://www.htmlstaff.org/secao.php?id=18">PHP</a> &gt; <strong>Visualizando artigo</strong></p><span><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconBrasil.gif" alt="Brasil!" title="Brasileiro com orgulho!"></span></div><!-- fim componente breadcrumbs --><!-- mainContent --><div id="mainContent" class="principal"><h1 class="titulo">Programando em MVC com PHP</h1><br>Autor/fonte: Daniel Ribeiro<br>E-mail/Url:  <a href="http://www.phpbrasil.com/articles/article.php/id/1509" title="Visualizar a fonte original deste artigo" target="_blank">http://www.phpbrasil.com/articles/article.php/id/1509</a><br>Tags: [ <a href="http://www.htmlstaff.org/buscar.php?tags=mvc" title="Listar todos itens relacionados a mvc">mvc</a> ] <br><br><div id="null">
+<script type="text/javascript"><!--
+google_ad_client = "pub-6654694818223278";
+/* 336x280, criado 05/07/08 */
+google_ad_slot = "5843517607";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript" src="Programando%20em%20MVC%20com%20PHP_arquivos/show_ads.js">
+</script><script>window.google_render_ad();</script><iframe name="google_ads_frame" src="Programando%20em%20MVC%20com%20PHP_arquivos/ads_002.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" width="336" frameborder="0" height="280"></iframe>
+</div><br>
+<div id="null" align="center">[ <a href="http://www.htmlstaff.org/indicar.php?id=10792">Indicar a um amigo</a> ] [ <a href="http://translate.google.com/translate?hl=en&amp;sl=pt&amp;u=http://www.htmlstaff.org/ver.php?id=10792">Translate to english</a> ] [ <a href="http://www.htmlstaff.org/imprimir.php?id=10792" rel="nofollow" target="_blank">Imprimir</a> ]</div><br><br><div id="HOTWordsTxt"><div class="artigo">Muita
+gente me pergunta sobre a maneira que eu programo usando MVC com PHP. É
+claro que já existem vários frameworks que utilizam essa técnica no
+desenvolvimento PHP. Porém eu resolvi apresentar aqui o conceitual do
+que eu uso que pode ser de material de auxílio para outros
+programadores também.<br>
+<br>
+Para se ter uma ideia, vamos partir para o modelo de programação
+orientada a objetos. Programar em MVC nada mais é do que programar
+também usando orientação a objetos.<br>
+<br>
+Vamos pensar então no conceito de objeto. Um exemplo, um veículo, onde teremos a classe de veículo e seus métodos:<br>
+<br>
+<pre>&lt;?php
+class Veiculo
+{
+    /**
+     * Qualquer veículo tem os seus métodos padrões:
+     */
+    public function andar()
+    {
+        // ... código aqui
+    }
+
+    public function parar()
+    {
+        // ... código aqui
+    }
+}
+?&gt;
+</pre>
+<br>
+Agora digamos que temos vários veículos, temos carro, moto, bicicleta e
+cada um terá eventos diferentes um do outro. Para isso criamos novas
+classes extendendo a classe Veiculo no qual as novas classes irão
+herdar os métodos e propriedades da classe Veiculo:<br>
+<br>
+<pre>&lt;?php
+class Bicicleta extends Veiculo
+{
+    // A bicicleta por sua vez contem propriedades
+    public $rodas;
+
+    // E tbm tem um metodo construtor
+    public function __construct()
+    {
+        $this-&gt;rodas = 2;
+    }
+
+    // E tbm seus metodos
+    public function trocarMarcha()
+    {
+        // ... código aqui
+    }
+}
+?&gt;
+</pre>
+<br>
+Desta forma quando instanciarmos o objeto Bicicleta, podemos utilizar
+os métodos de Veiculo, pois bicicleta é uma extensão de veiculo.
+Exemplo:<br>
+<br>
+<pre>&lt;?php
+$meuVeiculo = new Bicicleta();
+$meuVeiculo-&gt;trocarMarcha();
+$meuVeiculo-&gt;andar();
+$meuVeiculo-&gt;parar();
+?&gt;
+</pre>
+<br>
+Agora vamos construir outra classe (Automovel) que instancia veiculo<br>
+<br>
+<pre>&lt;?php
+class Automovel extends Veiculo
+{
+    public function ligar()
+    {
+        // ... código aqui
+    }
+
+    public function desligar()
+    {
+        // ... código aqui
+    }
+}
+?&gt;
+</pre>
+<br>
+Desta forma quando instanciarmos o objeto Automovel, podemos utilizar
+os métodos de Veiculo, pois automóvel é uma extensão de veiculo.
+Exemplo:<br>
+<br>
+<pre>&lt;?php
+$meuVeiculo = new Automovel();
+$meuVeiculo-&gt;ligar();
+$meuVeiculo-&gt;andar();
+$meuVeiculo-&gt;parar();
+$meuVeiculo-&gt;desligar();
+?&gt;
+</pre>
+<br>
+Percebeu que desta forma, se eu quiser mudar o comportamento de um
+Veiculo (independente do que ele seja) basta modificar a classe
+Veiculo, que todos os tipos de veiculos serão alterados (pois eles
+extendem a classe Veiculo). Isso facilita muito na manutenção do código.<br>
+<br>
+Pois bem, onde queremos chegar com tudo isso? Veja na próxima página como implementamos isso num sistema MVC.<br>
+<br>
+Uma aplicação MVC nada mais é do que classes principais de:<br>
+<br>
+<ul class="lista"><li>M - Model - Utilizada como o negócio da sua
+aplicação, tudo o que for utilizado para armazenamento de dados ou
+obtenção dos dados da aplicação);</li><li>V - View - Utilizada para exibir para o usuário tudo o que a aplicação produz;</li><li>C - Controller - Utilizada para realizar o controle integrando o Model e View (aqui é que controlamos o fluxo da aplicação).</li></ul><br>
+<br>
+Bem se sabemos que o Model Interage com o banco de dados, entao criamos
+uma classe model principal com os métodos principais que ele tem.<br>
+<br>
+Obs.: O exemplo que estou colocando aqui é só um mero exemplo, para
+você ter uma idéia, é claro que uma classe model existem mais métodos,
+dependendo da sua aplicação.<br>
+<br>
+<pre>&lt;?php
+class Model
+{
+    public function conectar()
+    {
+        // codigo pra conectar ao banco de dados
+    }
+
+    public function query()
+    {
+        // codigo pra executar uma query
+    }
+
+    public function desconectar()
+    {
+        // codigo pra desconectar do banco
+    }
+}
+?&gt;
+</pre>
+<br>
+Bem agora temos a classe View:<br>
+<br>
+<pre>&lt;?php
+class View
+{
+    public function mostrarNaTela($template)
+    {
+        // mostra na tela usando o template escolhido,
+        // aqui vem o codigo pra ele dar include em 
+        // algum arquivo html modificando os valores 
+        // que ja estao atribuidos a View e etc...
+    }
+
+    public function atribuirValor($var, $valor)
+    {
+        // codigo pra atribuir valores na view
+    }
+}
+?&gt;
+</pre>
+<br>
+Se você perceber, o Smarty segue um critério semelhante, não sei se você já usou Smarty, mas ele funciona mais ou menos assim:<br>
+<br>
+<pre>&lt;?php
+$smarty = new Smarty();
+// em nossa View o metodo atribuirValor()
+$smarty-&gt;assign('var1', $var1);
+$smarty-&gt;assign('var2', $var1);
+// em nossa View o metodo mostrarNaTela()
+$smarty-&gt;display('template.tpl');
+?&gt;
+</pre>
+<br>
+Já que temos métodos semelhantes, podemos então aplicar em nossa view
+todos os métodos do Smarty, para não ter que se preocupar em trabalhar
+com manipulação de templates. Ficaria mais ou menos assim a nossa view:<br>
+<br>
+<pre>&lt;?php
+class View
+{
+    // declaro a propriedae Smarty aqui dentro da nossa 
+    // view (veja que eh uma propriedade private, pois 
+    // somente a classe View pode acessar ela
+    private $smarty; 
+
+    public function __construct()
+    {
+        // quando entao for chamado o contrutor da 
+        // classe, ele instancia o objeto Smarty
+        $this-&gt;smarty = new Smarty();
+    }
+
+    public function mostrarNaTela($template)
+    {
+        // chama o metodo do smarty pra exibir o 
+        // template na tela
+        $this-&gt;smarty-&gt;display($template); 
+    }
+
+    public function atribuirValor($var, $valor)
+    {
+        // chama o metodo do smarty para atribuir 
+        // o valor a variavel
+        $this-&gt;smarty-&gt;assign($var, $valor);
+    }
+}
+?&gt;
+</pre>
+<br>
+Talvez você esteja se perguntando "Então se eu vou usar o Smarty,
+porque então eu tenho que criar uma View? E usar os métodos do Smarty
+dentro da view? Não poderia usar diretamente o Smarty?"<br>
+<br>
+Poderia, mas digamos que você posteriormente não queira mais utilizar o
+Smarty, e sim outro gerenciador de templates. Você teria nesse caso que
+mexer em sua aplicação inteira, não é? Fazendo uma classe dessa forma,
+você só mexe na classe View, e programa a classe View pra usar outro
+gerenciador de templates.<br>
+<br>
+Passamos para a classe Controller, que contém os métodos básicos que
+farão a sua aplicação funcionar. Até mesmo métodos genéricos que você
+utiliza dentro da sua aplicação.<br>
+<br>
+<pre>&lt;?php
+class Controller
+{
+    public function redirect($url)
+    {
+        header('Location: ' . $url);
+    }
+
+    public function error($error)
+    {
+        // se algum erro acontecer, chamo esse metodo,
+        // que vai fazer alguma coisa (mandar um email,
+        // gravar log, etc )
+        $this-&gt;log($error);
+    }
+
+    public function log($mensagem)
+    {
+        // grava uma menagem de log em algum arquivo 
+        // qualquer definido aqui
+    }
+}
+?&gt;
+</pre>
+<br>
+Resumindo, a classe Controller irá utilizar métodos que são genéricos
+para todos os módulos de sua aplicação. Agora que já temos o Model,
+View e Controller, vamos criar os módulos de nossa aplicação usando MVC.<br>
+<br>
+Veremos agora como criar os módulos de nossa aplicação extendendo as classes MVC que acabamos de criar.<br>
+<br>
+Um dos módulos é o módulo de login, então teremos o loginModel,
+loginView, loginController e cada um desses serão classes que
+extenderão suas respectivas "classes mães". Exemplo:<br>
+<br>
+<pre>&lt;?php
+class loginModel extends Model
+{
+    /**
+     * Um metodo para verficiar a senha do usuario
+     *
+     * @param string $usuario
+     * @param string $senha
+     * @return bool
+     */
+    public function verificarSenhaUsuario($usuario, $senha)
+    {
+        $this-&gt;conectar();
+        $sql = "SELECT * FROM  <a href="#" onclick="hwClick17292489681410(1081617203);return false;" style="border-bottom: 1px dotted; color: rgb(255, 0, 0); text-decoration: underline;" onmouseover="hw17292489681410(event, this, '1081617203'); this.style.cursor='hand'; this.style.textDecoration='underline'; this.style.borderBottom='solid';" onmouseout="hideMaybe(event, this); this.style.cursor='hand'; this.style.textDecoration='underline'; this.style.borderBottom='dotted 1px'; " oncontextmenu="return false;">usuarios</a> WHERE usuario = $usuario AND senha = $senha";
+        $resultado = $this-&gt;query($sql);
+        $this-&gt;desconectar();
+        return $resultado;
+    }
+}
+?&gt;
+</pre>
+<br>
+A classe de View do login, além de ter os métodos herdados do View principal, também tem seus próprios métodos:<br>
+<br>
+<pre>&lt;?php
+class loginView extends View
+{
+    /**
+     * Exibe a tela de login
+     *
+     */
+    public function exibirTelaLogin()
+    {
+        $this-&gt;mostrarNaTela('login.tpl');
+    }
+
+    /**
+     * Exibe a tela de erro
+     *
+     */
+    public function exibirTelaErro()
+    {
+        $this-&gt;mostrarNaTela('erro.tpl');
+    }
+
+    public function exibirTelaLogado()
+    {
+        $this-&gt;mostrarNaTela('logado.tpl');
+    }
+}
+?&gt;
+</pre>
+<br>
+Agora sim iremos para a classe do controlador, que irá interagir com loginModel e loginView:<br>
+<br>
+<pre>&lt;?php
+class loginController extends Controller
+{
+    // o loginController vai agregar loginModel e 
+    // loginView entao criamos esses objetos aqui
+
+    /**
+     * @var loginModel
+     */
+    private $model;
+
+    /**
+     * @var loginView
+     */
+    private $view;
+
+    public function __construct()
+    {
+        // instanciamos os objetos
+        $this-&gt;model = new loginModel();
+        $this-&gt;view = new loginView();
+    }
+
+    public function telaLogin()
+    {
+        // o metodo contrutor ja chama a view do 
+        // login pra exibir a tela de login
+        $this-&gt;view-&gt;exibirTelaLogin();
+    }
+
+    public function fazerLogin()
+    {
+        // tenta ver se o usuario colocou a senha certa
+        if ($this-&gt;model-&gt;verificarSenhaUsuario($_POST['usuario'], $_POST['senha'])) {
+            $this-&gt;gravaSessao();
+            $this-&gt;log('usuario logou');
+            $this-&gt;view-&gt;exibirTelaLogado();
+        } else {
+            $this-&gt;log('usuario tentou logar mas nao conseguiu');
+            $this-&gt;view-&gt;exibirTelaErro();
+        }
+    }
+
+    /**
+     * Esse metodo é private, significando que 
+     * so pode ser chamado dentro da classe
+     */
+    private function gravaSessao()
+    {
+        // grava a sessao usando session ou cookie
+    }
+
+    /**
+     * Esse metodo é private, significando que
+     * so podem ser chamando dentro da classe
+     */
+    private function apagaSessao()
+    {
+        // limpa a sessao ou cookie
+    }
+}
+?&gt;
+</pre>
+<br>
+Agora que já temos o nosso controlador loginController, temos que fazer
+com que ele seja instanciado e chamado pelo usuário, para isso teremos
+um arquivo de login onde irá fazer a instância do nosso controlador do
+login.<br>
+<br>
+Algo como login.php, este arquivo será chamado pelo browser, onde fará a requisição da sua classe.<br>
+<br>
+<pre>&lt;?php
+$objLogin = new loginController();
+
+/*
+verifica que metodo o browser esta chamando, 
+se nao chamar nenhum metodo, exibo a tela de login
+Desta forma se for chamado a url
+http://www.seusite.com.br/login.php
+ele vai chamar o metodo padrao telaLogin
+*/
+
+if (!$_REQUEST['action']) {
+    $_REQUEST['action'] = 'telaLogin';
+}
+
+// agora eu executo o metodo passado via url
+eval('$objLogin-&gt;' . $_REQUEST['action']);
+?&gt;
+</pre>
+<br>
+Pensando dessa maneira, você terá que fazer um arquivo para cada módulo
+do seu sistema, se o seu sistema tiver vários módulos, então terá
+vários arquivos:<br>
+<br>
+<pre>login.php
+usuarios.php (módulo de controle de usuários)
+produtos.php (módulo de controle de produtos)
+...
+</pre>
+<br>
+Se formos ver, todos os  <a href="#" onclick="hwClick10536398262410(1081617203);return false;" style="border-bottom: 1px dotted; color: rgb(255, 0, 0); text-decoration: underline;" onmouseover="hw10536398262410(event, this, '1081617203'); this.style.cursor='hand'; this.style.textDecoration='underline'; this.style.borderBottom='solid';" onmouseout="hideMaybe(event, this); this.style.cursor='hand'; this.style.textDecoration='underline'; this.style.borderBottom='dotted 1px'; " oncontextmenu="return false;">arquivos</a>
+que fazem as requisições de suas classes são semelhantes, entao porque
+não generalizar e fazer em um arquivo? Um script que pode ser usado
+para chamar qualquer módulo do sistema?<br>
+<br>
+<pre>&lt;?php
+// instancia o modulo
+eval('$instancia = new ' . $_REQUEST['modulo'] . 'Controller();');
+
+// define uma acao default
+if (!$_REQUEST['action']) {
+    // isso implica que todos os controllers 
+    // terao que ter um metodo chamado acaoPadrao
+    $_REQUEST['action'] = 'acaoPadrao';
+}
+
+// agora eu executo o metodo passado via url
+eval('$instancia' . $_REQUEST['action']);
+?&gt;
+</pre>
+<br>
+Agora você tem um arquivo que pode chamar qualquer módulo/método do seu sistema, bastando especificar na  <a href="#" onclick="hwClick9974840410(1081617203);return false;" style="border-bottom: 1px dotted; color: rgb(255, 0, 0); text-decoration: underline;" onmouseover="hw9974840410(event, this, '1081617203'); this.style.cursor='hand'; this.style.textDecoration='underline'; this.style.borderBottom='solid';" onmouseout="hideMaybe(event, this); this.style.cursor='hand'; this.style.textDecoration='underline'; this.style.borderBottom='dotted 1px'; " oncontextmenu="return false;">url</a>:<br>
+<br>
+<pre>http://www.seusite.com.br/main.php?module=login
+http://www.seusite.com.br/main.php?module=usuario
+http://www.seusite.com.br/main.php?module=produtos
+</pre>
+<br>
+O que eu escrevi aqui é mais para fim didático de como construir
+aplicações usando o modelo MVC, e é claro que depois de você pegar o
+conceito, você vai aperfeicoar o mesmo ainda mais de um jeito que
+funcione melhor para o seu caso específico.</div><br></div><div id="null"><br><script type="text/javascript"><!--
+google_ad_client = "pub-6654694818223278";
+/* 336x280, criado 05/07/08 */
+google_ad_slot = "5843517607";
+google_ad_width = 336;
+google_ad_height = 280;
+//-->
+</script>
+<script type="text/javascript" src="Programando%20em%20MVC%20com%20PHP_arquivos/show_ads.js">
+</script><script>window.google_render_ad();</script><iframe name="google_ads_frame" src="Programando%20em%20MVC%20com%20PHP_arquivos/ads_003.htm" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" width="336" frameborder="0" height="280"></iframe>
+<br><br><a href="http://www.linkk.com.br/submit.php?url=http://www.htmlstaff.org/ver.php?id=10792" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/img_linkk.gif" alt="Linkk" title="Recomende este artigo no Linkk!" border="0"></a> <a href="http://www.linkto.com.br/site.enviaNoticia.php?title=Programando%20em%20MVC%20com%20PHP&amp;url=http://www.htmlstaff.org/ver.php?id=10792" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/img_linkto.jpg" alt="Linkto" title="Recomende este artigo no Linkto!" border="0"></a> <a href="http://www.dihitt.com.br/submit.php?url=http://www.htmlstaff.org/ver.php?id=10792" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/img_dihitt.jpg" alt="Dihitt" title="Recomende este artigo no Dihitt!" border="0"></a> <a href="javascript:void(0);" onclick="void(window.open('http://del.icio.us/post?v=4&amp;noui&amp;jump=close&amp;url=' + encodeURIComponent('http://www.htmlstaff.org/ver.php?id=10792') + '&amp;title=' + encodeURIComponent('Programando em MVC com PHP') + '&amp;notes=' + encodeURIComponent('Muita gente me pergunta sobre a maneira que eu programo usando MVC com PHP. É claro que já existem vários frameworks que utilizam essa técnica no desenvolvimento PHP. Porém eu resolvi apresentar aqui o conceitual do que eu uso que pode ser de material...'), 'delicious','toolbar=no,width=700,height=400'))"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/img_del.png" alt="del.icio.us" title="Adicione este artigo nos seus favoritos no del.icio.us!" border="0"></a><br><br>Enviado por <a href="http://www.htmlstaff.org/membro.php?id=1">xKuRt</a> em 22/08/2007 às 11:34<br><br><hr><strong>Itens relacionados</strong><br><br><a href="http://www.htmlstaff.org/ver.php?id=6956">MVC em PHP com Smarty - Parte 2</a><br><a href="http://www.htmlstaff.org/ver.php?id=6955">MVC em PHP com Smarty - Parte 1</a><br><hr><strong>Avaliação</strong><br><br><p class="simpleText">Esta publicação ainda não foi avaliada!</p><br><form id="avaliar" name="avaliar"><fieldset><strong>Avaliar:</strong> <select size="1" name="avaliar"><option value="10" selected="selected">10</option><option value="7">7</option><option value="5">5</option><option value="3">3</option><option value="0">0</option></select> <button name="submit" type="submit" disabled="disabled">Ok!</button></fieldset></form><br><br><p class="simpleText">A avaliação de publicações é restrita a membros cadastrados e logados no nosso site.</p><br><hr><a name="comentarios"></a><strong>Comentários</strong><br><br><p class="simpleText">Este artigo ainda não foi comentado ou o(s) comentário(s) que foi(ram) enviado(s) a ele ainda não foi(ram) publicado(s).</p><br><p class="simpleText">Envio de comentário:</p><br><form id="form" name="form"><fieldset><textarea name="DfComentario" rows="8" cols="90" readonly="readonly">O envio de comentários é restrito a membros cadastrados e logados no nosso site.</textarea><br><br><button name="submit" type="submit" disabled="disabled">Enviar</button>&nbsp;&nbsp;<button name="reset" type="reset" disabled="disabled">Redefinir</button></fieldset></form></div>
+<br><!-- componente iconLinks --><ul class="iconLinks"><li><a href="http://www.apache.org/" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconLinkApache.gif" alt="Apache" title="Utilizamos e apoiamos o Apache"></a></li> <li><a href="http://www.php.net/" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconLinkPhp.gif" alt="PHP" title="Utilizamos e apoiamos o PHP"></a></li> <li><a href="http://www.mysql.com/" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconLinkMysql.gif" alt="MySQL" title="Utilizamos e apoiamos o MySQL"></a></li> <li><a href="http://creativecommons.org/licenses/by-nc-sa/2.5/br/deed.pt" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconLinkCc.gif" alt="Creative Commons" title="Conteúdo sob licença Creative Commons"></a></li> <li><a href="http://portuguese-83528966545.spampoison.com/" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconLinkSpamPoison.gif" alt="Spam Poison" title="Ajude a combater o spam! Clique aqui!"></a></li></ul><!-- fim componente iconLinks --><!-- componente pageCompiled --><p class="pageCompiled">Página compilada em 1.55 segundo(s)</p><!-- fim componente pageCompiled --></div><!-- fim mainContent --></div><div id="area3"><div class="area3"><!-- data --><p class="date">Sábado, 06 de Dezembro de 2008</p><!-- fim data --><!-- componente iconLinks --><ul class="iconLinks"><li><a href="http://www.htmlstaff.org/rss.php"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconLinkRss.gif" alt="RSS" title="Link do feed RSS com os últimos artigos postados no nosso site"></a></li> <li><a href="http://www.htmlstaff.org/atom.php"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/iconLinkAtom.gif" alt="Atom" title="Link do feed Atom com os últimos artigos postados no nosso site"></a></li></ul><!-- fim componente iconLinks --><!-- componente login --><div class="login"><h3 class="first">Área restrita</h3>
+<script type="text/javascript">
+function validar_10()
+{
+<!--
+var login = document.form_login.login.value
+if (login==""){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_login.login.focus()
+	return false
+	}
+var senha = document.form_login.senha.value
+if (senha==""){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_login.senha.focus()
+	return false
+	}
+}
+//-->
+</script><form action="checar_dados.php" id="form_login" name="form_login" method="post" onsubmit="return validar_10();"><fieldset><ul><li><label>Login</label><input name="login" value="" type="text"></li><li><label>Senha</label><input name="senha" type="password"></li><li class="button"><button name="submit" type="submit"><span>Logar</span></button></li></ul></fieldset></form><div class="signupForgetPass"><p>Não é membro ainda?</p><a href="http://www.htmlstaff.org/cadastrar_membro.php" class="signup">Cadastre-se e tenha acesso total ao nosso site!</a><a href="http://www.htmlstaff.org/lembrete_senha.php" class="forget">Não lembra o seu login/senha?</a><a href="http://www.htmlstaff.org/reenviar_chave_validacao.php" class="validation">Não recebeu a chave de validação?</a></div></div><!-- fim componente login --><!-- componente livros --><div><h3>Leitura recomendada</h3><p class="simpleText" align="center"><a href="http://www.submarino.com.br/books_productdetails.asp?Query=ProductPage&amp;ProdTypeId=1&amp;ProdId=191432&amp;franq=260173" title="Amplie seu conhecimento com este livro!" onmouseover="window.status='Amplie seu conhecimento com este livro!'; return true" target="_blank">UML na prática: Do problema ao sistema</a></p></div><!-- fim componente livros --><!-- componente lastNews --><div class="lastNews"><h3>Últimas publicações</h3><ul><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22888">CodeIgniter - Programando com segurança e velocidade</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22887">Animatubo Linux</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22886">Permitindo conexão ao banco no PostreSQL 8.3</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22885">Bloqueando o chat do Gmail via firewall (iptables) e proxy (Squid) no Linux</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22884">Wine: problemas com driver de som</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22883">Livros para os exames LPI (Linux Professional Institute) 101, 102, 201 e 202</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22882">Barack Obama adota licença Creative Commons</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22881">Proteja o seu código PHP com o PHP LockIt!</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22880">jQuery - A biblioteca do programador Javascript</a></li><li class="last"><a href="http://www.htmlstaff.org/ver.php?id=22879">Como está o meu DNS?</a></li></ul></div><!-- fim componente lastNews --><!-- componente tagCloud --><div class="tagCloud"><h3>Tag cloud</h3><ul><li><a href="http://www.htmlstaff.org/buscar.php?tags=iostat" style="font-size: 95%;" title="1 tags iostat">iostat</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=par%E1" style="font-size: 95%;" title="1 tags pará">pará</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=conisli" style="font-size: 95%;" title="1 tags conisli">conisli</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=nathan%20myhrvold" style="font-size: 95%;" title="1 tags nathan myhrvold">nathan myh...</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=martial%20arts%20capoeira" style="font-size: 95%;" title="1 tags martial arts capoeira">martial ar...</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=google%20bombing" style="font-size: 95%;" title="1 tags google bombing">google bom...</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=guestbook" style="font-size: 95%;" title="1 tags guestbook">guestbook</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=localtime" style="font-size: 95%;" title="1 tags localtime">localtime</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=jogo%20da%20forca" style="font-size: 95%;" title="1 tags jogo da forca">jogo da fo...</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=bagle" style="font-size: 95%;" title="1 tags bagle">bagle</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=xing" style="font-size: 95%;" title="1 tags xing">xing</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=legends%20of%20wrestlemania" style="font-size: 95%;" title="1 tags legends of wrestlemania">legends of...</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=label" style="font-size: 15%;" title="2 tags label">label</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=blogs" style="" title="73 tags blogs">blogs</a></li> <li><a href="http://www.htmlstaff.org/buscar.php?tags=olimp%EDadas%20pequim%202008" style="" title="13 tags olimpíadas pequim 2008">olimpíadas...</a></li> </ul></div><!-- fim componente tagCloud --><!-- componente topMembers --><div class="topMembers"><h3>Top 5 membros</h3><ul class="topList"><li><a href="http://www.htmlstaff.org/membro.php?id=1783">fredbcn</a><span>117 pts</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=20">Nando</a><span>93 pts</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=4142">fbinasco</a><span>75 pts</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=6869">shellenrox</a><span>74 pts</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=8">Anao</a><span>67 pts</span></li></ul></div><!-- fim componente lastNews --><!-- componente lastOnline --><div class="lastOnline"><h3>Últimos membros online</h3><ul class="topList"><li><a href="http://www.htmlstaff.org/membro.php?id=11746">kidveloso</a><span>em 06/12 às 14:01</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=1">xKuRt</a><span>em 06/12 às 11:22</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=11853">robertojrgm</a><span>em 06/12 às 11:11</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=11852">sinei</a><span>em 06/12 às 11:02</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=11851">gus7avo</a><span>em 06/12 às 11:01</span></li></ul></div><!-- fim componente lastOnline --><!-- componente lastNewMembers --><div class="lastNewMembers"><h3>Últimos membros cadastrados</h3><ul class="topList"><li><a href="http://www.htmlstaff.org/membro.php?id=11854">byanno</a><span>em 06/12</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=11853">robertojrgm</a><span>em 06/12</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=11852">sinei</a><span>em 06/12</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=11851">gus7avo</a><span>em 06/12</span></li><li><a href="http://www.htmlstaff.org/membro.php?id=11850">michelef</a><span>em 06/12</span></li></ul></div><!-- fim componente lastNewMembers --><!-- componente newsletter --><div class="newsletter"><h3>Newsletter</h3>
+<script type="text/javascript">
+function validar_11()
+{
+<!--
+var DfEmailNewsletter = document.form_newsletter.DfEmailNewsletter.value
+if (DfEmailNewsletter=="Seu@E-mail"){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_newsletter.DfEmailNewsletter.focus()
+	return false
+	}
+if (DfEmailNewsletter==""){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_newsletter.DfEmailNewsletter.focus()
+	return false
+	}
+if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.form_newsletter.DfEmailNewsletter.value))){
+	alert("É necessário o preenchimento de um endereço de e-mail válido.");
+	document.form_newsletter.DfEmailNewsletter.focus()
+	return false
+    }
+}
+//-->
+</script><form action="newsletter.php" id="form_newsletter" name="form_newsletter" method="post" onsubmit="return validar_11();"><fieldset><ul><li><label>Seu e-mail</label><input name="DfEmailNewsletter" maxlength="100" value="Seu@E-mail" onfocus="if(this.value=='Seu@E-mail') this.value='';" type="text"></li><li class="radio"><span class="first"><input name="newsletter" value="Cadastrar" checked="checked" type="radio"><label>Cadastrar</label></span><span class="last"><input name="newsletter" value="Descadastrar" type="radio"><label>Descadastrar</label></span></li><li class="button"><button name="submit" type="submit"><span>Enviar</span></button></li></ul></fieldset></form></div><!-- fim componente newsletter --><!-- componente indicar --><div class="newsletter"><h3>Indique o site para um amigo</h3>
+<script type="text/javascript">
+function validar_12()
+{
+<!--
+var DfSeuNomeIndicar = document.form_indicar.DfSeuNomeIndicar.value
+if (DfSeuNomeIndicar=="Digite seu nome"){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_indicar.DfSeuNomeIndicar.focus()
+	return false
+	}
+if (DfSeuNomeIndicar==""){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_indicar.DfSeuNomeIndicar.focus()
+	return false
+	}
+var DfEmailAmigoIndicar = document.form_indicar.DfEmailAmigoIndicar.value
+if (DfEmailAmigoIndicar=="Digite@E-mail_do_seu_amigo"){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_indicar.DfEmailAmigoIndicar.focus()
+	return false
+	}
+if (DfEmailAmigoIndicar==""){
+	alert("É necessário o preenchimento deste campo.");
+	document.form_indicar.DfEmailAmigoIndicar.focus()
+	return false
+	}
+if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(document.form_indicar.DfEmailAmigoIndicar.value))){
+	alert("É necessário o preenchimento de um endereço de e-mail válido.");
+	document.form_indicar.DfEmailAmigoIndicar.focus()
+	return false
+    }
+}
+//-->
+</script><form action="indicar_site.php" id="form_indicar" name="form_indicar" method="post" onsubmit="return validar_12();"><fieldset><ul><li><label>Seu nome</label><input name="DfSeuNomeIndicar" maxlength="100" value="Digite o seu nome" onfocus="if(this.value=='Digite o seu nome') this.value='';" type="text"></li><li><label>E-mail do seu amigo</label><input name="DfEmailAmigoIndicar" maxlength="100" value="E-mail do seu amigo" onfocus="if(this.value=='E-mail do seu amigo') this.value='';" type="text"></li><li class="button"><button name="submit" type="submit"><span>Enviar</span></button></li></ul></fieldset></form></div><!-- fim componente indicar --></div></div></div><!-- fim main --><!-- area2 --><div id="area2"><div class="area2"><!-- menu --><ul id="menu" class="menu"><li><a href="http://www.htmlstaff.org/index.php">Principal</a></li><li><a href="http://www.htmlstaff.org/cadastrar_membro.php">Cadastrar-se</a></li><li id="sub_menu" class="sub_menu"><a href="#">Desenvolvimento</a><ul class="subMenu"><li><a href="http://www.htmlstaff.org/secao.php?id=53">ActionScript</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=2">ASP/ASP.NET</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=3">Banco de dados</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=4">C/C++/C#</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=5">CGI</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=6">Clipper</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=7">Cold Fusion</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=8">CSS</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=9">Delphi</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=11">HTML/XHTML</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=12">IRC/IRC Scripting</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=13">Java</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=14">Javascript/AJAX/DHTML</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=15">JSP</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=23">Lua</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=25">Miscelânea ling., prog. etc</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=16">MSP</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=17">Perl</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=18">PHP</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=50">Python</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=49">Ruby/Ruby on Rails</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=19">SOAP</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=20">Visual Basic/VB.NET</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=21">VRML</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=22">WAP/WML</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=24">XML</a></li></ul></li><li id="sub_menu" class="sub_menu"><a href="#">Criação, soluções e etc</a><ul class="subMenu"><li><a href="http://www.htmlstaff.org/secao.php?id=26">CorelDRAW</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=27">Dreamweaver</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=28">E-business</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=29">Fireworks</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=30">Flash</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=31">FrontPage</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=32">FTP</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=34">Hardware</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=10">Illustrator</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=46">Miscelânea prog., sol. etc</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=35">Montagem e manutenção PCs</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=36">Photoshop</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=37">Redes</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=54">Retorno financeiro</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=38">Segurança</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=51">SEO/SEM</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=40">Web servers</a></li></ul></li><li id="sub_menu" class="sub_menu"><a href="#">Sistemas Operacionais</a><ul class="subMenu"><li><a href="http://www.htmlstaff.org/secao.php?id=33">GNU/Linux</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=52">Mac OS</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=39">Unix</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=41">Windows</a></li></ul></li><li id="sub_menu" class="sub_menu"><a href="#">Informe-se</a><ul class="subMenu"><li><a href="http://www.htmlstaff.org/secao.php?id=47">Entrevistas</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=48">Eventos e cursos</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=44">Jogos</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=1">Notas do site</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=42">Notícias</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=45">Off-topic</a></li><li><a href="http://www.htmlstaff.org/secao.php?id=43">Vírus e segurança</a></li></ul></li><li id="sub_menu" class="sub_menu"><a href="#">Cartilhas e manuais</a><ul class="subMenu"><li><a href="http://www.htmlstaff.org/cartilhaseguranca/cartilha-index.html" target="_blank">Cartilha de segurança</a></li><li><a href="http://www.htmlstaff.org/css2manual/cover.html" target="_blank">CSS manual</a></li><li><a href="http://www.htmlstaff.org/htmlmanual/cover.html" target="_blank">HTML manual</a></li><li><a href="http://www.htmlstaff.org/mysqlmanual/manual_toc.html" target="_blank">MySQL manual</a></li><li><a href="http://www.htmlstaff.org/postgresqlmanual/index.html" target="_blank">PostgreSQL manual</a></li><li><a href="http://www.htmlstaff.org/soapmanual/cover.htm" target="_blank">SOAP manual</a></li><li><a href="http://www.htmlstaff.org/xhtmlmanual/Cover.html" target="_blank">XHTML manual</a></li><li><a href="http://www.htmlstaff.org/xmlmanual/cover.htm" target="_blank">XML manual</a></li></ul></li><li id="sub_menu" class="sub_menu"><a href="#">Serviços</a><ul class="subMenu"><li><a href="http://www.htmlstaff.org/servico_criptografador.php">Criptografador</a></li><li><a href="http://www.htmlstaff.org/servicos/contador/" target="_blank">Contador</a></li><li><a href="http://www.htmlstaff.org/servico_gera_janela_popup.php">Gerar janela popup</a></li><li><a href="http://www.htmlstaff.org/servico_gera_meta_tags.php">Gerar meta tags</a></li><li><a href="http://www.htmlstaff.org/servicos/mural/" target="_blank">Mural</a></li><li><a href="http://www.htmlstaff.org/servicos/news/" target="_blank">News</a></li><li><a href="http://www.htmlstaff.org/servico_tabela_cores.php" target="_blank">Tabela de cores</a></li></ul></li><li id="sub_menu" class="sub_menu"><a href="#">Interatividade</a><ul class="subMenu"><li><a href="http://forum.htmlstaff.org/" target="_blank">Forum</a></li><li><a href="http://lista.htmlstaff.org/" target="_blank">Lista</a></li><li><a href="http://www.orkut.com/Community.aspx?cmm=113667" target="_blank">Orkut</a></li><li><a href="http://twitter.com/htmlstaff" target="_blank">Twitter</a></li></ul></li><li id="sub_menu" class="sub_menu"><a href="#">Parceiros</a><ul class="subMenu"><li><a href="http://www.codigofonte.net/" target="_blank">CodigoFonte.net</a></li><li><a href="http://www.tutoriaisclube.com/" target="_blank">Tutoriais Clube</a></li><li><a href="http://www.guanabara.info/" target="_blank">Guanabara.info</a></li><li><a href="http://www.phpmg.com/" target="_blank">PHP MG</a></li><li><a href="http://www.iesart.com/" target="_blank">iesart.com</a></li><li><a href="http://www.tutoriais.org/" target="_blank">Tutoriais.org</a></li><li><a href="http://www.vivaolinux.com.br/" target="_blank">Viva o Linux</a></li></ul></li></ul><br><br><div align="center"><a href="http://acaodacidadania.infolink.com.br/templates/acao/novo/publicacao/publicacao.asp?cod_Canal=3&amp;cod_Publicacao=1210" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/natalsemfome.jpg" alt="Natal sem Fome" title="Participe da campanha Natal sem Fome dos Sonhos 2008" border="0"></a><br><br><a href="http://www.digirati.com.br/marketing/?site=hostnet&amp;tipo=selo&amp;ref=htmlstaff.org" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/hostnet.gif" alt="Hostnet" title="Somos hospedados pela Hostnet" border="0"></a><br><br><a href="http://www.digirati.com.br/marketing/?site=imd&amp;tipo=selo&amp;ref=htmlstaff.org" target="_blank"><img src="Programando%20em%20MVC%20com%20PHP_arquivos/imd.gif" alt="IMD" title="Somos auditados pelo IMD" border="0"></a></div><!-- fim menu --></div></div><!-- fim area2 --></div><!-- fim content --><!-- footer --><div id="footer"><div class="footer"><p>Hospedado por Hospedado por <a href="http://www.hostnet.com.br/" rel="nofollow" target="_blank">Hostnet</a> <a href="http://www.hostnet.com.br/" rel="nofollow" target="_blank">Hospedagem de Sites</a>. Design: <a href="http://www.willpower.art.br/" rel="nofollow" target="_blank">willpower.art.br</a></p><p><span>2001-2008 htmlstaff.org. <a href="http://www.htmlstaff.org/ver.php?id=17210">Política de privacidade</a>. Conteúdo sob licença <a href="http://www.creativecommons.org/licenses/by-nc-sa/2.5/br/deed.pt" rel="nofollow" target="_blank">Creative Commons</a>.</span></p></div></div><!-- fim footer --></div></div><script src="Programando%20em%20MVC%20com%20PHP_arquivos/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript" language="JavaScript">
+_uacct = "UA-742902-1";
+urchinTracker();
+</script>
+<script src="Programando%20em%20MVC%20com%20PHP_arquivos/show.jsp"></script><div style="z-index: 10000; cursor: move; position: absolute; visibility: hidden; display: none; width: 0pt;" id="HOTWordsTitle"><div id="HOTWordsTitleText"></div></div>
+</body></html>

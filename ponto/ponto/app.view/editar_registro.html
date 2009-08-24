@@ -1,0 +1,113 @@
+{TOPO}
+<div id="caixa" style="width: 400px; margin-left: 30%;">
+    <div id="barraTitulo">
+        <div id="barraTituloTexto">Ajustar Frequencia</div>
+    </div>
+    <div id="formulario">
+        <form id="form1" name="form1" method="post" action="?_task=Registro&amp;_action=update">
+            <table style="border: 1px solid green; width: 100%;">
+                <tbody>
+                    <tr>
+                        <td rowspan="2" width="20%">
+                            <div align="center">Registro</div>
+                        </td>
+                        <td width="30%"><label>Data</label></td>
+                        <td width="10%"><input name="txtData" class="text" id="txtEntrada" value="{DATA}" readonly="readonly" type="text"></td>
+                        <td width="40%">&nbsp;</td>
+                        <td style="vertical-align: top;"><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Dia da Semana </td>
+                        <td>{DIASEMANA}</td>
+                        <td>&nbsp;</td>
+                        <td style="vertical-align: top;"><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">
+                            <div align="center">1&ordm; Turno</div>
+                        </td>
+                        <td>Entrada</td>
+                        <td><input name="txtEntrada" class="text" id="txtEntrada" value="{ENTRADA}" onkeyup="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" type="text"></td>
+                        <td>
+                            <select name="lsOcorrencia1" onchange="change_ocorrencia(this.value, 'divOcorrencia1')">
+                                <!-- BEGIN BLOCK_OCORRENCIA1 -->
+                                <option value="{CODIGO}" onclick="">{DESCRICAO}</option>
+                                <!-- END BLOCK_OCORRENCIA1 -->
+                            </select>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <div id="divOcorrencia1" style="display: none;"><textarea name="txtOcorrencia1"></textarea></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sa&iacute;da</td>
+                        <td><input name="txtAlmoco" class="text" id="txtAlmoco" value="{ALMOCO}" onkeyup="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" type="text"></td>
+                        <td>
+                            <select name="lsOcorrencia2" onchange="change_ocorrencia(this.value, 'divOcorrencia2')">
+                                <!-- BEGIN BLOCK_OCORRENCIA2 -->
+                                <option value="{CODIGO}">{DESCRICAO}</option>
+                                <!-- END BLOCK_OCORRENCIA2 -->
+                            </select>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <div id="divOcorrencia2" style="display: none;"><textarea name="txtOcorrencia2"></textarea></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">
+                            <div align="center">2&ordm; Turno</div>
+                        </td>
+                        <td>Entrada</td>
+                        <td><input name="txtRetorno" class="text" id="txtRetorno" value="{RETORNO}" onkeyup="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" type="text"></td>
+                        <td>
+                            <select name="lsOcorrencia3" onchange="change_ocorrencia(this.value, 'divOcorrencia3')">
+                                <!-- BEGIN BLOCK_OCORRENCIA3 -->
+                                <option value="{CODIGO}">{DESCRICAO}</option>
+                                <!-- END BLOCK_OCORRENCIA3 -->
+                            </select>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <div id="divOcorrencia3" style="display: none;"><textarea name="txtOcorrencia3"></textarea></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sa&iacute;da</td>
+                        <td><input name="txtSaida" class="text" id="txtSaida" value="{SAIDA}" onkeyup="Mascara_Hora(this.value, this, event)" size="8" maxlength="8" type="text"></td>
+                        <td>
+                            <select name="lsOcorrencia4" onchange="change_ocorrencia(this.value, 'divOcorrencia4')">
+                                <!-- BEGIN BLOCK_OCORRENCIA4 -->
+                                <option value="{CODIGO}">{DESCRICAO}</option>
+                                <!-- END BLOCK_OCORRENCIA4 -->
+                            </select>
+                        </td>
+                        <td style="vertical-align: top;">
+                            <div id="divOcorrencia4" style="display: none;"><textarea name="txtOcorrencia4"></textarea></div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p> <label> <input class="button" name="Submit" value="Confirmar" type="submit"> </label> </p>
+        </form>
+    </div>
+</div>
+
+<div id="mensagem">{MSG}</div>
+
+<script type="text/javascript">
+    function showDiv(ID) {
+        document.getElementById(ID).style.display = "";
+        document.getElementById("caixa").style.width = "550px";
+    }
+    function hideDiv(ID) {
+        document.getElementById(ID).style.display = "none";
+    }
+    function change_ocorrencia(valor, div){
+        if(valor == '5.00'){
+            showDiv(div);
+        }else{
+            hideDiv(div);
+        }
+    }
+</script>{FOOTER}

@@ -51,10 +51,10 @@ abstract class Data {
      * @param        string                                 $end
      * @return       array
      */
-    public static function getTimeDifference($pStartTime, $pEndTime)
+    public static function get_time_difference( $start, $end )
     {
-        $uts['start']      =    strtotime($pStartTime);
-        $uts['end']        =    strtotime($pEndTime);
+        $uts['start']      =    strtotime( $start );
+        $uts['end']        =    strtotime( $end );
         if( $uts['start']!==-1 && $uts['end']!==-1 )
         {
             if( $uts['end'] >= $uts['start'] )
@@ -67,9 +67,7 @@ abstract class Data {
                 if( $minutes=intval((floor($diff/60))) )
                 $diff = $diff % 60;
                 $diff    =    intval( $diff );
-                //return( array('days'=>$days, 'hours'=>$hours, 'minutes'=>$minutes, 'seconds'=>$diff) );
-                $h = $hours.":".$minutes.":".$diff;
-                return $h;
+                return( array('days'=>$days, 'hours'=>$hours, 'minutes'=>$minutes, 'seconds'=>$diff) );
             }
             else
             {
@@ -83,11 +81,6 @@ abstract class Data {
         return( false );
     }
 
-    public static function timeToDecimal($pHour)
-    {
-        list($h, $m, $s) = explode(":", $pHour);
-        $r = $h + ($m/60);
-        return $r;
-    }
+
 }
 ?>

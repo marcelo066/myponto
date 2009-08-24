@@ -1,0 +1,8 @@
+Extrair estrutura e dados de todos as bases de dados do seu mysql para o arquivo backup_banco.sql
+mysqldump -u root -p123 --all-databases > backup_banco.sql
+
+Extrair estrutura e dados de um banco somente, neste exemplo o banco banco_exemplo:
+mysqldump -u root -p123  –database banco_exemplo > backup_banco.sql
+
+E para restaurar o banco de dados extraído anteriormente, utilize:
+mysql -u root -p123 -h localhost banco_exemplo < backup_banco.sql
