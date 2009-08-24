@@ -1,0 +1,64 @@
+{TOPO}
+<div id="caixa" style="width: 780px; margin-left: 10%">
+    <div id="barraTitulo" ><div id="barraTituloTexto">Banco de Horas</div></div>
+    <div id="formulario">
+        <table border="1" width="559">
+            <tbody>
+                <tr><td width="392">SALDO:</td></tr>
+                <tr><td>{SALDO}</td></tr>
+            </tbody>
+        </table>
+        <br />
+        <table border="0" cellspacing="0" width="760">
+            <tbody>
+                <tr>
+                </tr>
+                <tr>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="100">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">PERIODO</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">EXTRA 50%</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">EXTRA 100%</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">HORAS NORMAIS</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">TOTAL TRABALHADO</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">HORAS A TRABALHAR</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">SALDO DO PERIODO</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">HORAS PAGAS</font></b></div>
+                    </td>
+                    <td class="LinTitulo" align="center" bgcolor="#006699" valign="middle" width="48">
+                        <div align="center"><b><font color="#ffffff" face="Verdana" size="1">SALDO ACUMULADO</font></b></div>
+                    </td>
+                </tr>
+                <!-- BEGIN BLOCK_BANCO_HORAS -->
+                <tr onmouseover="highlight(this);" onmouseout="normal(this);" align="center" bgcolor="{COR}">
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{PERIODO}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{EXTRA50}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{EXTRA100}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{HORNORMAIS}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{TOTALTRABALHADO}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{HORASATRABALHAR}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{SALDODOPERIODO}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{HORASPAGAS}</td>
+                    <td class="LinNormal" align="center" valign="center">&nbsp;{SALDOACUMULADO}</td>
+                </tr>
+                <!-- END BLOCK_BANCO_HORAS -->
+            </tbody>
+        </table>
+        <br />
+    </div>
+</div>
+<br>
+{FOOTER}

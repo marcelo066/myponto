@@ -107,7 +107,8 @@ class RegistroController
             {
                 $this->view->setValue("OPTSAI", "disabled");
                 $this->view->setValue("MSGSAI", " - " . $oRegistro->getSaidaTarde());
-                $this->view->setValue("OPTBTN", "disabled");                
+                $this->view->setValue("OPTBTN", "disabled");
+                header( 'Location: ?_task=Apropriacao&_action=show' ) ;
             }
         }
         else

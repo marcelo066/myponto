@@ -29,46 +29,6 @@ class RegistroDao extends Dao
                 . $pPonto->getData()."' AND cod_prof_funcao = "
                 . $pProf->getCodProfFuncao() . ";";
 
-           // atualiza os totais           
-           $oRegistro = new Registro;
-           $oRegistro = $this->getByDate($pProf, new DateTime($pPonto->getData()));
-           if($oRegistro)
-           {
-               $t = 0;
-               switch($oRegistro->getFlag())
-               {
-                   case 6:  // entrada manhã + saída manhã
-                       $s = $oRegistro->getEntradaManha();
-                       $e = $oRegistro->getSaidaManha();
-                       $t = Data::getTimeDifference($s, $e);
-                       $t = Data::timeToDecimal($t);
-                       break;
-                   case 18: // entrada manhã + saída tarde
-                       $s = $oRegistro->getEntradaManha();
-                       $e = $oRegistro->getSaidaTarde();
-                       $t = Data::getTimeDifference($s, $e);
-                       $t = Data::timeToDecimal($t);
-                       break;
-                    case 24: // entrada tarde + saída tarde
-                       $s = $oRegistro->getEntradaTarde();
-                       $e = $oRegistro->getSaidaTarde();
-                       $t = Data::getTimeDifference($s, $e);
-                       $t = Data::timeToDecimal($t);
-                       break;
-                   case 30: // tudo
-                       $s = $oRegistro->getEntradaManha();
-                       $e = $oRegistro->getSaidaManha();
-                       $t1 = Data::getTimeDifference($s, $e);
-                       $s = $oRegistro->getEntradaTarde();
-                       $e = $oRegistro->getSaidaTarde();
-                       $t2 = Data::getTimeDifference($s, $e);
-                       $t = Data::getTimeDifference($t1, $t2);
-                       $t = Data::timeToDecimal($t);
-                       break;
-               }
-               echo $t;
-               return $t;
-           }
         }      
         parent::executar($sql);
     }
@@ -76,7 +36,8 @@ class RegistroDao extends Dao
     public function update(Profissional $pProf, Registro $pRegistro)
     {
         try
-        {           
+        {
+            /*
             echo $pProf->getCodProfFuncao() . '<br>';
             echo $pProf->getNome() . '<br>';
             echo $pRegistro->getData()->format("d-m-Y") . '<br>';
@@ -84,12 +45,42 @@ class RegistroDao extends Dao
             echo $pRegistro->getSaidaManha() . '<br>';
             echo $pRegistro->getEntradaTarde() . '<br>';
             echo $pRegistro->getEntradaTarde() . '<br>';
-         
+            */
+
+            // a START time value
+            $start = $pRegistro->getEntradaManha();
+            // an END time value
+            $end   = $pRegistro->getSaidaManha();
+
+            // what is the time difference between $end and $start?
+            if( $diff =@ Data::get_time_difference($start, $end) )
+            {
+                
+                //$d = strtotime($diff['hours'].":".$diff['minutes'].":".$diff['seconds']);
+                //echo strftime("%H:%M:%S",$d);
+                $h = $diff['hours'];
+                $m = $diff['minutes'];
+                $s = $diff['seconds'];
+
+                $r = $h + ($m/60);
+
+                echo($r);
+
+            }
+            else
+            {
+                echo "Horas: Error";
+            }
+
+
+
+
+/*
             // lista de ocorrências
             foreach($pRegistro->getOcorrencia() as $row )
             {
                 echo $row->getCodigo()  . '<br>';
-            }
+            }*/
         }
         catch(Exception $e)
         {
