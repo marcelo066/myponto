@@ -89,27 +89,26 @@ class ApropriacaoDao extends Dao
 
     public function getTotalApropriado(Apropriacao $pAprop)
     {
-        try{
+        //try{
             $sql = "SELECT SUM(total)
                    FROM hor_aprop
                    WHERE cod_prof_funcao = ".$pAprop->getCodProfFuncao().
                    " AND data = '".$pAprop->getData()."';";
             $ret = parent::executarScalar($sql);
             return $ret;
-        }catch(Exception $e){
+        /*}catch(Exception $e){
             throw new Exception($e->getMessage());
-        }
+        }*/
     }
 
     public function getSaldoApropriar(Apropriacao $pAprop)
     {
-        try{
+       // try{
                         
             $oProf = Sessao::getObject("oProf");
             $oRegistro = new Registro;
-            $oRegistroD = new RegistroDao;            
-            $vData = new DateTime(date($pAprop->getData()));
-            $oRegistro = $oRegistroD->getByDate($oProf, $vData);
+            $oRegistroD = new RegistroDao;
+            $oRegistro = $oRegistroD->getByDate($oProf, $pAprop->getData());
             if($oRegistro){
                 $tRegistrado = $oRegistro->getTotal();
             }else{
@@ -120,9 +119,9 @@ class ApropriacaoDao extends Dao
             
             return $vSaldo;
 
-        }catch(Exception $e){
+        /*}catch(Exception $e){
             throw new Exception($e->getMessage());
-        }
+        }*/
     }
 }
 ?>
