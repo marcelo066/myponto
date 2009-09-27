@@ -9,7 +9,8 @@ abstract class Data {
      * @param DateTime $data
      * @return String
      */
-    public static function getDiaSemana(DateTime $data) {
+    public static function getDiaSemana(DateTime $data)
+    {
         $ds = $data->format("w");
         $dias_semana = array('Domingo', 'Segunda-Feira', 'Ter&ccedil;a-Feira',
                             'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira',
@@ -82,12 +83,15 @@ abstract class Data {
         }
         return( false );
     }
-
-    public static function timeToDecimal($pHour)
+    public static function timeToDecimal($hora)
     {
-        list($h, $m, $s) = explode(":", $pHour);
-        $r = $h + ($m/60);
-        return $r;
+        //try {
+            list($h, $m, $s) = explode(":", $hora);
+            $r = $h + ($m/60);
+            return $r;
+        /*}catch(Exception $e){
+            throw new Exception($e->getMessage());
+        }*/
     }
 }
 ?>

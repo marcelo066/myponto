@@ -4,12 +4,12 @@
     <div id="formulario">
     <form id="form1" name="form1" method="post" action="./?_task=Registro&_action=add">
         <fieldset><legend>Turno 1:</legend>
-            <input name="optTurno" value="entrada" lang="pt" type="radio" {OPTENT} />Entrada {MSGENT}<br />
-            <input name="optTurno" value="almoco" lang="pt" type="radio" {OPTALM} />Saida {MSGALM}<br />
+            <input name="optFlag" value="2" lang="pt" type="radio" {OPTENT} />Entrada {MSGENT}<br />
+            <input name="optFlag" value="4" lang="pt" type="radio" {OPTALM} />Saida {MSGALM}<br />
         </fieldset>
         <fieldset> <legend>Turno 2:</legend>
-            <input name="optTurno" value="retorno" lang="pt" type="radio" {OPTRET} />Entrada {MSGRET}<br />
-            <input name="optTurno" value="saida" lang="pt" type="radio" {OPTSAI} />Saida {MSGSAI}<br />
+            <input name="optFlag" value="8" lang="pt" type="radio" {OPTRET} />Entrada {MSGRET}<br />
+            <input name="optFlag" value="16" lang="pt" type="radio" {OPTSAI} />Saida {MSGSAI}<br />
         </fieldset>
         <input name="chkApropriar" value="true" type="checkbox" /> Apropriar Horarios
         <br/><br/><input name="btnRegistrar" value="Registrar" type="submit" class="button" {OPTBTN} />

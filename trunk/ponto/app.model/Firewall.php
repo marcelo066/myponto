@@ -11,7 +11,7 @@ class Firewall extends Dao
     }
 
     // par�metros relativos ao click
-    public function podeClicar(Profissional $pProf, Ponto $pPonto)
+    public function podeClicar(Profissional $pProf, Registro $pRegistro)
     {
 
         return true;

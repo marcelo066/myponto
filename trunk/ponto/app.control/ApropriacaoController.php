@@ -15,8 +15,7 @@ class ApropriacaoController extends Controller {
 
     public function show()
     {
-        try
-        {
+        //try{
             // carrega a tabela com apropriações
             $oProf = Sessao::getObject("oProf");
             $pAprop = new Apropriacao;
@@ -47,7 +46,7 @@ class ApropriacaoController extends Controller {
             $oRegistro = new RegistroDao;
             $oRegistro->add($oProf, $pPonto);
             */
-            $msg = "Apropriado: " . $this->model->getTotalApropriado($pAprop) .
+           $msg = "Apropriado: " . $this->model->getTotalApropriado($pAprop) .
                 "<br>Saldo: " . $this->model->getSaldoApropriar($pAprop);
             $this->view->setValue("MSG", $msg);
             
@@ -69,9 +68,9 @@ class ApropriacaoController extends Controller {
             $this->view->addFile("FOOTER", "rodape.html");
             $this->view->setValue("FUNCOES", $func);
             $this->view->show();
-        }catch(Exception $e){
-            die($e->getMessage());
-        }
+        /*}catch(Exception $e){
+            die($e->getTraceAsString());
+        }*/
     }
 
     public function add()

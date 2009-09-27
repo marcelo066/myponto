@@ -53,7 +53,8 @@ class FrequenciaController extends Controller
                 $cor = "#f4f4f3";
             }
             $this->view->setValue("COR", $cor);
-            $this->view->setValue("DATA", $vFreq->getData()->format("d/m/Y"));
+            //$this->view->setValue("DATA", $vFreq->getData()->format("d/m/Y"));
+            $this->view->setValue("DATA", $vFreq->getData());
             $this->view->setValue("DIA", $vFreq->getDiaDaSemana());
             $this->view->setValue("ENTRADA", $vFreq->getEntradaManha());
             $this->view->setValue("SAIDA", $vFreq->getSaidaManha());
@@ -64,7 +65,8 @@ class FrequenciaController extends Controller
             $this->view->setValue("TOTAL", $vFreq->getTotal());
             $this->view->setValue("EXTRA50", $vFreq->getExtra50());
             $this->view->setValue("EXTRA100", $vFreq->getExtra100());
-            $this->view->setValue("IDAJUSTE",  "?_task=Registro&_action=edit&_Id=" . $vFreq->getData()->format('d/m/Y'));
+            //$this->view->setValue("IDAJUSTE",  "?_task=Registro&_action=edit&_Id=" . $vFreq->getData()->format('d/m/Y'));
+            $this->view->setValue("IDAJUSTE",  "?_task=Registro&_action=edit&_Id=" . $vFreq->getData());
             $this->view->parseBlock("BLOCK_FREQUENCIA", true);
         }        
 

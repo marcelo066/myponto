@@ -15,27 +15,33 @@ class RegistroController
 
     public function add()
     {
-        // instancia ponto
-        $oPonto = new Ponto;
-        $oPonto->setData(date("Y-m-d"));
-        $oPonto->setHora(date("H:i:s"));
-        $oPonto->setTurno($_POST["optTurno"]);
-        $oPonto->setApropriar($_POST["chkApropriar"]);
-        // instancia profissional
-        $oProf = new Profissional;
-        $oProf = Sessao::getObject("oProf");        
-        // ve se pode clicar
-        $fw = new Firewall;
-        if($fw->podeClicar($oProf, $oPonto))
-        {
-            // registra o ponto
-            $this->model->add($oProf, $oPonto);
+        try{
+            // instancia registro
+            $oRegistro = new Registro;
+            $oRegistro->setData(date("Y-m-d"));
+            $oRegistro->setApropriar($_POST["chkApropriar"]);
+            $oRegistro->setHora(date("H:i:s"));
+            $oRegistro->setFlag($_POST["optFlag"]);
+
+            // instancia profissional
+            $oProf = new Profissional;
+            $oProf = Sessao::getObject("oProf");
+            // ve se pode clicar
+            $fw = new Firewall;
+            if($fw->podeClicar($oProf, $oRegistro))
+            {
+                // registra o ponto
+                $this->model->add($oProf, $oRegistro);
+            }
+            else
+            {
+                $this->view->setValue("MSG", "Não pode clicar.");
+            }
+            $this->show();
+        }catch(Exception $e){
+            die($e->getMessage());
         }
-        else
-        {
-            $this->view->setValue("MSG", "Não pode clicar.");
-        }        
-        $this->show();
+ 
     }
 
     public function update()
@@ -72,14 +78,14 @@ class RegistroController
     }
 
     public function show()
-    {        
+    {
         // obtem profissional logado, armazenado na sessao
         $oProf = new Profissional;
         $oProf = Sessao::getObject("oProf");
         
         // checa quais
         $oRegistro = new Registro;        
-        $oRegistro = $this->model->getByDate($oProf, new DateTime(date("Y-m-d")));
+        $oRegistro = $this->model->getByDate($oProf, date("Y-m-d"));
         if($oRegistro){
             // se ja clicou entrada, desabilita controle
             if($oRegistro->getEntradaManha())

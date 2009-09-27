@@ -2,75 +2,39 @@
 
 class RegistroDao extends Dao
 {
-    public function  __construct() {
+    public function  __construct()
+    {
         parent::conectar();
     }
 
-    public function  __destruct() {
+    public function  __destruct()
+    {
         parent::desconectar();
     }
 
-    public function add(Profissional $pProf, Ponto $pPonto)
+    public function add(Profissional $pProf, Registro $pRegistro)
     {
         // se ja tem registro, vai dar update
         // caso contrario, vai dar insert
-        if(!$this->getByDate($pProf, new DateTime($pPonto->getData())))
+        if(!$this->getByDate($pProf, $pRegistro->getData()))
         {
-            $sql = "INSERT INTO hor_frequencia (cod_prof_funcao, data, " . $pPonto->getTurno()
-                . ") VALUES ("
-                . $pProf->getCodProfFuncao() . ",'"
-                . $pPonto->getData(). "','"
-                . $pPonto->getHora() . "');";
+            $sql = "INSERT INTO hor_frequencia (cod_prof_funcao, data, " . $pRegistro->getCampo()
+            . ") VALUES ("
+            . $pProf->getCodProfFuncao() . ",'"
+            . $pRegistro->getData(). "','"
+            . $pRegistro->getHora() . "');";
+            parent::executar($sql);
         }
         else
         {
-            $sql = "UPDATE hor_frequencia SET " . $pPonto->getTurno() . " = '"
-                . $pPonto->getHora() ."' WHERE data = '"
-                . $pPonto->getData()."' AND cod_prof_funcao = "
-                . $pProf->getCodProfFuncao() . ";";
-
-           // atualiza os totais           
-           $oRegistro = new Registro;
-           $oRegistro = $this->getByDate($pProf, new DateTime($pPonto->getData()));
-           if($oRegistro)
-           {
-               $t = 0;
-               switch($oRegistro->getFlag())
-               {
-                   case 6:  // entrada manhã + saída manhã
-                       $s = $oRegistro->getEntradaManha();
-                       $e = $oRegistro->getSaidaManha();
-                       $t = Data::getTimeDifference($s, $e);
-                       $t = Data::timeToDecimal($t);
-                       break;
-                   case 18: // entrada manhã + saída tarde
-                       $s = $oRegistro->getEntradaManha();
-                       $e = $oRegistro->getSaidaTarde();
-                       $t = Data::getTimeDifference($s, $e);
-                       $t = Data::timeToDecimal($t);
-                       break;
-                    case 24: // entrada tarde + saída tarde
-                       $s = $oRegistro->getEntradaTarde();
-                       $e = $oRegistro->getSaidaTarde();
-                       $t = Data::getTimeDifference($s, $e);
-                       $t = Data::timeToDecimal($t);
-                       break;
-                   case 30: // tudo
-                       $s = $oRegistro->getEntradaManha();
-                       $e = $oRegistro->getSaidaManha();
-                       $t1 = Data::getTimeDifference($s, $e);
-                       $s = $oRegistro->getEntradaTarde();
-                       $e = $oRegistro->getSaidaTarde();
-                       $t2 = Data::getTimeDifference($s, $e);
-                       $t = Data::getTimeDifference($t1, $t2);
-                       $t = Data::timeToDecimal($t);
-                       break;
-               }
-               echo $t;
-               return $t;
-           }
-        }      
-        parent::executar($sql);
+            $sql = "UPDATE hor_frequencia SET " . $pRegistro->getCampo() . " = '"
+            . $pRegistro->getHora() ."' WHERE data = '"
+            . $pRegistro->getData()."' AND cod_prof_funcao = "
+            . $pProf->getCodProfFuncao() . ";";      
+            parent::executar($sql);
+            // atualiza os totais
+             $this->updateTotals($pProf, $pRegistro);            
+        }
     }
 
     public function update(Profissional $pProf, Registro $pRegistro)
@@ -97,16 +61,66 @@ class RegistroDao extends Dao
         }
     }
 
+    public function updateTotals(Profissional $pProf, Registro $pRegistro)
+    {
+        try
+        {
+         
+            die($pProf->getCargaHoraria());
+            // atualiza os totais
+            $oRegistro = new Registro;
+            $oRegistro = $this->getByDate($pProf, $pRegistro->getData());
+            $t = 0;
+            switch($oRegistro->getFlag())
+            {
+                case 6:  // entrada manhã + saída manhã
+                    $s = $oRegistro->getEntradaManha();
+                    $e = $oRegistro->getSaidaManha();
+                    $t = Data::getTimeDifference($s, $e);
+                    $t = Data::timeToDecimal($t);
+                    break;
+                case 18: // entrada manhã + saída tarde
+                    $s = $oRegistro->getEntradaManha();
+                    $e = $oRegistro->getSaidaTarde();
+                    $t = Data::getTimeDifference($s, $e);
+                    $t = Data::timeToDecimal($t);
+                    break;
+                case 24: // entrada tarde + saída tarde
+                    $s = $oRegistro->getEntradaTarde();
+                    $e = $oRegistro->getSaidaTarde();
+                    $t = Data::getTimeDifference($s, $e);
+                    $t = Data::timeToDecimal($t);
+                    break;
+                case 30: // tudo
+                    $s = $oRegistro->getEntradaManha();
+                    $e = $oRegistro->getSaidaManha();
+                    $t1 = Data::getTimeDifference($s, $e);
+                    $t1 =Data::timeToDecimal($t1);
+                    $s = $oRegistro->getEntradaTarde();
+                    $e = $oRegistro->getSaidaTarde();
+                    $t2 = Data::getTimeDifference($s, $e);
+                    $t2 =Data::timeToDecimal($t2);
+                    $t = $t1 + $t2;
+                    break;
+            }
+            $sql = "UPDATE hor_frequencia SET total = , h_50 = , h_100 = ";
+            echo $t;
+        }
+        catch(Exception $e)
+        {
+            throw new Exception($e->getMessage());
+        }
+    }
 
-
-    public function getByDate(Profissional $pProf, DateTime $pData)
+    public function getByDate(Profissional $pProf, $pData)
     {
         try{
+            $pData = new DateTime($pData);
             $sql = "SELECT hf.data, DAYNAME(hf.data) as dia, hf.entrada, hf.almoco,
                         hf.retorno, hf.saida, hf.total, hf.h_50, hf.h_100
                     FROM hor_frequencia hf
                     WHERE hf.cod_prof_funcao = " . $pProf->getCodProfFuncao() . "
-                    AND hf.data = '" . $pData->format("Y-m-d") . "';";          
+                    AND hf.data = '" . $pData->format("Y-m-d") . "';";
             $row = parent::obterRecordSet($sql);
             if($row)
             {
@@ -127,7 +141,7 @@ class RegistroDao extends Dao
             else
             {
                 return false;
-            }        
+            }
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
@@ -156,7 +170,7 @@ class RegistroDao extends Dao
         {
             $reg = new Registro();
             $reg->setData($row[$j]["data"]);
-            $objData = $reg->getData();
+            $objData = new DateTime($reg->getData());
             if($objData->format('d/m/Y') == $ObjInicio->format('d/m/Y'))
             {
                 //$reg->setDiaDaSemana($row[$j][dia]);
@@ -183,7 +197,6 @@ class RegistroDao extends Dao
                 // pode ser final de semana, feriado,
                 // ou alguma outra ocorrencia como
                 // atestado, licen�a etc, etc.
-
                 $reg->setData($ObjInicio->format('d-m-Y'));
                 $reg->setDiaDaSemana(Data::getTipoDia($ObjInicio));
                 $reg->setEntradaManha('-');
@@ -199,7 +212,7 @@ class RegistroDao extends Dao
             $ObjInicio->modify("+1 day");
             $ret[] = $reg;
         }
-        return $ret; 
+        return $ret;
     }
 }
 ?>
