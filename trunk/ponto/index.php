@@ -19,20 +19,27 @@ function __autoload($classe)
 
 try{
 
-    // trata URL amigavel
-    $classe = $_GET["_task"];
-    $metodo = $_GET["_action"];
-    
-    // define classe padrao
-    if (empty($classe)) {
-        $classe = 'Login';
-    }
-
-    // define metodo padrao
-    if (empty($metodo)) {
+    new Sessao;
+    if(!Sessao::getValue('logado'))
+    {
+        $classe = 'Usuario';
         $metodo = 'login';
-    }
+    }else{
 
+        // trata URL amigavel
+        $classe = $_GET["_task"];
+        $metodo = $_GET["_action"];
+
+        // define classe padrao
+        if (empty($classe)) {
+            $classe = 'Usuario';
+        }
+
+        // define metodo padrao
+        if (empty($metodo)) {
+            $metodo = 'login';
+        }
+    }
     // prepara arquivo para inclusão
     $filename = "app.control/".$classe."Controller.php";
 
@@ -54,9 +61,10 @@ try{
         //unset($instancia);
         throw new Exception("Url inválida!");
     }
-    
+
     // executa o metodo da classe
     eval('$instancia->' . $metodo . '();');
+
 
 }
 catch(Exception $e)
