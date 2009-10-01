@@ -9,14 +9,14 @@ class ApropriacaoController extends Controller {
 
     public function __construct(){
         // instanciamos os objetos
-        $this->model = new ApropriacaoDao();
+        $this->model = new Apropriacao();
         $this->view = new View('apropriar.html');
     }
 
     public function show()
     {
         //try{
-            // carrega a tabela com apropriaÃ§Ãµes
+            // carrega a tabela com apropriações
             $oProf = Sessao::getObject("oProf");
             $pAprop = new Apropriacao;
             $pAprop->setCodProfFuncao($oProf->getCodProfFuncao());
@@ -50,7 +50,7 @@ class ApropriacaoController extends Controller {
                 "<br>Saldo: " . $this->model->getSaldoApropriar($pAprop);
             $this->view->setValue("MSG", $msg);
             
-            // passa funÃ§Ãµes Ajax para obter a descriÃ§Ã£o do centro de custo
+            // passa funções Ajax para obter a descrição do centro de custo
             $func = 'function checkCC() {
                 if($F("txtCC").length == 4) {
                     var url = "?_task=Cc&_action=getCC";
@@ -79,11 +79,11 @@ class ApropriacaoController extends Controller {
             $oCc = new CcDao;
             if(!isset($_POST["txtCC"]) && !is_numeric($_POST["txtCC"]) || !$oCc->existe($_POST["txtCC"]))
             {
-                $this->view->setValue("MSG", "Centro de custo invÃ¡lido ou inexistente. Informe um centro de custo vÃ¡lido.");
+                $this->view->setValue("MSG", "Centro de custo inválido ou inexistente. Informe um centro de custo válido.");
             }
             elseif(!isset($_POST["txtValor"]) && !is_numeric($_POST["txtValor"]) || !$_POST["txtValor"] > 0)
             {
-                $this->view->setValue("MSG", "Valor invÃ¡lido. Informe um valor numÃ©rico maior que zero.");
+                $this->view->setValue("MSG", "Valor inválido. Informe um valor numérico maior que zero.");
             }
             else
             {
@@ -112,19 +112,19 @@ class ApropriacaoController extends Controller {
                 $oAprop = new Apropriacao;
                 $oApropD = new ApropriacaoDao;
                 $oAprop = $oApropD->getById($_GET["_token"]);
-                // sÃ³ pode excluir apropriaÃ§Ã£o do prÃ³prio usuario
+                // só pode excluir apropriação do próprio usuario
                 if($oAprop)
                 {
                     if($oAprop->getCodProfFuncao() == $oProf->getCodProfFuncao()){
                         $oApropD->excluir($oAprop);
                     }else{
-                        $this->view->setValue("MSG", "Erro nÃ£o foi possivel excluir");
+                        $this->view->setValue("MSG", "Erro não foi possivel excluir");
                     }
                 }else{
-                    $this->view->setValue("MSG", "Erro nÃ£o foi possivel excluir");
+                    $this->view->setValue("MSG", "Erro não foi possivel excluir");
                 }                
             }else{
-                $this->view->setValue("MSG", "Erro nÃ£o foi possivel excluir");
+                $this->view->setValue("MSG", "Erro não foi possivel excluir");
             }
             $this->show();
         }catch(Exception $e){

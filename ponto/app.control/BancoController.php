@@ -10,18 +10,16 @@ class BancoController {
     public function __construct()
     {
         // instanciamos os objetos
-        $this->model = new BancoDao();
+        $this->model = new Banco();
         $this->view = new View("banco.html");
     }
 
     public function show()
     {
-        $oBancoDao = new BancoDao();
-        $oBanco = $oBancoDao->get(93);
-
         // obtém objetos da sessão
         $oPeriodo = Sessao::getObject("oPeriodo");
         $oProf = Sessao::getObject("oProf");
+        $oBanco = $this->model->getBanco($oProf->getCodProfFuncao());
 
         $vInicio = new DateTime($oPeriodo->getInicio());
 
