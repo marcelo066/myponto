@@ -1,6 +1,5 @@
 <?php
 
-require_once("./checaLogin.php");
 
 class CcController extends Controller {
 
@@ -9,7 +8,7 @@ class CcController extends Controller {
 
     public function __construct(){
         // instanciamos os objetos
-        $this->model = new CcDao();
+        $this->model = new Cc();
         //$this->view = new View('apropriar.html');
     }
 

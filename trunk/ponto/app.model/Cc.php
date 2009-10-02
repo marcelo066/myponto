@@ -1,6 +1,6 @@
 <?php
 
-class CcDao extends Dao
+class Cc extends Dao
 {
     function  __construct()
     {

@@ -1,6 +1,5 @@
 <?php
 
-require_once("./checaLogin.php");
 
 class FrequenciaController extends Controller
 {
@@ -10,20 +9,20 @@ class FrequenciaController extends Controller
     public function __construct()
     {
         // instanciamos os objetos
-        $this->model = new FrequenciaDao();
+        $this->model = new Frequencia();
         $this->view = new View("frequencia.html");
     }
 
     public function show()
     {
-        // define perï¿½odo da frequencia
-        // obtendo objeto armazenado na sessï¿½o        
+        // define período da frequencia
+        // obtendo objeto armazenado na sessão
         new Sessao();
         $oPeriodo = Sessao::getObject("oPeriodo");
-        $vInicio = new DateTime($oPeriodo->getInicio());
-        $vFim = new DateTime($oPeriodo->getFim());                     
-        $oProf = Sessao::getObject("oProf");
-        $oFreq = $this->model->get($oProf->getCodProfFuncao(), $vInicio, $vFim);
+        $vInicio = new DateTime($oPeriodo->getInicial());
+        $vFim = new DateTime($oPeriodo->getFinal());
+        $oProf = Sessao::getObject("oProf");        
+        $this->model->getFrequencia($oProf->getCodProfFuncao(), $vInicio, $vFim);
 
         /************************
         * Preenche View
@@ -35,15 +34,15 @@ class FrequenciaController extends Controller
         $vTitulo = ":: FOLHA DE FREQUENCIA :: ". $oFreq->mes . "/" . $oFreq->ano . " :: " . $oProf->getMatricula() . " - " . $oProf->getNome() . " :: " . $oProf->getFuncao();
         $this->view->setValue("TITULO", $vTitulo);
         // resumo
-        $this->view->setValue("RES_NORMAIS", $oFreq->resumo->getTotHorNormais());
-        $this->view->setValue("RES_EXTRA50", $oFreq->resumo->getTotHorExtras50());
-        $this->view->setValue("RES_EXTRA100", $oFreq->resumo->getTotHorExtras100());
-        $this->view->setValue("RES_TOTAL", $oFreq->resumo->getTotHorTrabalhadas());
-        $this->view->setValue("RES_ATRAB", $oFreq->resumo->getTotHorATrabalhar());
-        $this->view->setValue("RES_SALDO", $oFreq->resumo->getSaldoHoras());
+        $this->view->setValue("RES_NORMAIS", $this->model->resumo->getTotHorNormais());
+        $this->view->setValue("RES_EXTRA50", $this->model->resumo->getTotHorExtras50());
+        $this->view->setValue("RES_EXTRA100", $this->model->resumo->getTotHorExtras100());
+        $this->view->setValue("RES_TOTAL", $this->model->resumo->getTotHorTrabalhadas());
+        $this->view->setValue("RES_ATRAB", $this->model->resumo->getTotHorATrabalhar());
+        $this->view->setValue("RES_SALDO", $this->model->resumo->getSaldoHoras());
 
         // registro                
-        foreach($oFreq->registro as $vFreq)
+        foreach($this->model->registro as $vFreq)
         {
             if($bol){
                 $bol = false;

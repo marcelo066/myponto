@@ -64,6 +64,7 @@ class Apropriacao extends Dao {
                    FROM hor_aprop
                    WHERE cod_prof_funcao = ".$this->getCodProfFuncao().
                    " AND data = '".$this->getData()."';";
+            parent::conectar();
             $rs = parent::obterRecordSet($sql);
             $vAprop = array();
             foreach($rs as $row)
@@ -77,13 +78,14 @@ class Apropriacao extends Dao {
                 $vAprop[] = $oAprop;
                 unset($oAprop);
             }
+            parent::desconectar();
             return $vAprop;
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
     }
 
-    public function add()
+    public function insert()
     {
         try{
             $sql = "INSERT INTO hor_aprop (cod_prof_funcao, data, cc, total)
@@ -92,18 +94,22 @@ class Apropriacao extends Dao {
             .$this->getData()."',"
             .$this->getCc().",'"
             .$this->getValor()."');";
+            parent::conectar();
             $rs = parent::executar($sql);
+            parent::desconectar();
         }catch(Exception $e){
             throw new Exception($e->getMessage());
         }
     }
 
-    public function excluir()
+    public function delete()
     {
         try{
             $sql = "DELETE FROM hor_aprop
                     WHERE id = " . $this->getId();
+            parent::conectar();
             $rs = parent::executar($sql);
+            parent::desconectar();
             return true;
         }catch(Exception $e){
             throw new Exception($e->getMessage());
@@ -116,6 +122,7 @@ class Apropriacao extends Dao {
             $sql = "SELECT id, data, cod_prof_funcao, cc, total
                    FROM hor_aprop
                    WHERE id = ".$this->getId().";";
+            parent::conectar();
             $rs = parent::obterRecordSet($sql);
             if($rs)
             {
@@ -125,6 +132,7 @@ class Apropriacao extends Dao {
                 $this->setData($rs[0]["data"]);
                 $this->setValor($rs[0]["total"]);
             }
+            parent::desconectar();
             return true;
         }catch(Exception $e){
             throw new Exception($e->getMessage());
@@ -138,7 +146,9 @@ class Apropriacao extends Dao {
                    FROM hor_aprop
                    WHERE cod_prof_funcao = ".$this->getCodProfFuncao().
                    " AND data = '".$this->getData()."';";
+            parent::conectar();
             $ret = parent::executarScalar($sql);
+            parent::desconectar();
             return $ret;
         }catch(Exception $e){
             throw new Exception($e->getMessage());
@@ -150,9 +160,8 @@ class Apropriacao extends Dao {
         try{
 
             $oProf = Sessao::getObject("oProf");
-            $oRegistro = new Registro;
-            $oRegistroD = new RegistroDao;
-            $oRegistro = $oRegistroD->getByDate($oProf, $this->getData());
+            $oRegistro = new Registro;            
+            $oRegistro->getByDate($oProf, $this->getData());
             if($oRegistro){
                 $tRegistrado = $oRegistro->getTotal();
             }else{
@@ -167,7 +176,6 @@ class Apropriacao extends Dao {
             throw new Exception($e->getMessage());
         }
     }
-
 
 }
 ?>
