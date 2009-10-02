@@ -13,45 +13,46 @@ class UsuarioController extends Controller {
     }
 
     public function login()
-    {  
+    {
+        try{
 
-        // valida usuario e sanha
-        if (!$_POST['matricula'] && !$_POST['senha'])
-        {
-            $this->view->show();
-        }
-        else
-        {
-            // checa login            
-            $this->model->setLogin($_POST['matricula']);
-            $this->model->setSenha($_POST['senha']);
-            $varCodProfFuncao = $this->model->login();
-            if(!$varCodProfFuncao)
+            // valida usuario e sanha
+            if (!$_POST['matricula'] && !$_POST['senha'])
             {
-                // Redireciona para a página de login, com status de erro
-                $this->view->setValue("MSG", "Usuário ou senha Inválidos");
                 $this->view->show();
             }
             else
             {
-                // Registra Sessão
-                new Sessao();
-                if(!Sessao::getValue('logado'))
+                // checa login
+                $this->model->setLogin($_POST['matricula']);
+                $this->model->setSenha($_POST['senha']);
+                $varCodProfFuncao = $this->model->login();
+                if(!$varCodProfFuncao)
                 {
-                    Sessao::SetValue('logado', true);
+                    // Redireciona para a página de login, com status de erro
+                    $this->view->setValue("MSG", "Usuário ou senha Inválidos");
+                    $this->view->show();
                 }
+                else
+                {
+                    // Registra Sessão
+                    new Sessao();
+                    if(!Sessao::getValue('logado'))
+                    {
+                        Sessao::SetValue('logado', true);
+                    }
 
-                // Registra vari?veis globais
-                $oProf = new Profissional();
-                $oProf->getProfissional($varCodProfFuncao);
-                Sessao::setObject('oProf', $oProf);
-                $oPeriodo = new Periodo(date("d-m-Y"));
-                //$oPeriodo = new Periodo("2009-03-05");
-                Sessao::setObject('oPeriodo', $oPeriodo);
+                    // Registra vari?veis globais
+                    $oProf = new Profissional();
+                    $oProf->getProfissional($varCodProfFuncao);
+                    Sessao::setObject('oProf', $oProf);
+                    $oPeriodo = new Periodo(date("d-m-Y"));
+                    //$oPeriodo = new Periodo("2009-03-05");
+                    Sessao::setObject('oPeriodo', $oPeriodo);
 
-                $oRegistro = new RegistroController;
-                $oRegistro->show();
-                $oRegistro = null;
+                    $oRegistro = new RegistroController;
+                    $oRegistro->show();
+                    $oRegistro = null;
 
 /*
                 // Redireciona para p?gina principal
@@ -59,9 +60,12 @@ class UsuarioController extends Controller {
                 $oFreq->exibirFrequencia();
                 $oFreq = null;
                 //return true;*/
+                }
             }
+            //return false;
+        }catch(Exception $e){
+            die($e->getTraceAsString());
         }
-        //return false;
     }
 
     public function Logout()

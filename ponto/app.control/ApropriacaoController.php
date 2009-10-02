@@ -1,7 +1,5 @@
 <?php
 
-require_once("./checaLogin.php");
-
 class ApropriacaoController extends Controller {
 
     private $view;
@@ -15,13 +13,13 @@ class ApropriacaoController extends Controller {
 
     public function show()
     {
-        //try{
+        try{
             // carrega a tabela com apropriações
             $oProf = Sessao::getObject("oProf");
             $pAprop = new Apropriacao;
             $pAprop->setCodProfFuncao($oProf->getCodProfFuncao());
             $pAprop->setData(date("Y-m-d"));
-            $oAprop = $this->model->getAll($pAprop);
+            $oAprop = $pAprop->getAll();
             if($oAprop)
             {
                 foreach($oAprop as $vAprop)
@@ -36,7 +34,7 @@ class ApropriacaoController extends Controller {
                     $this->view->setValue("COR", $cor);
                     $this->view->setValue("CC", $vAprop->getCc());
                     $this->view->setValue("VALOR", $vAprop->getValor());
-                    $this->view->setValue("LINK", "?_task=Apropriacao&_action=excluir&_token=".$vAprop->getId());
+                    $this->view->setValue("LINK", "?_task=Apropriacao&_action=delete&_token=".$vAprop->getId());
                     $this->view->parseBlock("BLOCK_APROPRIACAO", true);
                 }
             }
@@ -68,15 +66,15 @@ class ApropriacaoController extends Controller {
             $this->view->addFile("FOOTER", "rodape.html");
             $this->view->setValue("FUNCOES", $func);
             $this->view->show();
-        /*}catch(Exception $e){
-            die($e->getTraceAsString());
-        }*/
+        }catch(Exception $e){
+            $this->view->setValue("MSG", $e->getMessage());
+        }
     }
 
-    public function add()
+    public function insert()
     {
         try{
-            $oCc = new CcDao;
+            $oCc = new Cc;
             if(!isset($_POST["txtCC"]) && !is_numeric($_POST["txtCC"]) || !$oCc->existe($_POST["txtCC"]))
             {
                 $this->view->setValue("MSG", "Centro de custo inválido ou inexistente. Informe um centro de custo válido.");
@@ -92,17 +90,16 @@ class ApropriacaoController extends Controller {
                 $oAprop->setCc($_POST["txtCC"]);
                 $oAprop->setCodProfFuncao($oProf->getCodProfFuncao());
                 $oAprop->setData(date("Y-m-d"));
-                $oAprop->setValor($_POST["txtValor"]);
-                $oApropD = new ApropriacaoDao;
-                $oApropD->add($oAprop);
+                $oAprop->setValor($_POST["txtValor"]);                
+                $oAprop->insert();
             }
             $this->show();
         }catch(Exception $e){
-            die($e->getMessage());
+            $this->view->setValue("MSG", $e->getMessage());
         }
     }
 
-    public function excluir()
+    public function delete()
     {
         try
         {
@@ -110,13 +107,13 @@ class ApropriacaoController extends Controller {
             {
                 $oProf = Sessao::getObject("oProf");
                 $oAprop = new Apropriacao;
-                $oApropD = new ApropriacaoDao;
-                $oAprop = $oApropD->getById($_GET["_token"]);
+                $oAprop->setId($_GET["_token"]);
+                $oAprop->getById();
                 // só pode excluir apropriação do próprio usuario
                 if($oAprop)
                 {
                     if($oAprop->getCodProfFuncao() == $oProf->getCodProfFuncao()){
-                        $oApropD->excluir($oAprop);
+                        $oAprop->delete();
                     }else{
                         $this->view->setValue("MSG", "Erro não foi possivel excluir");
                     }
@@ -128,7 +125,7 @@ class ApropriacaoController extends Controller {
             }
             $this->show();
         }catch(Exception $e){
-            die($e->getMessage());
+            $this->view->setValue("MSG", $e->getMessage());
         }
     }
 

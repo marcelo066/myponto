@@ -1,7 +1,5 @@
 <?php
 
-include_once ("FeriadoDao.php");
-
 abstract class Data {
     /**
      * MÃ©todo getDiaSemana
@@ -12,9 +10,9 @@ abstract class Data {
     public static function getDiaSemana(DateTime $data)
     {
         $ds = $data->format("w");
-        $dias_semana = array('Domingo', 'Segunda-Feira', 'Ter&ccedil;a-Feira',
+        $dias_semana = array('Domingo', 'Segunda-Feira', 'Terça-Feira',
                             'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira',
-                            'S&aacute;bado');
+                            'Sábado');
         return $dias_semana[$ds];
     }
 
@@ -26,9 +24,8 @@ abstract class Data {
      */
     public static function getTipoDia(DateTime $pData)
     {
-        $oFeriado = new FeriadoDao();
-        $vFeriado = $oFeriado->getFeriado($pData);
-        if(!$vFeriado)
+        $oFeriado = new Feriado;        
+        if(!$oFeriado->isFeriado($pData))
         {
             return self::getDiaSemana($pData);
         }

@@ -10,5 +10,29 @@ class Frequencia {
     public $profissional;   // um objeto
     public $resumo;         // um objeto
     public $registro;       // um array de objetos
+
+    public function getFrequencia($pCodProfFuncao, DateTime $pInicio, DateTime $pFim)
+    {
+        try{
+            // instancia objetos que comp�e a frequencia
+            $reg = new Registro();
+            $res = new Resumo();
+
+            // carrega resumo
+            $this->resumo = $res->getResumo($pCodProfFuncao, $pInicio, $pFim);
+
+            // carrega registro
+            $this->registro = $reg->getByRange($pCodProfFuncao, $pInicio, $pFim);
+
+            // la la la la la la la
+            $this->ano = $pInicio->format("Y");
+            $this->mes = $pInicio->format("m");
+
+            return true;
+        }catch(Exception $e){
+            throw new Exception($e->getTraceAsString());
+        }
+    }
+
 }
 ?>

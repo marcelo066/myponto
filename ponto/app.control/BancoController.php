@@ -1,6 +1,5 @@
 <?php
 
-require_once("./checaLogin.php");
 
 class BancoController {
 
@@ -21,7 +20,7 @@ class BancoController {
         $oProf = Sessao::getObject("oProf");
         $oBanco = $this->model->getBanco($oProf->getCodProfFuncao());
 
-        $vInicio = new DateTime($oPeriodo->getInicio());
+        $vInicio = new DateTime($oPeriodo->getInicial());
 
         $this->view->addFile("TOPO", "topo.html");
 

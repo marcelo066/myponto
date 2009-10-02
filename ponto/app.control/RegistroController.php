@@ -1,6 +1,5 @@
 <?php
 
-require_once("./checaLogin.php");
 
 class RegistroController
 {
@@ -9,11 +8,11 @@ class RegistroController
     public function __construct()
     {
         // instanciamos os objetos
-        $this->model = new RegistroDao();
+        $this->model = new Registro();
         $this->view = new View("registro.html");
     }
 
-    public function add()
+    public function insert()
     {
         try{
             // instancia registro
@@ -84,7 +83,7 @@ class RegistroController
         $oProf = Sessao::getObject("oProf");
         
         // checa quais
-        $oRegistro = new Registro;        
+        $oRegistro = new Registro;
         $oRegistro = $this->model->getByDate($oProf, date("Y-m-d"));
         if($oRegistro){
             // se ja clicou entrada, desabilita controle
@@ -145,6 +144,7 @@ class RegistroController
             // preenche view com dados do registro
             $oRegistro = new Registro;
             $oRegistro = $this->model->getByDate($oProf, $vData);
+            die("opa");
             $view->setValue("DATA", $vData->format("d-m-Y"));
             $view->setValue("DIASEMANA", Data::getDiaSemana($vData));
             if($oRegistro)
@@ -157,9 +157,8 @@ class RegistroController
 
             // carrega selects de ocorrencia
             $oOcorrencia = new Ocorrencia;
-            $oOcorrenciaDao = new OcorrenciaDao;
-            $oOcorrencia = $oOcorrenciaDao->getList();
-            foreach($oOcorrencia as $row )
+            $vOcorrencia = $oOcorrencia->getAll();
+            foreach($vOcorrencia as $row )
             {
                 $view->setValue("CODIGO", $row->getCodigo());
                 $view->setValue("DESCRICAO", $row->getDescricao());
@@ -168,10 +167,6 @@ class RegistroController
                 $view->parseBlock("BLOCK_OCORRENCIA3", true);
                 $view->parseBlock("BLOCK_OCORRENCIA4", true);
             }
-
-            // destroi objetos
-            unset($oOcorrenciaDao);
-            unset($oOcorrencia);
 
             // exibe view
             $view->addFile("FOOTER", "rodape.html");

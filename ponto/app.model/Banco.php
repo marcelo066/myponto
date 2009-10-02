@@ -123,7 +123,7 @@ final class Banco extends Dao
             {
 
                 $oPeriodo = new Periodo($row["periodo_ini"]);
-                $vPeriodo = "de " . $oPeriodo->getInicio() . " a " . $oPeriodo->getFim();
+                $vPeriodo = "de " . $oPeriodo->getInicial() . " a " . $oPeriodo->getFinal();
                 $oBanco = new Banco;
                 $oBanco->setPeriodo($vPeriodo);
                 $oBanco->setHorhex50($row["hex_50"]);
