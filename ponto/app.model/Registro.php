@@ -21,6 +21,7 @@ class Registro extends Dao {
     private $ocorrencias;
     private $apropriar;
     private $campo;
+    private $saldo;
     /**
         flag
         entrada manhÃ£ = 2
@@ -136,7 +137,7 @@ class Registro extends Dao {
     }
 
     public function setTotal ($pTotal){
-        $this->total = number_format($pTotal,2,',','.');
+        $this->total = number_format($pTotal,2);
     }
 
     public function getExtra50 (){
@@ -144,7 +145,7 @@ class Registro extends Dao {
     }
 
     public function setExtra50 ($pExtra50){
-        $this->extra50 = number_format($pExtra50,2,',','.');
+        $this->extra50 = number_format($pExtra50,2);
     }
 
     public function getExtra100 (){
@@ -152,7 +153,7 @@ class Registro extends Dao {
     }
 
     public function setExtra100 ($pExtra100){
-        $this->extra100 = number_format($pExtra100,2,',','.');
+        $this->extra100 = number_format($pExtra100,2);
     }
 
     public function addOcorrencia(Ocorrencia $pOcorrencia)
@@ -203,33 +204,32 @@ class Registro extends Dao {
                 break;
         }
     }
-
+   
     public function insert(Profissional $pProf, Registro $pRegistro)
     {
         try{
             // se ja tem registro, vai dar update
-            // caso contrario, vai dar insert            
+            // caso contrario, vai dar insert
+            $pData = new DateTime($pRegistro->getData());
             if(!$this->getByDate($pProf, $pRegistro->getData()))
             {                
                 $sql = "INSERT INTO hor_frequencia (cod_prof_funcao, data, " . $pRegistro->getCampo()
                 . ") VALUES ("
                 . $pProf->getCodProfFuncao() . ",'"
-                . $pRegistro->getData(). "','"
+                . $pData->format("Y-m-d"). "','"
                 . $pRegistro->getHora() . "');";
-                parent::conectar();
                 parent::executar($sql);                
             }
             else
             {
                 $sql = "UPDATE hor_frequencia SET " . $pRegistro->getCampo() . " = '"
                 . $pRegistro->getHora() ."' WHERE data = '"
-                . $pRegistro->getData()."' AND cod_prof_funcao = "
+                . $pData->format("Y-m-d")."' AND cod_prof_funcao = "
                 . $pProf->getCodProfFuncao() . ";";
-                parent::conectar();
-                parent::executar($sql);
-                // atualiza os totais
-                $this->updateTotals($pProf, $pRegistro);
+                parent::executar($sql);                
             }
+            // atualiza os totais
+            $this->updateTotals($pProf, $pRegistro);
         }catch(Exception $e) {
             throw new Exception($e->getTraceAsString());
         }
@@ -263,7 +263,7 @@ class Registro extends Dao {
     {
         try
         {           
-            // atualiza os totais
+            // atualiza os totais            
             $oRegistro = new Registro;
             $oRegistro = $this->getByDate($pProf, $pRegistro->getData());
             $t = 0;
@@ -298,12 +298,34 @@ class Registro extends Dao {
                     $t2 =Data::timeToDecimal($t2);
                     $t = $t1 + $t2;
                     break;
-            }
-            $oPeriodo = new Registro($pProf);
-            die($oPeriodo->getHorATrabalhar( )
-            )
-            $sql = "UPDATE hor_frequencia EgetHorATrabalharT total = , h_50 = , h_100 = ";
-            echo $t;
+            }            
+            $oPeriodo = new Periodo();
+            $oPeriodo->setInicial($oRegistro->getData());
+            $oPeriodo->setFinal($oRegistro->getData());
+            $vTrabalhar = $pProf->getHorasTrabalharNoPeriodo($oPeriodo);
+            $vSaldo = $t - $vTrabalhar;
+            $t100 = 0;
+            $t50 = 0;
+            //se tiver saldo e o dia for sábado, é hora extra a 50%
+            //se for domingo ou feriado, é hora extra a 100%
+            $vData =new DateTime($oRegistro->getData());
+            if($vSaldo > 0)
+            {                
+                switch(Data::getTipoDia($vData)){
+                    case "Sábado":
+                        $t50 = $vSaldo;
+                        break;
+                    case "Domingo":
+                        $t100 = $vSaldo;
+                        break;
+                    case "Feriado":
+                        $t100 = $vSaldo;
+                        break;
+                    }
+                }            
+            $sql = "UPDATE hor_frequencia SET total = $t , h_50 = $t50, h_100 = $t100 "
+            ."WHERE data = '".$vData->format("Y-m-d")."' AND cod_prof_funcao = ".$pProf->getCodProfFuncao().";";
+            parent::executar($sql);
         }
         catch(Exception $e)
         {
@@ -320,13 +342,13 @@ class Registro extends Dao {
                     FROM hor_frequencia hf
                     WHERE hf.cod_prof_funcao = " . $pProf->getCodProfFuncao() . "
                     AND hf.data = '" . $pData->format("Y-m-d") . "';";
-            parent::conectar();            
             $row = parent::obterRecordSet($sql);
             if($row)
             {
+                $oData = new DateTime($row[0]["data"]);
                 $oRegistro = new Registro;
-                $oRegistro->setData($row[0]["data"]);
-                $oRegistro->setDiaDaSemana(Data::getTipoDia(new DateTime($row[0]["data"])));
+                $oRegistro->setData($oData->format('d-m-Y'));
+                $oRegistro->setDiaDaSemana(Data::getTipoDia($oData));
                 $oRegistro->setEntradaManha($row[0]["entrada"]);
                 $oRegistro->setSaidaManha($row[0]["almoco"]);
                 $oRegistro->setEntradaTarde($row[0]["retorno"]);
@@ -336,12 +358,10 @@ class Registro extends Dao {
                 $oRegistro->setTotal($row[0]["total"]);
                 $oRegistro->setExtra50($row[0]["h_50"]);
                 $oRegistro->setExtra100($row[0]["h_100"]);
-                parent::desconectar();
                 return $oRegistro;
             }
             else
             {
-                parent::desconectar();
                 return false;
             }
         }catch(Exception $e){
@@ -349,22 +369,18 @@ class Registro extends Dao {
         }
     }
 
-    public function getByRange($pCodProfFuncao, DateTime $pInicio, DateTime $pFim)
+    public function getByRange(Profissional $pProf, Periodo $pPeriodo)
     {
         try{
-            // foi necessï¿½rio criar outro objeto, pois todo objeto em php
-            // ï¿½ passado por referï¿½ncia e isso estava interferindo no resultado
-            // de outras funï¿½ï¿½es
-            $ObjInicio = new DateTime($pInicio->format("Y-m-d"));
-            $ObjFim = new DateTime($pFim->format("Y-m-d"));
+            $ObjInicio = new DateTime($pPeriodo->getInicial());
+            $ObjFim = new DateTime($pPeriodo->getFinal());
             $sql = "SELECT hf.data, DAYNAME(hf.data) as dia, hf.entrada, hf.almoco,
                     hf.retorno, hf.saida, hf.total, hf.h_50, hf.h_100
                     FROM hor_frequencia hf INNER JOIN profs_funcoes pf
                     ON (hf.cod_prof_funcao = pf.codigo)
-                    WHERE pf.codigo = $pCodProfFuncao
-                    AND hf.data BETWEEN '" . $ObjInicio->format('Y-m-d') . "'
+                    WHERE pf.codigo = " . $pProf->getCodProfFuncao()
+                    ." AND hf.data BETWEEN '" . $ObjInicio->format('Y-m-d') . "'
                     AND '" . $ObjFim->format('Y-m-d') . "';";
-            parent::conectar();
             $row = parent::obterRecordSet($sql);
             // insere os dias de falta, finais de semana
             // feriados e ocorrï¿½ncias na frequencia
@@ -372,22 +388,22 @@ class Registro extends Dao {
             $j = 0;
             while($ObjInicio <= $ObjFim)
             {
-                $reg = new Registro();
-                $reg->setData($row[$j]["data"]);
-                $objData = new DateTime($reg->getData());
-                if($objData->format('d/m/Y') == $ObjInicio->format('d/m/Y'))
+                $oReg = new Registro();
+                $oData = new DateTime($row[$j]["data"]);
+                $oReg->setData($oData->format("d-m-Y"));
+                if($oData->format('d/m/Y') == $ObjInicio->format('d/m/Y'))
                 {
                     //$reg->setDiaDaSemana($row[$j][dia]);
-                    $reg->setDiaDaSemana(Data::getTipoDia($objData));
-                    $reg->setEntradaManha($row[$j]["entrada"]);
-                    $reg->setSaidaManha($row[$j]["almoco"]);
-                    $reg->setEntradaTarde($row[$j]["retorno"]);
-                    $reg->setSaidaTarde($row[$j]["saida"]);
-                    $reg->setEntradaNoite('-');
-                    $reg->setSaidaNoite('-');
-                    $reg->setTotal($row[$j]["total"]);
-                    $reg->setExtra50($row[$j]["h_50"]);
-                    $reg->setExtra100($row[$j]["h_100"]);
+                    $oReg->setDiaDaSemana(Data::getTipoDia($oData));
+                    $oReg->setEntradaManha($row[$j]["entrada"]);
+                    $oReg->setSaidaManha($row[$j]["almoco"]);
+                    $oReg->setEntradaTarde($row[$j]["retorno"]);
+                    $oReg->setSaidaTarde($row[$j]["saida"]);
+                    $oReg->setEntradaNoite('-');
+                    $oReg->setSaidaNoite('-');
+                    $oReg->setTotal($row[$j]["total"]);
+                    $oReg->setExtra50($row[$j]["h_50"]);
+                    $oReg->setExtra100($row[$j]["h_100"]);
                     if($j < count($row)-1)
                     {
                         $j++;
@@ -401,26 +417,40 @@ class Registro extends Dao {
                     // pode ser final de semana, feriado,
                     // ou alguma outra ocorrencia como
                     // atestado, licenï¿½a etc, etc.
-                    $reg->setData($ObjInicio->format('d-m-Y'));
-                    $reg->setDiaDaSemana(Data::getTipoDia($ObjInicio));
-                    $reg->setEntradaManha('-');
-                    $reg->setSaidaManha('-');
-                    $reg->setEntradaTarde('-');
-                    $reg->setSaidaTarde('-');
-                    $reg->setEntradaNoite('-');
-                    $reg->setSaidaNoite('-');
-                    $reg->setTotal(0);
-                    $reg->setExtra50(0);
-                    $reg->setExtra100(0);
+                    $oReg->setData($ObjInicio->format('d-m-Y'));
+                    $oReg->setDiaDaSemana(Data::getTipoDia($ObjInicio));
+                    $oReg->setEntradaManha('-');
+                    $oReg->setSaidaManha('-');
+                    $oReg->setEntradaTarde('-');
+                    $oReg->setSaidaTarde('-');
+                    $oReg->setEntradaNoite('-');
+                    $oReg->setSaidaNoite('-');
+                    $oReg->setTotal(0);
+                    $oReg->setExtra50(0);
+                    $oReg->setExtra100(0);
                 }
                 $ObjInicio->modify("+1 day");
-                $ret[] = $reg;
+                $ret[] = $oReg;
             }
-            parent::desconectar();
             return $ret;
         }catch(Exception $e){
             throw new Exception($e->getTraceAsString());
         }
+    }
+
+    public function getTotaisTrabalhados(Profissional $pProf, Periodo $pPeriodo)
+    {
+            $oInicio = new DateTime($pPeriodo->getInicial());
+            $oFim = new DateTime($pPeriodo->getFinal());
+            $sql = "SELECT SUM(h_50) as Hex50, SUM(h_100)  as Hex100, SUM(total) as total  "
+            . "FROM hor_frequencia "
+            . "WHERE cod_prof_funcao =  ".$pProf->getCodProfFuncao()
+            . " AND data BETWEEN '" . $oInicio->format('Y-m-d')
+            . "' AND '" . $oFim->format('Y-m-d') . "';";
+            $rs = parent::obterRecordSet($sql);            
+            $this->setExtra50($rs[0]["Hex50"]);
+            $this->setExtra100($rs[0]["Hex100"]);
+            $this->setTotal($rs[0]["total"]);
     }
 
     public function __construct()

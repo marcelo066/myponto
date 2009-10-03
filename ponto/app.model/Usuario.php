@@ -48,18 +48,6 @@ class Usuario extends Dao{
         $this->grupo = $pGrupo;
     }
 
-    public function __construct(){
-        if(!parent::conectar()){
-            echo "Erro ao conectar com a base de dados!";
-            exit();
-        }
-    }
-
-    public function  __destruct()
-    {
-        parent::desconectar();
-    }
-
     public function login()
     {
         $sql = "SELECT pf.codigo

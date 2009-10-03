@@ -2,14 +2,6 @@
 
 class Firewall extends Dao
 {
-    public function  __construct() {
-        parent::conectar();
-    }
-
-    public function  __destruct() {
-        parent::desconectar();
-    }
-
     // par�metros relativos ao click
     public function podeClicar(Profissional $pProf, Registro $pRegistro)
     {

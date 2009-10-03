@@ -71,7 +71,6 @@ class Feriado extends Dao {
                 "WHERE DAY(data) = $dia " .
                 "AND MONTH(data) = $mes " .
                 "AND fixo = 1;";            
-            parent::conectar();
             $rs = parent::obterRecordSet($sql);
             if($rs)
             {
@@ -99,13 +98,8 @@ class Feriado extends Dao {
                 $this->setDescricao($rs[0]["descricao"]);
                 $this->setTipo($rs[0]["tipo"]);
                 $this->setHoras($rs[0]["horas"]);
-                $this->setFixo($rs[0]["fixo"]);
-                parent::desconectar();                
+                $this->setFixo($rs[0]["fixo"]);       
             }
-            else
-            {
-                parent::desconectar();                
-            }          
             return $cont;
         }catch(Exception $e){
             throw new Exception($e->getTraceAsString());

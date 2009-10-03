@@ -16,9 +16,10 @@ class ApropriacaoController extends Controller {
         try{
             // carrega a tabela com apropriações
             $oProf = Sessao::getObject("oProf");
+            $oPeriodo = Sessao::getObject("oPeriodo");
             $pAprop = new Apropriacao;
             $pAprop->setCodProfFuncao($oProf->getCodProfFuncao());
-            $pAprop->setData(date("Y-m-d"));
+            $pAprop->setData($oPeriodo->getData());
             $oAprop = $pAprop->getAll();
             if($oAprop)
             {
