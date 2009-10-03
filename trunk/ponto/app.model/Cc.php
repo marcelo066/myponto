@@ -2,16 +2,6 @@
 
 class Cc extends Dao
 {
-    function  __construct()
-    {
-        parent::conectar();
-    }
-
-    function  __destruct()
-    {
-        parent::desconectar();
-    }
-
     function getCc($cc)
     {
         // retorna banco de horas

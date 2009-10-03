@@ -7,7 +7,7 @@ abstract class Dao {
  * Conecta com a base de dados
  * @return <type>
  */
-    protected function conectar(){
+    private function conectar(){
         try{
             $this->conn = new PDO('mysql:unix_socket=/tmp/mysql.sock;host=127.0.0.1;port=3306;dbname=new_ufc','root','h4ck3r');
             return true;
@@ -16,7 +16,7 @@ abstract class Dao {
         }
     }
 
-    protected function desconectar(){
+    private function desconectar(){
         try{
             $this->conn = null;
             return true;
@@ -27,9 +27,11 @@ abstract class Dao {
 
     protected function obterRecordSet($sql){
         try{
+            $this->conectar();
             $stm = $this->conn->prepare($sql);
             $stm->execute();
             $ret = $stm->fetchAll();
+            $this->desconectar();
             return $ret;
         }catch(PDOException $e){
             throw new Exception($e->getMessage());
@@ -38,9 +40,12 @@ abstract class Dao {
 
     protected function executar($sql){
         try{
+            $this->conectar();
             $stm = $this->conn->prepare($sql);
             $stm->execute();
-            return $stm->rowCount();
+            $cont = $stm->rowCount();
+            $this->desconectar();
+            return cont;
         }catch(PDOException $e){
             throw new Exception($e->getMessage());
         }
@@ -48,9 +53,11 @@ abstract class Dao {
 
     protected function executarScalar($sql){
         try{
+            $this->conectar();
             $stm = $this->conn->prepare($sql);
             $stm->execute();
             $row = $stm->fetchColumn();
+            $this->desconectar();
             return $row;
         }catch(PDOException $e){
             throw new Exception($e->getMessage());

@@ -89,14 +89,11 @@ final class Banco extends Dao
         $this->horAcumuladas = $horAcumuladas;
     }
 
-
-
     function getBanco($pCodProfFuncao)
     {
         try{
             // horista não possui banco de horas
-            $oProf = new Profissional();
-            $oProf->getProfissional($pCodProfFuncao);
+            $oProf = new Profissional($pCodProfFuncao);
             if($oProf->getHorista())
             {
                 return false;
@@ -114,14 +111,12 @@ final class Banco extends Dao
                ON (hb.cod_prof_funcao = ht.cod_prof_funcao AND hb.periodo_ini = ht.periodo_ini)
                WHERE hb.cod_prof_funcao = " . $pCodProfFuncao .
                " ORDER BY hb.periodo_ini ASC;";
-            parent::conectar();
             $rs = parent::obterRecordSet($sql);
 
             //$varAcumulado = 0;
             $ret = Array();
             foreach($rs as $row)
             {
-
                 $oPeriodo = new Periodo($row["periodo_ini"]);
                 $vPeriodo = "de " . $oPeriodo->getInicial() . " a " . $oPeriodo->getFinal();
                 $oBanco = new Banco;
@@ -137,7 +132,6 @@ final class Banco extends Dao
                 $oBanco->setHoracumuladas($varAcumulado);
                 $ret[] = $oBanco;
             }
-            parent::desconectar();
             return $ret;
         }catch(Exception $e){
             throw new Exception($e->getTraceAsString());

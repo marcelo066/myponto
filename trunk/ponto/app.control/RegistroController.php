@@ -16,13 +16,13 @@ class RegistroController
     {
         try{
             // instancia registro
-            $this->model->setData(date("Y-m-d"));
+            $oPeriodo = Sessao::getObject("oPeriodo");
+            $this->model->setData($oPeriodo->getData());
             $this->model->setApropriar($_POST["chkApropriar"]);
             $this->model->setHora(date("H:i:s"));
             $this->model->setFlag($_POST["optFlag"]);
 
             // instancia profissional
-            $oProf = new Profissional;
             $oProf = Sessao::getObject("oProf");
             // ve se pode clicar
             $fw = new Firewall;
@@ -77,12 +77,12 @@ class RegistroController
     public function show()
     {
         // obtem profissional logado, armazenado na sessao
-        $oProf = new Profissional;
         $oProf = Sessao::getObject("oProf");
-        
+        $oPeriodo = Sessao::getObject("oPeriodo");
+
         // checa quais
         $oRegistro = new Registro;
-        $oRegistro = $this->model->getByDate($oProf, date("Y-m-d"));
+        $oRegistro = $this->model->getByDate($oProf, $oPeriodo->getData());
         if($oRegistro){
             // se ja clicou entrada, desabilita controle
             if($oRegistro->getEntradaManha())
@@ -131,7 +131,7 @@ class RegistroController
             // define view
             $view = new View("editar_registro.html");
             $view->addFile("TOPO", "topo.html");
-             $vData = new DateTime(str_replace("/","-",$_GET["_Id"] ));
+             $vData = new DateTime(str_replace("/","-",$_GET["_token"] ));
 
             // preenche view com dados do profissional
             $oProf = new Profissional;

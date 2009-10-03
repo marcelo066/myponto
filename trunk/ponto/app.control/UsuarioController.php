@@ -15,7 +15,6 @@ class UsuarioController extends Controller {
     public function login()
     {
         try{
-
             // valida usuario e sanha
             if (!$_POST['matricula'] && !$_POST['senha'])
             {
@@ -43,28 +42,19 @@ class UsuarioController extends Controller {
                     }
 
                     // Registra vari?veis globais
-                    $oProf = new Profissional();
-                    $oProf->getProfissional($varCodProfFuncao);
+                    $oProf = new Profissional($varCodProfFuncao);
                     Sessao::setObject('oProf', $oProf);
-                    $oPeriodo = new Periodo($oProf);
-                    //$oPeriodo = new Periodo("10-01-2008", $oProf);
+                    $oPeriodo = new Periodo();
+                    //$oPeriodo = new Periodo("25-09-2009");
                     Sessao::setObject('oPeriodo', $oPeriodo);
-
                     $oRegistro = new RegistroController;
                     $oRegistro->show();
                     $oRegistro = null;
-
-/*
-                // Redireciona para p?gina principal
-                $oFreq = new FrequenciaController;
-                $oFreq->exibirFrequencia();
-                $oFreq = null;
-                //return true;*/
                 }
             }
-            //return false;
+            return true;
         }catch(Exception $e){
-            $this->view->setValue("MSG", $e->getTraceAsString());
+            die($e->getTraceAsString());
         }
     }
 

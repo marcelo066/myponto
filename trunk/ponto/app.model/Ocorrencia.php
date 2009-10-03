@@ -25,7 +25,6 @@ class Ocorrencia extends Dao {
         $sql = "SELECT cod_ocorrencia as codigo, descricao
                 FROM hor_tipo_ocorrencia
                 ORDER BY cod_ocorrencia;";
-        parent::conectar();
         $rs = parent::obterRecordSet($sql);
         $oOcorrencia = Array();
         foreach($rs as $row)
@@ -36,7 +35,6 @@ class Ocorrencia extends Dao {
             $oOcorrencia[] = $vOcorrencia;
             $vOcorrencia = null;
         }
-        parent::desconectar();
         return $oOcorrencia;
     }
     public function Insert(Ocorrencia $pOcorrencia, Profissional $pProfissional)
