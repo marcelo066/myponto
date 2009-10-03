@@ -46,8 +46,8 @@ class UsuarioController extends Controller {
                     $oProf = new Profissional();
                     $oProf->getProfissional($varCodProfFuncao);
                     Sessao::setObject('oProf', $oProf);
-                    $oPeriodo = new Periodo(date("d-m-Y"));
-                    //$oPeriodo = new Periodo("2009-03-05");
+                    $oPeriodo = new Periodo($oProf);
+                    //$oPeriodo = new Periodo("10-01-2008", $oProf);
                     Sessao::setObject('oPeriodo', $oPeriodo);
 
                     $oRegistro = new RegistroController;
@@ -64,7 +64,7 @@ class UsuarioController extends Controller {
             }
             //return false;
         }catch(Exception $e){
-            die($e->getTraceAsString());
+            $this->view->setValue("MSG", $e->getTraceAsString());
         }
     }
 

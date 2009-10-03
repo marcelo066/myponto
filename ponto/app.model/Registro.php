@@ -206,29 +206,33 @@ class Registro extends Dao {
 
     public function insert(Profissional $pProf, Registro $pRegistro)
     {
-        // se ja tem registro, vai dar update
-        // caso contrario, vai dar insert
-        parent::conectar();
-        if(!$this->getByDate($pProf, $pRegistro->getData()))
-        {
-            $sql = "INSERT INTO hor_frequencia (cod_prof_funcao, data, " . $pRegistro->getCampo()
-            . ") VALUES ("
-            . $pProf->getCodProfFuncao() . ",'"
-            . $pRegistro->getData(). "','"
-            . $pRegistro->getHora() . "');";
-            parent::executar($sql);
+        try{
+            // se ja tem registro, vai dar update
+            // caso contrario, vai dar insert            
+            if(!$this->getByDate($pProf, $pRegistro->getData()))
+            {                
+                $sql = "INSERT INTO hor_frequencia (cod_prof_funcao, data, " . $pRegistro->getCampo()
+                . ") VALUES ("
+                . $pProf->getCodProfFuncao() . ",'"
+                . $pRegistro->getData(). "','"
+                . $pRegistro->getHora() . "');";
+                parent::conectar();
+                parent::executar($sql);                
+            }
+            else
+            {
+                $sql = "UPDATE hor_frequencia SET " . $pRegistro->getCampo() . " = '"
+                . $pRegistro->getHora() ."' WHERE data = '"
+                . $pRegistro->getData()."' AND cod_prof_funcao = "
+                . $pProf->getCodProfFuncao() . ";";
+                parent::conectar();
+                parent::executar($sql);
+                // atualiza os totais
+                $this->updateTotals($pProf, $pRegistro);
+            }
+        }catch(Exception $e) {
+            throw new Exception($e->getTraceAsString());
         }
-        else
-        {
-            $sql = "UPDATE hor_frequencia SET " . $pRegistro->getCampo() . " = '"
-            . $pRegistro->getHora() ."' WHERE data = '"
-            . $pRegistro->getData()."' AND cod_prof_funcao = "
-            . $pProf->getCodProfFuncao() . ";";
-            parent::executar($sql);
-            // atualiza os totais
-            $this->updateTotals($pProf, $pRegistro);
-        }
-        parent::desconectar();
     }
 
     public function update(Profissional $pProf, Registro $pRegistro)
@@ -237,7 +241,7 @@ class Registro extends Dao {
         {
             echo $pProf->getCodProfFuncao() . '<br>';
             echo $pProf->getNome() . '<br>';
-            echo $pRegistro->getData()->format("d-m-Y") . '<br>';
+            echo $pRegistro->getData() . '<br>';
             echo $pRegistro->getEntradaManha() . '<br>';
             echo $pRegistro->getSaidaManha() . '<br>';
             echo $pRegistro->getEntradaTarde() . '<br>';
@@ -258,9 +262,7 @@ class Registro extends Dao {
     public function updateTotals(Profissional $pProf, Registro $pRegistro)
     {
         try
-        {
-
-            die($pProf->getCargaHoraria());
+        {           
             // atualiza os totais
             $oRegistro = new Registro;
             $oRegistro = $this->getByDate($pProf, $pRegistro->getData());
@@ -297,7 +299,10 @@ class Registro extends Dao {
                     $t = $t1 + $t2;
                     break;
             }
-            $sql = "UPDATE hor_frequencia SET total = , h_50 = , h_100 = ";
+            $oPeriodo = new Registro($pProf);
+            die($oPeriodo->getHorATrabalhar( )
+            )
+            $sql = "UPDATE hor_frequencia EgetHorATrabalharT total = , h_50 = , h_100 = ";
             echo $t;
         }
         catch(Exception $e)
@@ -309,13 +314,13 @@ class Registro extends Dao {
     public function getByDate(Profissional $pProf, $pData)
     {
         try{
-            $pData = new DateTime($pData);
+           $pData = new DateTime($pData);
             $sql = "SELECT hf.data, DAYNAME(hf.data) as dia, hf.entrada, hf.almoco,
                         hf.retorno, hf.saida, hf.total, hf.h_50, hf.h_100
                     FROM hor_frequencia hf
                     WHERE hf.cod_prof_funcao = " . $pProf->getCodProfFuncao() . "
                     AND hf.data = '" . $pData->format("Y-m-d") . "';";
-            parent::conectar();
+            parent::conectar();            
             $row = parent::obterRecordSet($sql);
             if($row)
             {

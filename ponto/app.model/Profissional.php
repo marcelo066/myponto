@@ -86,6 +86,5 @@ final class Profissional extends Dao
             throw new Exception($e->getTraceAsString());
         }
     }
-
 }
 ?>

@@ -1,6 +1,6 @@
 <?php
 
-abstract class Data {
+abstract class Data extends Feriado {
     /**
      * Método getDiaSemana
      * retorna o dia da semana de uma data

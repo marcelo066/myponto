@@ -16,21 +16,20 @@ class RegistroController
     {
         try{
             // instancia registro
-            $oRegistro = new Registro;
-            $oRegistro->setData(date("Y-m-d"));
-            $oRegistro->setApropriar($_POST["chkApropriar"]);
-            $oRegistro->setHora(date("H:i:s"));
-            $oRegistro->setFlag($_POST["optFlag"]);
+            $this->model->setData(date("Y-m-d"));
+            $this->model->setApropriar($_POST["chkApropriar"]);
+            $this->model->setHora(date("H:i:s"));
+            $this->model->setFlag($_POST["optFlag"]);
 
             // instancia profissional
             $oProf = new Profissional;
             $oProf = Sessao::getObject("oProf");
             // ve se pode clicar
             $fw = new Firewall;
-            if($fw->podeClicar($oProf, $oRegistro))
+            if($fw->podeClicar($oProf, $this->model))
             {
                 // registra o ponto
-                $this->model->add($oProf, $oRegistro);
+                $this->model->insert($oProf, $this->model);
             }
             else
             {
@@ -38,9 +37,8 @@ class RegistroController
             }
             $this->show();
         }catch(Exception $e){
-            die($e->getMessage());
+            $this->view->setValue("MSG", $e->getTraceAsString());
         }
- 
     }
 
     public function update()
@@ -133,7 +131,7 @@ class RegistroController
             // define view
             $view = new View("editar_registro.html");
             $view->addFile("TOPO", "topo.html");
-            $vData = new DateTime(str_replace("/","-",$_GET["_Id"] ));
+             $vData = new DateTime(str_replace("/","-",$_GET["_Id"] ));
 
             // preenche view com dados do profissional
             $oProf = new Profissional;
@@ -143,8 +141,7 @@ class RegistroController
 
             // preenche view com dados do registro
             $oRegistro = new Registro;
-            $oRegistro = $this->model->getByDate($oProf, $vData);
-            die("opa");
+            $oRegistro = $this->model->getByDate($oProf, $vData->format("d-m-Y"));
             $view->setValue("DATA", $vData->format("d-m-Y"));
             $view->setValue("DIASEMANA", Data::getDiaSemana($vData));
             if($oRegistro)
@@ -154,7 +151,6 @@ class RegistroController
                 $view->setValue("RETORNO", $oRegistro->getEntradaTarde());
                 $view->setValue("SAIDA", $oRegistro->getSaidaTarde());
             }
-
             // carrega selects de ocorrencia
             $oOcorrencia = new Ocorrencia;
             $vOcorrencia = $oOcorrencia->getAll();
@@ -167,7 +163,6 @@ class RegistroController
                 $view->parseBlock("BLOCK_OCORRENCIA3", true);
                 $view->parseBlock("BLOCK_OCORRENCIA4", true);
             }
-
             // exibe view
             $view->addFile("FOOTER", "rodape.html");
             $view->show();
@@ -175,10 +170,7 @@ class RegistroController
         catch(Exception $e)
         {
             die($e->getMessage());
-
         }
-
     }
-
 }
 ?>
