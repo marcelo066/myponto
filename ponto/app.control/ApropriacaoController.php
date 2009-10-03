@@ -17,10 +17,9 @@ class ApropriacaoController extends Controller {
             // carrega a tabela com apropriações
             $oProf = Sessao::getObject("oProf");
             $oPeriodo = Sessao::getObject("oPeriodo");
-            $pAprop = new Apropriacao;
-            $pAprop->setCodProfFuncao($oProf->getCodProfFuncao());
-            $pAprop->setData($oPeriodo->getData());
-            $oAprop = $pAprop->getAll();
+            $this->model->setCodProfFuncao($oProf->getCodProfFuncao());
+            $this->model->setData($oPeriodo->getData());
+            $oAprop = $this->model->getAll();
             if($oAprop)
             {
                 foreach($oAprop as $vAprop)
@@ -40,11 +39,9 @@ class ApropriacaoController extends Controller {
                 }
             }
 
-            /*
+            
             // checa quanto tem para apropriar
-            $oRegistro = new RegistroDao;
-            $oRegistro->add($oProf, $pPonto);
-            */
+            
            $msg = "Apropriado: " . $this->model->getTotalApropriado($pAprop) .
                 "<br>Saldo: " . $this->model->getSaldoApropriar($pAprop);
             $this->view->setValue("MSG", $msg);
