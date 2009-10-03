@@ -16,10 +16,11 @@ class Frequencia {
         try{
             // instancia objetos que comp�e a frequencia
             $reg = new Registro();
-            $res = new Resumo();
 
-            // carrega resumo
-            $this->resumo = $res->getResumo($pCodProfFuncao, $pInicio, $pFim);
+        // carrega resumo
+           new Sessao();
+            $res = Sessao::getObject("oPeriodo");
+            $this->resumo = $res;
 
             // carrega registro
             $this->registro = $reg->getByRange($pCodProfFuncao, $pInicio, $pFim);
