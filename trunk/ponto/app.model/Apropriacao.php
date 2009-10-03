@@ -24,7 +24,7 @@ class Apropriacao extends Dao {
     public function setCodProfFuncao($codProfFuncao) {
         $this->codProfFuncao = $codProfFuncao;
     }
-
+        
     public function getData() {
         return $this->data;
     }
@@ -60,10 +60,11 @@ class Apropriacao extends Dao {
     public function getAll()
     {
         try{
+            $pData = new DateTime($this->getData());
             $sql = "SELECT id, cc, total
                    FROM hor_aprop
                    WHERE cod_prof_funcao = ".$this->getCodProfFuncao().
-                   " AND data = '".$this->getData()."';";
+                   " AND data = '".$pData->format("Y-m-d")."';";
             $rs = parent::obterRecordSet($sql);
             $vAprop = array();
             foreach($rs as $row)
@@ -71,8 +72,8 @@ class Apropriacao extends Dao {
                 $oAprop = new Apropriacao;
                 $oAprop->setId($row["id"]);
                 $oAprop->setCc($row["cc"]);
-                $oAprop->setCodProfFuncao($pCodProfFuncao);
-                $oAprop->setData($pData);
+                $oAprop->setCodProfFuncao($this->getCodProfFuncao());
+                $oAprop->setData($pData->format("d-m-Y"));
                 $oAprop->setValor($row["total"]);
                 $vAprop[] = $oAprop;
                 unset($oAprop);
@@ -86,10 +87,11 @@ class Apropriacao extends Dao {
     public function insert()
     {
         try{
+            $pData = new DateTime($this->getData());
             $sql = "INSERT INTO hor_aprop (cod_prof_funcao, data, cc, total)
                     VALUES ("
             .$this->getCodProfFuncao().",'"
-            .$this->getData()."',"
+            .$pData->format("Y-m-d")."',"
             .$this->getCc().",'"
             .$this->getValor()."');";
             $rs = parent::executar($sql);
@@ -134,10 +136,11 @@ class Apropriacao extends Dao {
     public function getTotalApropriado()
     {
         try{
+            $pData = new DateTime($this->getData());
             $sql = "SELECT SUM(total)
                    FROM hor_aprop
                    WHERE cod_prof_funcao = ".$this->getCodProfFuncao().
-                   " AND data = '".$this->getData()."';";
+                   " AND data = '".$pData->format("Y-m-d")."';";
             $ret = parent::executarScalar($sql);
             return $ret;
         }catch(Exception $e){
@@ -148,14 +151,13 @@ class Apropriacao extends Dao {
     public function getSaldoApropriar()
     {
         try{
-            $oProf = Sessao::getObject("oProf");
-            $oRegistro = new Registro;            
-            $oRegistro->getByDate($oProf, $this->getData());
-            if($oRegistro){
-                $tRegistrado = $oRegistro->getTotal();
-            }else{
-                $tRegistrado = 0;
-            }
+            $oProf = new Profissional($this->getCodProfFuncao());
+            $oPeriodo = new Periodo;
+            $oRegistro = new Registro;
+            $oPeriodo->setInicial($this->getData());
+            $oPeriodo->setFinal($this->getData());            
+            $oRegistro->getTotaisTrabalhados($oProf, $oPeriodo);
+            $tRegistrado = $oRegistro->getTotal();
             $tApropriado = $this->getTotalApropriado();
             $vSaldo = $tRegistrado - $tApropriado;
             return $vSaldo;

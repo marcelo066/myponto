@@ -34,7 +34,7 @@ abstract class Dao {
             $this->desconectar();
             return $ret;
         }catch(PDOException $e){
-            throw new Exception($e->getMessage());
+            throw new PDOException($e->getMessage());
         }
     }
 
@@ -46,8 +46,10 @@ abstract class Dao {
             $cont = $stm->rowCount();
             $this->desconectar();
             return cont;
-        }catch(PDOException $e){
-            throw new Exception($e->getMessage());
+        }catch(Exception $e1){
+            throw new PDOException($e1->getMessage());
+        }catch(Exception $e2){
+            throw new Exception($e2->getMessage());
         }
     }
 
