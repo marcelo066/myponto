@@ -38,10 +38,8 @@ class ApropriacaoController extends Controller {
                     $this->view->parseBlock("BLOCK_APROPRIACAO", true);
                 }
             }
-
             
-            // checa quanto tem para apropriar
-            
+            // checa quanto tem para apropriar            
            $msg = "Apropriado: " . $this->model->getTotalApropriado($pAprop) .
                 "<br>Saldo: " . $this->model->getSaldoApropriar($pAprop);
             $this->view->setValue("MSG", $msg);
@@ -72,6 +70,13 @@ class ApropriacaoController extends Controller {
     public function insert()
     {
         try{
+            $oProf = Sessao::getObject("oProf");
+            $oPeriodo = Sessao::getObject("oPeriodo");
+            $this->model->setCc($_POST["txtCC"]);
+            $this->model->setCodProfFuncao($oProf->getCodProfFuncao());
+            $this->model->setData($oPeriodo->getData());
+            $this->model->setValor($_POST["txtValor"]);
+
             $oCc = new Cc;
             if(!isset($_POST["txtCC"]) && !is_numeric($_POST["txtCC"]) || !$oCc->existe($_POST["txtCC"]))
             {
@@ -79,17 +84,14 @@ class ApropriacaoController extends Controller {
             }
             elseif(!isset($_POST["txtValor"]) && !is_numeric($_POST["txtValor"]) || !$_POST["txtValor"] > 0)
             {
-                $this->view->setValue("MSG", "Valor inválido. Informe um valor numérico maior que zero.");
+                $this->view->setValue("MSG", "Valor inválido. Informe um valor numérico maior que zero.");                
+            }elseif($_POST["txtValor"] > $this->model->getSaldoApropriar($oAprop))
+            {
+                $this->view->setValue("MSG2", "Valor ({$_POST["txtValor"]}) maior que o esperado({$this->model->getSaldoApropriar($oAprop)}).");
             }
             else
             {
-                $oProf = Sessao::getObject("oProf");
-                $oAprop = new Apropriacao;
-                $oAprop->setCc($_POST["txtCC"]);
-                $oAprop->setCodProfFuncao($oProf->getCodProfFuncao());
-                $oAprop->setData(date("Y-m-d"));
-                $oAprop->setValor($_POST["txtValor"]);                
-                $oAprop->insert();
+                $this->model->insert();
             }
             $this->show();
         }catch(Exception $e){
