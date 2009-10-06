@@ -82,13 +82,13 @@ abstract class Data extends Feriado {
     }
     public static function timeToDecimal($hora)
     {
-        //try {
+        try {
             list($h, $m, $s) = explode(":", $hora);
             $r = $h + ($m/60);
             return $r;
-        /*}catch(Exception $e){
+        }catch(Exception $e){
             throw new Exception($e->getMessage());
-        }*/
+        }
     }
 }
 ?>

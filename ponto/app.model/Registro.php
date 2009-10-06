@@ -222,10 +222,9 @@ class Registro extends Dao {
             }
             else
             {
-                $sql = "UPDATE hor_frequencia SET " . $pRegistro->getCampo() . " = '"
-                . $pRegistro->getHora() ."' WHERE data = '"
-                . $pData->format("Y-m-d")."' AND cod_prof_funcao = "
-                . $pProf->getCodProfFuncao() . ";";
+                $sql = "UPDATE hor_frequencia SET {$pRegistro->getCampo()} = '
+                {$pRegistro->getHora()}' WHERE data = '
+                {$pData->format("Y-m-d")}' AND cod_prof_funcao = {$pProf->getCodProfFuncao()};";
                 parent::executar($sql);                
             }
             // atualiza os totais
@@ -315,6 +314,9 @@ class Registro extends Dao {
                     case "Sábado":
                         $t50 = $vSaldo;
                         break;
+                    case "Sexta-Feira":
+                        $t50 = $vSaldo;
+                        break;
                     case "Domingo":
                         $t100 = $vSaldo;
                         break;
@@ -323,8 +325,8 @@ class Registro extends Dao {
                         break;
                     }
                 }            
-            $sql = "UPDATE hor_frequencia SET total = $t , h_50 = $t50, h_100 = $t100 "
-            ."WHERE data = '".$vData->format("Y-m-d")."' AND cod_prof_funcao = ".$pProf->getCodProfFuncao().";";
+            $sql = "UPDATE hor_frequencia SET total = {$t} , h_50 = {$t50}, h_100 = {$t100}
+            WHERE data = '{$vData->format("Y-m-d")}' AND cod_prof_funcao = {$pProf->getCodProfFuncao()};";
             parent::executar($sql);
         }
         catch(Exception $e)
