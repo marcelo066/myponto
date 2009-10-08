@@ -45,7 +45,7 @@ class UsuarioController extends Controller {
                     $oProf = new Profissional($varCodProfFuncao);
                     Sessao::setObject('oProf', $oProf);
                     $oPeriodo = new Periodo();
-                    //$oPeriodo = new Periodo("25-09-2009");
+                    //$oPeriodo = new Periodo("4-10-2009");
                     Sessao::setObject('oPeriodo', $oPeriodo);
                     $oRegistro = new RegistroController;
                     $oRegistro->show();

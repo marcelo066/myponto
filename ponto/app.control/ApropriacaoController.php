@@ -92,6 +92,11 @@ class ApropriacaoController extends Controller {
             else
             {
                 $this->model->insert();
+                // se não tem + nada para apropriar tira a pendência da frequencia
+                if($this->model->getSaldoApropriar() == 0)
+                {
+                    
+                }
             }
             $this->show();
         }catch(Exception $e){
@@ -128,6 +133,5 @@ class ApropriacaoController extends Controller {
             $this->view->setValue("MSG", $e->getMessage());
         }
     }
-
 }    
 ?>

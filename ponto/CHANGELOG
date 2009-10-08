@@ -120,6 +120,10 @@ Adicionado campo locked à tabela hor_frequencia
 ALTER TABLE `hor_frequencia` ADD `locked` BOOL NOT NULL DEFAULT '0';
 
 ************************************************************************
+Adicionado campo apropriou à tabela hor_frequencia
+************************************************************************
+ALTER TABLE `hor_frequencia` ADD `apropriou` BOOL NOT NULL DEFAULT '0';
+************************************************************************
 alterada a tabela hor autorizações
 ************************************************************************
 ALTER TABLE `hor_autorizacoes` CHANGE `data` `data` DATE NULL DEFAULT NULL

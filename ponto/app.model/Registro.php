@@ -311,17 +311,14 @@ class Registro extends Dao {
             if($vSaldo > 0)
             {                
                 switch(Data::getTipoDia($vData)){
-                    case "Sábado":
-                        $t50 = $vSaldo;
-                        break;
-                    case "Sexta-Feira":
-                        $t50 = $vSaldo;
-                        break;
                     case "Domingo":
                         $t100 = $vSaldo;
                         break;
                     case "Feriado":
                         $t100 = $vSaldo;
+                        break;
+                    default:
+                        $t50 = $vSaldo;
                         break;
                     }
                 }            
@@ -454,6 +451,9 @@ class Registro extends Dao {
             $this->setExtra100($rs[0]["Hex100"]);
             $this->setTotal($rs[0]["total"]);
     }
+
+
+
 
     public function __construct()
     {
