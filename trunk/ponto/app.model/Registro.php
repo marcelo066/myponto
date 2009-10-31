@@ -452,9 +452,6 @@ class Registro extends Dao {
             $this->setTotal($rs[0]["total"]);
     }
 
-
-
-
     public function __construct()
     {
         $this->flag = 0;
