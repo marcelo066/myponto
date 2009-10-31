@@ -5,7 +5,9 @@ class Firewall extends Dao
     // parï¿½metros relativos ao click
     public function podeClicar(Profissional $pProf, Registro $pRegistro)
     {
+        $pData = new DateTime($pRegistro->getData())   ;
 
+/**
         return true;
 
         // checa se o ponto estï¿½ bloqueado
@@ -19,7 +21,7 @@ class Firewall extends Dao
         {
             return false;
         }
-
+**/
         // checa se o profissional estï¿½ na lista de programaï¿½ï¿½o
         $sql = "SELECT entrada, saida " .
             "FROM hor_autorizacoes " .
@@ -47,42 +49,44 @@ class Firewall extends Dao
         }
 
         // proibe clicagem final de semana e feriado
-        $vArray = array("Sï¿½bado", "Domingo", "Feriado");               
+        $vArray = array("Sábado", "Domingo", "Feriado");
         if(in_array(Data::getTipoDia($pData), $vArray))
         {
             return false;
         }
          
-        // checa se estï¿½ clicando dentro da faixa permitida
-        $oHorarioPadraoDao = new HorarioPadraoDao();
-        $oHorarioPadrao = $oHorarioPadraoDao->getHorario($pCodProfFuncao);
-
-        // Testa permissï¿½es de horï¿½rios
-        switch($pTurno)
+        // checa se está clicando dentro da faixa permitida
+        $oHorarioPadrao = new HorarioPadrao($pProf->getCodProfFuncao(), $pData->format("w"));
+        switch($pRegistro->getCampo())
         {
-            case "entrada": 
-                if($pHora->format("h:i:s") < $oHorarioPadrao->getEntrada())
+            case "entrada":
+                $hora = Data::addHoras($oHorarioPadrao->getToleranciaAntes(),$oHorarioPadrao->getEntrada());
+                if($pRegistro->getHora() < $hora)
                 {
                     return false;
                 }
                 break;
 
             case "almoco":
-                if($pHora > $oHorarioPadrao->getAlmoco())
-                {
+                die( $oHorarioPadrao->getToleranciaAntes());
+                if($pRegistro->getHora() > $oHorarioPadrao->getAlmoco())
+                {                    
                     return false;
                 }
                 break;
 
             case "retorno":
-                if($pHora < $oHorarioPadrao->getRetorno())
+                if($pRegistro->getHora() < $oHorarioPadrao->getRetorno())
                 {
                     return false;
                 }
                 break;
 
             case "saida":
-                if($pHora > $oHorarioPadrao->getRetorno())
+                 $hora = Data::addHoras($oHorarioPadrao->getToleranciaDepois(),$oHorarioPadrao->getSaida());
+                 echo "pode clicar até: $hora<br>";
+                 echo "clicando: {$pRegistro->getHora()}<br>";
+                if($pRegistro->getHora() > $hora)
                 {
                     return false;
                 }
@@ -135,19 +139,6 @@ class Firewall extends Dao
                 return true;
             }
         }
-    }
-    
-    private function subtraiHorario($pHora1, $pHora2)
-    {
-        $dif = (strtotime($pHora1)) - (strtotime($pHora2));
-        if ($dif >= 3600)
-            $hora = floor(($dif >= 86400) ? ($dif / 86400) * 24 : $dif / 3600);
-        if ($calc = ($dif % 3600))
-        {
-            $minuto = floor($calc / 60);
-            $segundo = $calc % 60;
-        }
-        return "$hora:$minuto:$segundo";
     }
 }
 
